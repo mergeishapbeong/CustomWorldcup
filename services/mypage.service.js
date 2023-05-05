@@ -1,7 +1,6 @@
 const WorldcupRepository = require('../repositories/worldcup.repository');
 const WorldcupChoiceRepository = require('../repositories/worldcup.choice.repository');
 const { Worldcups, Worldcup_choices } = require('../models');
-const AppError = require('../utils/appError');
 
 class MypageService {
   worldcupRepository = new WorldcupRepository(Worldcups);
