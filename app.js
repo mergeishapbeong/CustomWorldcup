@@ -10,17 +10,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 
-const indexRouter = require("./routes/index");
-const worldcupRouter = require("./routes/worldcup.routes");
-const authRouter = require("./routes/auth.routes");
-const likeRouter = require("./routes/like.routes");
-const mypageRouter = require("./routes/mypage.routes");
-const commentRouter = require("./routes/comment.routes");
+const apiMainRouter = require("./routes/index");
 
-app.use("/", [indexRouter]);
-app.use("/api/worldcup", [worldcupRouter, commentRouter, likeRouter]);
-app.use("/api/auth", [authRouter]);
-app.use("/api/mypage", [mypageRouter]);
+app.use("/api", [apiMainRouter]);
 
 app.listen(port, () => {
   console.log(`running http://localhost:${port}`);
