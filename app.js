@@ -2,7 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const app = express();
-const port = 3000;
+const { config } = require("./config/config");
+const port = config.host.port
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
