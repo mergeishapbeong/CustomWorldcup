@@ -9,6 +9,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Users, {
+        targetKey: "user_id",
+        foreignKey: "user_id",
+      });
+
+      this.hasMany(models.Likes, {
+        sourceKey: "worldcup_id",
+        foreignKey: "worldcup_id",
+      });
+
+      this.hasMany(models.Comments, {
+        sourceKey: "worldcup_id",
+        foreignKey: "worldcup_id",
+      });
+
+      this.hasMany(models.Worldcup_choices, {
+        sourceKey: "worldcup_id",
+        foreignKey: "worldcup_id",
+      });
     }
   }
   Worldcups.init(

@@ -9,6 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Worldcups, {
+        targetKey: "worldcup_id",
+        foreignKey: "worldcup_id",
+      });
+
+      this.belongsTo(models.Worldcup_results, {
+        targetKey: "worldcup_choice_id",
+        foreignKey: "worldcup_choice_id",
+      });
     }
   }
   Worldcup_choices.init(

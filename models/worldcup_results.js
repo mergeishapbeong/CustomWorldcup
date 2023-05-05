@@ -1,12 +1,21 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class worldcup_results extends Model {
+  class Worldcup_results extends Model {
     static associate(models) {
       // define association here
+      this.hasMany(models.Worldcup_choices, {
+        sourceKey: "worldcup_choice_id",
+        foreignKey: "worldcup_choice_id",
+      });
+
+      this.belongsTo(models.Users, {
+        targetKey: "user_id",
+        foreignKey: "user_id",
+      });
     }
   }
-  worldcup_results.init(
+  Worldcup_results.init(
     {
       worldcup_result_id: {
         allowNull: false,
@@ -34,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdAt: {
         allowNull: false,
-        defaultValue: Sequelize.fn("now"),
+        defaultValue: DataTypes.fn("now"),
         type: DataTypes.DATE,
       },
       updatedAt: {
@@ -45,8 +54,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "worldcup_results",
+      modelName: "Worldcup_results",
     }
   );
-  return worldcup_results;
+  return Worldcup_results;
 };
