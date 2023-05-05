@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Worldcup_choices extends Model {
     /**
@@ -13,13 +11,46 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Worldcup_choices.init({
-    worldcup_id: DataTypes.INTEGER,
-    choice_name: DataTypes.STRING,
-    choice_url: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Worldcup_choices',
-  });
+  Worldcup_choices.init(
+    {
+      worldcup_choice_id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      worldcup_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Worldcups",
+          key: "worldcup_id",
+        },
+        onDelete: "CASCADE",
+      },
+      choice_name: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      choice_url: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      createdAt: {
+        defaultValue: DataTypes.fn("now"),
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        defaultValue: DataTypes.fn("now"),
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Worldcup_choices",
+    }
+  );
   return Worldcup_choices;
 };
