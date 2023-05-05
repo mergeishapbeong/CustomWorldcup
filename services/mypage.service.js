@@ -1,64 +1,26 @@
-const PostRepository = require('../repositories/posts.repository');
-const { Worldcups } = require('../models');
+const WorldcupRepository = require('../repositories/worldcup.repository');
+const WorldcupChoiceRepository = require('../repositories/worldcup.choice.repository');
+const { Worldcups, Worldcup_choices } = require('../models');
 const AppError = require('../utils/appError');
 
 class MypageService {
-  postRepository = new PostRepository(Posts);
+  worldcupRepository = new WorldcupRepository(Worldcups);
+  worldcupChoiceRepository = new WorldcupChoiceRepository(Worldcup_choices);
 
-  postPost = async (input) => {
-    await this.postRepository.create(input);
-  }
-
-  getPosts = async () => {
-    const allPost = await this.postRepository.findAll();
-
-    // 호출한 Post들을 가장 최신 게시글 부터 정렬합니다.
+  getMyWorldcups = async () => {
+    const myWorldcups = await this.worldcupRepository.findAll();
     allPost.sort((a, b) => {
       return b.createdAt - a.createdAt;
-    })
-
-    // 비즈니스 로직을 수행한 후 사용자에게 보여줄 데이터를 가공합니다.
-    return allPost;
+    });
+    return myWorldcups;
   }
 
-  getPost = async (postId) => {
-    const post = await this.postRepository.findOne(postId);
-    if (!post) {
-      throw new AppError(404, '게시글이 존재하지 않습니다.');
-    }
-    return post;
-  }
-
-  putPost = async (postData) => {
-
-    const post = await this.postRepository.findOne(postData.postId);
-    if (!post) {
-      throw new AppError(404, '게시글이 존재하지 않습니다.');
-    }
-
-    if (post.userId != postData.userId) {
-      throw new AppError(403, '게시글의 수정 권한이 존재하지 않습니다.');
-    }
-
-    const { title, content, userId, postId } = postData;
-    const updateValue = { title, content };
-    const whereOption = { userId, postId };
-    updateValue.updatedAt = Date.now();
-    await this.postRepository.update(updateValue, whereOption);
-  }
-
-  deletePost = async (input) => {
-
-    const post = await this.postRepository.findOne(input.postId);
-    if (!post) {
-      throw new AppError(404, '게시글이 존재하지 않습니다.');
-    }
-
-    if (post.userId != input.userId) {
-      throw new AppError(403, '게시글의 삭제 권한이 존재하지 않습니다.');
-    }
-
-    await this.postRepository.delete(input.postId);
+  getMyWorldcupResults = async () => {
+    const myWorldcupResults = await this.worldcupChoiceRepository.findAll();
+    allPost.sort((a, b) => {
+      return b.createdAt - a.createdAt;
+    });
+    return myWorldcupResults;
   }
 }
 
