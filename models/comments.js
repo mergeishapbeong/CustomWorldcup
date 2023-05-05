@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Comments extends Model {
     /**
@@ -13,13 +11,51 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Comments.init({
-    user_id: DataTypes.INTEGER,
-    worldcup_id: DataTypes.INTEGER,
-    comment: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Comments',
-  });
+  Comments.init(
+    {
+      comment_id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      user_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Users", // Users 모델을 참조합니다.
+          key: "user_id", // Users 모델의 userId를 참조합니다.
+        },
+        onDelete: "CASCADE",
+      },
+      worldcup_id: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        references: {
+          model: "Worldcups",
+          key: "worldcup_id",
+        },
+        onDelete: "CASCADE",
+      },
+      comment: {
+        allowNull: false,
+        type: DataTypes.TEXT,
+      },
+      createdAt: {
+        allowNull: false,
+        defaultValue: Sequelize.fn("now"),
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        defaultValue: DataTypes.fn("now"),
+        type: DataTypes.DATE,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Comments",
+    }
+  );
   return Comments;
 };
