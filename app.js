@@ -3,8 +3,8 @@ const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const app = express();
 const errorHandler = require("./middlewares/error-handler");
-const { config } = require("./config/config");
-const port = config.host.port
+const { host } = require("./config/config");
+const port = host.port;
 
 // parser
 app.use(express.urlencoded({ extended: false }));
