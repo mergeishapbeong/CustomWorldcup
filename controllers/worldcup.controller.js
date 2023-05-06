@@ -1,5 +1,5 @@
 const WorldcupService = require("../services/worldcup.service");
-const { postWorldcupSchema } = require("./joi");
+const { postWorldcupSchema, updateWorldcupSchema } = require("./joi");
 
 class WorldcupController {
   worldcupService = new WorldcupService();
@@ -44,7 +44,12 @@ class WorldcupController {
   };
 
   updateWorldcup = async (req, res) => {
-    const { title, content } = req.body;
+    const { title, content } = await updateWorldcupSchema
+      .validateAsync(req.body)
+      .catch((error) => {
+        console.error(error);
+        return res.status(412).json({ errorMessage: error.message });
+      });
     const { worldcup_id } = req.params;
     const user_id = 1;
     // const { user_id } = res.locals.user;
