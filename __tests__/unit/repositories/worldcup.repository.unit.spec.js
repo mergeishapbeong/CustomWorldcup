@@ -1,4 +1,4 @@
-const WorldcupRepository = require("../../repositories/worldcup.repository");
+const WorldcupRepository = require("../../../repositories/worldcup.repository");
 
 // 가상 모델 생성
 let mockWorldcupModel = {
@@ -30,7 +30,7 @@ describe("WorldcupRepository Unit Test", () => {
     const userId = 1;
     const myWorldcups = await worldcupRepository.findAll(userId);
 
-    
+
     // 1. mockWorldcupModel의 findAll 메소드를 호출하는지 검증
     expect(mockWorldcupModel.findAll).toHaveBeenCalledTimes(1);
 

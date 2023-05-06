@@ -1,4 +1,4 @@
-const WorldcupChoiceRepository = require("../../repositories/worldcup.choice.repository");
+const WorldcupChoiceRepository = require("../../../repositories/worldcup.choice.repository");
 
 // 가상 모델 생성
 let mockWorldcupChoiceModel = {

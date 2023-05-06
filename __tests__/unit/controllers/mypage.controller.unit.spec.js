@@ -1,4 +1,4 @@
-const MypageController = require("../../controllers/mypage.controller");
+const MypageController = require("../../../controllers/mypage.controller");
 
 // posts.controller.js 에서는 아래 5개의 Method만을 사용합니다.
 let mockMypageService = {
@@ -46,9 +46,9 @@ describe("MypageController Unit Test", () => {
 
   test("getMyWorldcups success test", async () => {
     /**
-     1. given
-     2. when
-     3. then
+     1. given - Build
+     2. when - Operate
+     3. then - Check
      */
     const myWorldcupsExample = [
       {
@@ -62,8 +62,7 @@ describe("MypageController Unit Test", () => {
     ];
     mockMypageService.getMyWorldcups = jest.fn(() => myWorldcupsExample);
 
-    const { userId } = mockResponse.locals.user;
-    const myWorldcups = await mypageController.getMyWorldcups(mockRequest, mockResponse, mockNext);
+    await mypageController.getMyWorldcups(mockRequest, mockResponse, mockNext);
 
     // 1. mypageService의 getMyWorldcups 메소드를 호출하는지 검증
     expect(mockMypageService.getMyWorldcups).toHaveBeenCalledTimes(1);
@@ -91,8 +90,7 @@ describe("MypageController Unit Test", () => {
     ];
     mockMypageService.getMyWorldcupResults = jest.fn(() => myWorldcupResultsExample);
 
-    const { userId } = mockResponse.locals.user;
-    const myWorldcupResults = await mypageController.getMyWorldcupResults(mockRequest, mockResponse, mockNext);
+    await mypageController.getMyWorldcupResults(mockRequest, mockResponse, mockNext);
 
     // 1. mypageService의 getMyWorldcupResults 메소드를 호출하는지 검증
     expect(mockMypageService.getMyWorldcupResults).toHaveBeenCalledTimes(1);
