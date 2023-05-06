@@ -1,4 +1,4 @@
-const MypageService = require("../../services/mypage.service");
+const MypageService = require("../../../services/mypage.service");
 
 // mock Repository <- 의존성 주입하는 건가봐. 아닌가. 아닌 거 같음.
 // 의존성 주입은 Repository에서 model을 생성자의 인자로 받는 부분이 아닌가?
@@ -38,7 +38,7 @@ describe("MypageService Unit Test", () => {
     const userId = 1;
     const myWorldcups = await mypageService.getMyWorldcups(userId);
 
-    // 1. 결과값 내림차순 정렬 검증
+    // 1. 결과값 내림차순 정렬 검증, 결과 검증
     expect(myWorldcups).toEqual(
       myWorldcupsExample.sort((a, b) => {
         return b.createdAt - a.createdAt;
@@ -66,7 +66,7 @@ describe("MypageService Unit Test", () => {
     const userId = 1;
     const myWorldcupResults = await mypageService.getMyWorldcupResults(userId);
 
-    // 1. 결과값 내림차순 정렬 검증
+    // 1. 결과값 내림차순 정렬 검증, 결과 검증
     expect(myWorldcupResults).toEqual(
       myWorldcupResultsExample.sort((a, b) => {
         return b.createdAt - a.createdAt;
