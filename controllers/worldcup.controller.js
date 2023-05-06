@@ -4,12 +4,12 @@ const { postWorldcupSchema, updateWorldcupSchema } = require("./joi");
 class WorldcupController {
   worldcupService = new WorldcupService();
 
-  createWorldcup = async (req, res) => {
+  createWorldcup = async (req, res, next) => {
     const { title, content, choices } = await postWorldcupSchema
       .validateAsync(req.body)
       .catch((error) => {
-        console.error(error);
-        return res.status(412).json({ errorMessage: error.message });
+        error.errorCode = 412;
+        next(error, req, res, error.message);
       });
     const user_id = 1;
     // const { user_id } = res.locals.user;
@@ -27,7 +27,7 @@ class WorldcupController {
     }
   };
 
-  getAllWorldcups = async (req, res) => {
+  getAllWorldcups = async (req, res, next) => {
     try {
       const worldcups = await this.worldcupService.getAllWorldcups();
       res.status(200).json({ worldcups });
@@ -36,7 +36,7 @@ class WorldcupController {
     }
   };
 
-  getOneWorldcup = async (req, res) => {
+  getOneWorldcup = async (req, res, next) => {
     const { worldcup_id } = req.params;
     try {
       const worldcup = await this.worldcupService.getOneWorldcup(worldcup_id);
@@ -46,12 +46,12 @@ class WorldcupController {
     }
   };
 
-  updateWorldcup = async (req, res) => {
+  updateWorldcup = async (req, res, next) => {
     const { title, content } = await updateWorldcupSchema
       .validateAsync(req.body)
       .catch((error) => {
-        console.error(error);
-        return res.status(412).json({ errorMessage: error.message });
+        error.errorCode = 412;
+        next(error, req, res, error.message);
       });
     const { worldcup_id } = req.params;
     const user_id = 1;
@@ -69,7 +69,7 @@ class WorldcupController {
     }
   };
 
-  deleteWorldcup = async (req, res) => {
+  deleteWorldcup = async (req, res, next) => {
     const { worldcup_id } = req.params;
     const user_id = 1;
     // const { user_id } = res.locals.user;
