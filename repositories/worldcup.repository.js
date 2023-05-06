@@ -18,8 +18,33 @@ class WorldcupRepository {
     });
   };
 
+  getAllWorldcups = async () => {
+    return await this.worldcupsModel.findAll({
+      order: [["createdAt", "DESC"]],
+    });
+  };
+
+  getOneWorldcup = async (worldcup_id) => {
+    return await this.worldcupsModel.findAll({
+      where: { worldcup_id },
+    });
+  };
+
+  updateWorldcup = async (title, content, worldcup_id, user_id) => {
+    await this.worldcupsModel.update(
+      { title, content },
+      { where: { [Op.and]: [{ worldcup_id }, { user_id }] } }
+    );
+  };
+
+  deleteWorldcup = async (worldcup_id, user_id) => {
+    await this.worldcupsModel.destroy({
+      where: { [Op.and]: [{ worldcup_id }, { user_id }] },
+    });
+  };
+
   findAll = async (userId) => {
-    const posts = await this.worldcupModel.findAll({
+    const posts = await this.worldcupsModel.findAll({
       where: { userId },
     });
     return posts;
