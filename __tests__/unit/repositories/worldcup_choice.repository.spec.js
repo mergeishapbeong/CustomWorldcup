@@ -27,8 +27,8 @@ describe("WorldcupChoiceRepository Unit Test", () => {
 
     mockWorldcupChoiceModel.findAll = jest.fn(() => myWorldcupResultsExample);
 
-    const userId = 1;
-    const myWorldcupResults = await worldcupChoiceRepository.findAllMine(userId);
+    const user_id = 1;
+    const myWorldcupResults = await worldcupChoiceRepository.findAllMine(user_id);
 
 
     // 1. mockWorldcupModel의 findAll 메소드를 호출하는지 검증
