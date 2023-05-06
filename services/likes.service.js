@@ -32,7 +32,7 @@ class LikesService {
           );
           console.log("deleteLikeData", deleteLikeData);
           console.log("decreaseLikesData", decreaseLikesData);
-          return { message: "월드컵 좋아요 완료" };
+          return { message: "월드컵 취소 좋아요 완료" };
         } else {
           // 2-2. 존재하지 않으면 생성 및 increase
           const createLikeData = await this.likesRepository.createLike(
@@ -46,7 +46,7 @@ class LikesService {
 
           console.log("createLikeData", createLikeData);
           console.log("increaseLikesData", increaseLikesData);
-          return { message: "월드컵 좋아요 취소 완료" };
+          return { message: "월드컵 좋아요 완료" };
         }
       }
     );
