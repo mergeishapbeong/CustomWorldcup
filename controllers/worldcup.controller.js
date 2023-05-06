@@ -13,7 +13,6 @@ class WorldcupController {
       title,
       content
     );
-    console.log(newWorldcup);
     const worldcup_id = newWorldcup.dataValues.worldcup_id;
     await Promise.all(
       choices.map(async (choice) => {
@@ -27,13 +26,37 @@ class WorldcupController {
     res.status(201).json({ message: "월드컵 작성 완료" });
   };
 
-  getAllWorldcups = async (req, res) => {};
+  getAllWorldcups = async (req, res) => {
+    const worldcups = await this.worldcupService.getAllWorldcups();
+    res.status(200).json({ worldcups });
+  };
 
-  getOneWorldcup = async (req, res) => {};
+  getOneWorldcup = async (req, res) => {
+    const { worldcup_id } = req.params;
+    const worldcup = await this.worldcupService.getOneWorldcup(worldcup_id);
+    res.status(200).json({ worldcup });
+  };
 
-  updateWorldcup = async (req, res) => {};
+  updateWorldcup = async (req, res) => {
+    const { title, content } = req.body;
+    const { worldcup_id } = req.params;
+    const user_id = 1;
+    // const { user_id } = res.locals.user;
 
-  deleteWorldcup = async (req, res) => {};
+    await this.worldcupService.updateWorldcup(title, content, worldcup_id, user_id);
+
+    res.status(200).json({ message: "월드컵 수정 완료" });
+  };
+
+  deleteWorldcup = async (req, res) => {
+    const { worldcup_id } = req.params;
+    const user_id = 1;
+    // const { user_id } = res.locals.user;
+
+    await this.worldcupService.deleteWorldcup(worldcup_id, user_id);
+
+    res.status(200).json({ message: "월드컵 삭제 완료" });
+  };
 }
 
 module.exports = WorldcupController;

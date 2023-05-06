@@ -13,19 +13,19 @@ class WorldcupService {
     }
 
     getAllWorldcups = async () => {
-
+        return await this.worldcupRepository.getAllWorldcups()
     };
 
-    getOneWorldcup = async () => {
+    getOneWorldcup = async (worldcup_id) => {
+        return await this.worldcupRepository.getOneWorldcup(worldcup_id);
+      };
 
+    updateWorldcup = async (title, content, worldcup_id, user_id) => {
+        await this.worldcupRepository.updateWorldcup(title, content, worldcup_id, user_id)
     };
 
-    updateWorldcup = async () => {
-
-    };
-
-    deleteWorldcup = async () => {
-        
+    deleteWorldcup = async (worldcup_id, user_id) => {
+        await this.worldcupRepository.deleteWorldcup(worldcup_id, user_id)
     };
 }
 
