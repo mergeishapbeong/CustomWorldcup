@@ -5,7 +5,7 @@ class WorldcupChoiceRepository {
     this.worldcupChoiceModel = worldcupChoiceModel;
   }
 
-  findAll = async (userId) => {
+  findAllMine = async (userId) => {
     const myWorldcupResults = await this.worldcupChoiceModel.findAll({
       includes: [
         {

@@ -7,7 +7,8 @@ class MypageController {
   getMyWorldcups = async (req, res, next) => {
     try {
       const { userId } = res.locals.user;
-      const myWorldcups = await this.mypageService.getMyWorldcups();
+      const myWorldcups = await this.mypageService.getMyWorldcups(userId);
+      res.status(200).json({ results: myWorldcups });
     } catch (error) {
       next(error, req, res, "내가 만든 월드컵 조회에 실패하였습니다.");
     }
@@ -17,18 +18,10 @@ class MypageController {
   getMyWorldcupResults = async (req, res, next) => {
     try {
       const { userId } = res.locals.user;
-      const myWorldcupResults = await this.mypageService.getMyWorldcupResults();
+      const myWorldcupResults = await this.mypageService.getMyWorldcupResults(userId);
+      res.status(200).json({ results: myWorldcupResults });
     } catch (error) {
       next(error, req, res, "월드컵 결과 조회에 실패하였습니다.");
-    }
-  };
-
-  getPosts = async (req, res, next) => {
-    try {
-      const posts = await this.postService.getPosts();
-      return res.status(200).json({ posts: posts });
-    } catch (error) {
-      next(error, req, res, "게시글 조회에 실패하였습니다.");
     }
   };
 

@@ -15,7 +15,7 @@ class MypageService {
   }
 
   getMyWorldcupResults = async () => {
-    const myWorldcupResults = await this.worldcupChoiceRepository.findAll();
+    const myWorldcupResults = await this.worldcupChoiceRepository.findAllMine();
     allPost.sort((a, b) => {
       return b.createdAt - a.createdAt;
     });
