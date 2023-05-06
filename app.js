@@ -5,6 +5,8 @@ const app = express();
 const errorHandler = require("./middlewares/error-handler");
 const { host } = require("./config/config");
 const port = host.port;
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger-output");
 
 // parser
 app.use(express.urlencoded({ extended: false }));
@@ -13,6 +15,9 @@ app.use(cookieParser());
 
 // logger
 app.use(morgan("dev"));
+
+// swagger
+app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // router
 const apiMainRouter = require("./routes/index");

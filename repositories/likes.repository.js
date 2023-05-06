@@ -6,7 +6,7 @@ class LikesRepository {
   }
 
   getUserLiked = async (user_id, worldcup_id) => {
-    const getUserLikedData = await this.Likes.find({
+    const getUserLikedData = await this.Likes.findOne({
       where: {
         [Op.and]: [{ worldcup_id }, { user_id }],
       },

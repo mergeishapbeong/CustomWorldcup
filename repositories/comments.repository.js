@@ -20,6 +20,13 @@ class CommentsRepository {
     return allComments;
   };
 
+  findOneComment = async (comment_id) => {
+    const findOneCommentData = await this.Comments.findOne({
+      where: { comment_id: comment_id },
+    });
+    return findOneCommentData;
+  };
+
   updateComment = async (comment, worldcup_id, comment_id) => {
     const updateCommentData = await this.Comments.update(
       { comment },

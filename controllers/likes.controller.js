@@ -5,7 +5,7 @@ class LikesController {
   likesService = new LikesService();
   worldcupService = new WorldcupService();
 
-  worldcupLikeToggle = async (req, res) => {
+  worldcupLikeToggle = async (req, res, next) => {
     try {
       const { worldcup_id } = req.params;
       const { user_id } = res.locals.user;
@@ -31,7 +31,8 @@ class LikesController {
             worldcup_id,
             true
           );
-        return res.status(200).json(worldcupLikeToggleData);
+        console.log(worldcupLikeToggleData);
+        return res.status(200).json({ message: "월드컵 좋아요 취소 완료" });
       } else {
         const worldcupLikeToggleData =
           await this.likesService.worldcupLikeToggle(
@@ -39,7 +40,7 @@ class LikesController {
             worldcup_id,
             false
           );
-        return res.status(200).json(worldcupLikeToggleData);
+        return res.status(200).json({ message: "월드컵 좋아요 완료" });
       }
     } catch (error) {
       console.log(error);
