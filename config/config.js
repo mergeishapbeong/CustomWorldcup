@@ -34,12 +34,6 @@ const config = {
     password: required("DB_PASSWORD"),
     dialect: required("DB_DIALECT"),
   },
-  // redis: {
-  // 	host: required("REDIS_HOST"),
-  // 	port: parseInt(required("REDIS_PORT)")),
-  // 	username: required("REDIS_USERNAME"),
-  // 	password: required("REDIS_PASSWORD"),
-  // },
 };
 
 module.exports = { config };
