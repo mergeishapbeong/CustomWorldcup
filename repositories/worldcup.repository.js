@@ -17,6 +17,13 @@ class WorldcupRepository {
       choice_url,
     });
   };
+
+  findAll = async (userId) => {
+    const posts = await this.worldcupModel.findAll({
+      where: { userId },
+    });
+    return posts;
+  };
 }
 
 module.exports = WorldcupRepository;
