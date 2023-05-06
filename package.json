@@ -9,7 +9,7 @@
     "test:coverage": "jest --coverage --forceExit",
     "test:unit": "jest __tests__/unit --forceExit",
     "test:integration": "jest __tests__/integration --forceExit",
-    "start": "nodemon app",
+    "start": "nodemon app"
   },
   "keywords": [],
   "author": "",
