@@ -8,32 +8,37 @@ function required(key, defaultValue = undefined) {
   return value;
 }
 
-const config = {
-  jwt: {
-    secretKey: required("SECRET_KEY"),
-    refreshExpiresIn: required("REFRESH_EXPIRES", "7d"),
-    accessExpiresIn: required("ACCESS_EXPIRES", "2h"),
-  },
-  bcrypt: {
-    saltRounds: parseInt(required("BCRYPT_SALT_ROUNDS", 10)),
-  },
-  host: {
-    port: parseInt(required("HOST_PORT")),
-  },
-  development: {
-    host: required("DB_HOST"),
-    username: required("DB_USER"),
-    database: required("DB_NAME"),
-    password: required("DB_PASSWORD"),
-    dialect: required("DB_DIALECT"),
-  },
-  test: {
-    host: required("DB_HOST"),
-    username: required("DB_USER"),
-    database: required("DB_TEST_NAME"),
-    password: required("DB_PASSWORD"),
-    dialect: required("DB_DIALECT"),
-  },
+const jwt = {
+  secretKey: required("SECRET_KEY"),
+  refreshExpiresIn: required("REFRESH_EXPIRES", "7d"),
+  accessExpiresIn: required("ACCESS_EXPIRES", "2h"),
+};
+const bcrypt = {
+  saltRounds: parseInt(required("BCRYPT_SALT_ROUNDS", 10)),
+};
+const host = {
+  port: parseInt(required("HOST_PORT")),
+};
+const development = {
+  host: required("DB_HOST"),
+  username: required("DB_USER"),
+  database: required("DB_NAME"),
+  password: required("DB_PASSWORD"),
+  dialect: "mysql",
+};
+const test = {
+  host: required("DB_HOST"),
+  username: required("DB_USER"),
+  database: required("DB_TEST_NAME"),
+  password: required("DB_PASSWORD"),
+  dialect: "mysql",
+};
+const production = {
+  username: required("DB_USER"),
+  password: required("DB_PASSWORD"),
+  database: required("DB_NAME"),
+  host: required("DB_HOST"),
+  dialect: "mysql",
 };
 
-module.exports = { config };
+module.exports = { jwt, bcrypt, host, test, production };
