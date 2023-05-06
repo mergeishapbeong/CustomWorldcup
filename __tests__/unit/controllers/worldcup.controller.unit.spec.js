@@ -161,7 +161,6 @@ describe("Worldcup Controller 단위 테스트", () => {
   });
 
   test("POST: Worldcup Controller createWorldcup 실패 케이스", async () => {
-
     const createWorldcupRequestBodyParamsInvalid1 = {
       title: "",
       content: "Content_InvalidParamsError",
@@ -177,25 +176,10 @@ describe("Worldcup Controller 단위 테스트", () => {
       ],
     };
 
-    const createWorldcupRequestBodyParamsInvalid2 = {
-      title: 123,
-      content: "Content_InvalidParamsError",
-      choices: [
-        {
-          choice_name: "Choice_name_InvalidParamsError",
-          choice_url: "Choice_url_InvalidParamsError",
-        },
-        {
-          choice_name: "Choice_name_InvalidParamsError",
-          choice_url: "Choice_url_InvalidParamsError",
-        },
-      ],
-    };
-
     // validation
-    // mockRequest.body = createWorldcupRequestBodyParamsInvalid1;
-    // const validationResult = postWorldcupSchema.validate(mockRequest.body)
-    // expect(validationResult).toEqual()
+    mockRequest.body = createWorldcupRequestBodyParamsInvalid1;
+    const validationResult = postWorldcupSchema.validate(mockRequest.body)
+    expect(validationResult).toEqual()
 
     // // controller function
     // await worldcupController.createWorldcup(mockRequest, mockResponse, mockNext);

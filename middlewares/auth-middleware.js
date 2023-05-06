@@ -42,7 +42,7 @@ module.exports = async (req, res, next) => {
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
 
     const decodedToken = jwt.verify(a, process.env.SECRET_KEY);
-    const userId = decodedToken.userId;
+    const userId = decodedToken.user_id;
 
     if (!isRefreshTokenValidate)
       return res
@@ -63,7 +63,7 @@ module.exports = async (req, res, next) => {
       }
     }
 
-    const user = await Users.findOne({ where: { userId } });
+    const user = await Users.findOne({ where: { user_id: userId } });
     res.locals.user = user;
     next();
   } catch (err) {
