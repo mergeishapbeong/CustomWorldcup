@@ -15,14 +15,13 @@ let mypageService = new MypageService();
 mypageService.worldcupRepository = mockWorldcupRepository;
 mypageService.worldcupChoiceRepository = mockWorldcupChoiceRepository;
 
-describe("MypageService Test", () => {
+describe("MypageService Unit Test", () => {
   beforeEach(() => {
     // 모든 Mock을 초기화합니다.
     jest.resetAllMocks();
   });
 
   test("getMyWorldcups success test", async () => {
-    // findAllPost Method를 실행했을 때, Return 값 입니다.
     const myWorldcupsExample = [
       {
         title: "최애 라면 월드컵",
@@ -51,7 +50,6 @@ describe("MypageService Test", () => {
   });
 
   test("getMyWorldcupResults success test", async () => {
-    // findAllPost Method를 실행했을 때, Return 값 입니다.
     const myWorldcupResultsExample = [
       {
         title: "최애 라면 월드컵",

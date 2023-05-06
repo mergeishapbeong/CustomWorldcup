@@ -26,7 +26,7 @@ let mockNext = jest.fn();
 let mypageController = new MypageController();
 mypageController.mypageService = mockMypageService;
 
-describe("MypageController Test", () => {
+describe("MypageController Unit Test", () => {
   /**
    -> Controller의 모든 메소드 테스트하기
    1. getMyWorldcups
