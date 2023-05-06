@@ -1,12 +1,21 @@
 const CommentsService = require("../services/comments.service");
 const WorldcupService = require("../services/worldcup.service");
+const {
+  postWorldcupCommentSchema,
+  updateWorldcupCommentSchema,
+} = require("./joi");
 class CommentsController {
   commentsService = new CommentsService();
   worldcupService = new WorldcupService();
 
   createComment = async (req, res) => {
     try {
-      const { comment } = req.body;
+      const { comment } = await postWorldcupCommentSchema
+        .validateAsync(req.body)
+        .catch((error) => {
+          error.errorCode = 412;
+          next(error, req, res, error.message);
+        });
       const { worldcup_id } = req.params;
       const { user_id } = res.locals.user;
 
@@ -27,7 +36,7 @@ class CommentsController {
       return res.status(200).json(createCommentData);
     } catch (error) {
       console.log(error);
-      return res.status(400).json({ errorMessage: error.message });
+      next(error, req, res, "댓글 작성에 실패하였습니다.");
     }
   };
 
@@ -50,12 +59,17 @@ class CommentsController {
       res.status(200).json(findAllCommentsData);
     } catch (error) {
       console.log(error);
-      return res.status(400).json({ errorMessage: error.message });
+      next(error, req, res, "댓글 조회에 실패하였습니다.");
     }
   };
   updateComment = async (req, res) => {
     try {
-      const { comment } = req.body;
+      const { comment } = await updateWorldcupCommentSchema
+        .validateAsync(req.body)
+        .catch((error) => {
+          error.errorCode = 412;
+          next(error, req, res, error.message);
+        });
       const { worldcup_id, comment_id } = req.params;
       const { user_id } = res.locals.user;
       // user 정보가 맞는지 조회하여 오류처리 (미작성)
@@ -75,7 +89,7 @@ class CommentsController {
       return res.status(200).json(updateCommentData);
     } catch (error) {
       console.log(error);
-      return res.status(400).json({ errorMessage: error.message });
+      next(error, req, res, "댓글 수정에 실패하였습니다.");
     }
   };
 
@@ -103,7 +117,7 @@ class CommentsController {
       return res.status(200).json(deleteCommentData);
     } catch (error) {
       console.log(error);
-      return res.status(400).json({ errorMessage: error.message });
+      next(error, req, res, "댓글 삭제에 실패하였습니다.");
     }
   };
 }
