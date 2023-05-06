@@ -5,7 +5,7 @@ const WorldcupController = require("../controllers/worldcup.controller");
 const worldcupController = new WorldcupController();
 
 // POST: 월드컵 생성
-router.post("/", worldcupController.createWorldcup);
+router.post("/", authMiddleware, worldcupController.createWorldcup);
 
 // GET: 월드컵 전체 조회
 router.get("/", worldcupController.getAllWorldcups);
@@ -14,9 +14,9 @@ router.get("/", worldcupController.getAllWorldcups);
 router.get("/:worldcup_id", worldcupController.getOneWorldcup);
 
 // PUT: 월드컵 수정
-router.put("/:worldcup_id", worldcupController.updateWorldcup);
+router.put("/:worldcup_id", authMiddleware, worldcupController.updateWorldcup);
 
 // DELETE: 월드컵 삭제
-router.delete("/:worldcup_id", worldcupController.deleteWorldcup);
+router.delete("/:worldcup_id", authMiddleware, worldcupController.deleteWorldcup);
 
 module.exports = router;
