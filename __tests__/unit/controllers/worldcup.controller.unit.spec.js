@@ -19,7 +19,7 @@ let mockResponse = {
   json: jest.fn(),
   locals: {
     user: {
-      userId: 1,
+      user_id: 1,
     },
   },
 };
@@ -52,15 +52,18 @@ describe("WorldcupController Unit Test", () => {
 
   test("createWorldcup success test", async () => {
     /**
-     1. createWorldcup 잘 하는지 검증
-     2. createWorldcupChoice 잘 하는지 검증
+     1. createWorldcup() 잘 호출하는지 검증
+     2. createWorldcupChoice() 잘 호출하는지 검증
      */
     const newWorldcupExample = {
       worldcup_id: 1,
     };
     mockMypageService.getMyWorldcups = jest.fn(() => myWorldcupsExample);
 
-    const newWorldcup = await mypageController.createWorldcup(mockRequest, mockResponse);
+    const newWorldcup = await mypageController.createWorldcup(
+      mockRequest,
+      mockResponse
+    );
 
     // 1. mockWorldcupService의 createWorldcup 메소드를 호출하는지 검증
     expect(mockWorldcupService.createWorldcup).toHaveBeenCalledTimes(1);
@@ -105,20 +108,78 @@ describe("WorldcupController Unit Test", () => {
 
   test("getOneWorldcup success test", async () => {
     /**
-     1. createWorldcup 잘 하는지 검증
-     2. createWorldcupChoice 잘 하는지 검증
+     1. worldcupService의 getOneWorldcup 메소드를 잘 호출하는지 검증
      */
     const newWorldcupExample = {
       worldcup_id: 1,
     };
-    mockMypageService.getMyWorldcups = jest.fn(() => myWorldcupsExample);
+    mockWorldcupService.getOneWorldcup = jest.fn(() => myWorldcupsExample);
 
-    const newWorldcup = await mypageController.createWorldcup(mockRequest, mockResponse);
+    const newWorldcup = await mypageController.createWorldcup(
+      mockRequest,
+      mockResponse
+    );
 
-    // 1. mockWorldcupService의 createWorldcup 메소드를 호출하는지 검증
-    expect(mockWorldcupService.createWorldcup).toHaveBeenCalledTimes(1);
+    const worldcup = await worldcupController.getOneWorldcup(
+      mockRequest,
+      mockResponse
+    );
+
+    // 1. mockWorldcupService의 getOneWorldcup 메소드를 호출하는지 검증
+    expect(mockWorldcupService.getOneWorldcup).toHaveBeenCalledTimes(1);
 
     // 2. res.status는 200의 값을 반환하는지 검증
+    expect(mockResponse.status).toHaveBeenCalledWith(201);
+  });
+
+  /**
+   1. worldcupService의 getOneWorldcup 메소드를 잘 호출하는지 검증
+   2. 입력값을 deleteWorldcup로 잘 전달하는지 검증
+   3. res.status는 200의 값을 반환하는지 검증
+   */
+  test("updateWorldcup success test", async () => {
+    const newWorldcupExample = {
+      worldcup_id: 1,
+    };
+    mockWorldcupService.getOneWorldcup = jest.fn(() => myWorldcupsExample);
+
+    const newWorldcup = await mypageController.createWorldcup(
+      mockRequest,
+      mockResponse
+    );
+
+    const worldcup = await worldcupController.getOneWorldcup(
+      mockRequest,
+      mockResponse
+    );
+
+    // 1. mockWorldcupService의 getOneWorldcup 메소드를 호출하는지 검증
+    expect(mockWorldcupService.getOneWorldcup).toHaveBeenCalledTimes(1);
+
+    // 2. res.status는 200의 값을 반환하는지 검증
+    expect(mockResponse.status).toHaveBeenCalledWith(201);
+  });
+
+  /**
+   1. worldcupService의 deleteWorldcup 메소드를 잘 호출하는지 검증
+   2. 입력값을 deleteWorldcup로 잘 전달하는지 검증
+   3. res.status는 200의 값을 반환하는지 검증
+   */
+  test("deleteWorldcup success test", async () => {
+    const worldcup_id = 1;
+    const user_id = 1;
+    mockRequest.params.worldcup_id = worldcup_id;
+    mockResponse.locals.user.user_id = user_id;
+
+    await worldcupController.deleteWorldcup(mockRequest, mockResponse);
+
+    // 1. worldcupService의 deleteWorldcup 메소드를 잘 호출하는지 검증
+    expect(mockWorldcupService.deleteWorldcup).toHaveBeenCalledTimes(1);
+
+    // 2. 입력값을 deleteWorldcup로 잘 전달하는지 검증
+    expect(mockWorldcupService.deleteWorldcup).toHaveBeenCalledWith(worldcup_id, user_id);
+
+    // 3. res.status는 200의 값을 반환하는지 검증
     expect(mockResponse.status).toHaveBeenCalledWith(201);
   });
 });

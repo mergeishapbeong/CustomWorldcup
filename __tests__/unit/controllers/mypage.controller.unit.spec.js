@@ -43,12 +43,13 @@ describe("MypageController Unit Test", () => {
     });
   });
 
+  /**
+  1. given - Build
+  2. when - Operate
+  3. then - Check
+  */
+
   test("getMyWorldcups success test", async () => {
-    /**
-     1. given - Build
-     2. when - Operate
-     3. then - Check
-     */
     const myWorldcupsExample = [
       {
         title: "최애 라면 월드컵",
@@ -61,22 +62,22 @@ describe("MypageController Unit Test", () => {
     ];
     mockMypageService.getMyWorldcups = jest.fn(() => myWorldcupsExample);
 
+
     await mypageController.getMyWorldcups(mockRequest, mockResponse, mockNext);
 
-    // 1. mypageService의 getMyWorldcups 메소드를 호출하는지 검증
+    /**
+     1. mypageService의 getMyWorldcups 메소드를 호출하는지 검증
+     2. res.status는 200을 반환하는지 검증
+     3. response에서 결과 데이터를 제대로 출력하는지 검증
+     */
     expect(mockMypageService.getMyWorldcups).toHaveBeenCalledTimes(1);
-
-    // 2. res.status는 200을 반환하는지 검증
     expect(mockResponse.status).toHaveBeenCalledWith(200);
-
-    // 3. response에서 결과 데이터를 제대로 출력하는지 검증
     expect(mockResponse.json).toHaveBeenCalledWith({
       results: myWorldcupsExample,
     });
   });
 
   test("getMyWorldcupResults success test", async () => {
-    // PostService의 findAllPost Method를 실행했을 때 Return 값을 변수로 선언합니다.
     const myWorldcupResultsExample = [
       {
         title: "최애 라면 월드컵",
@@ -89,15 +90,16 @@ describe("MypageController Unit Test", () => {
     ];
     mockMypageService.getMyWorldcupResults = jest.fn(() => myWorldcupResultsExample);
 
+
     await mypageController.getMyWorldcupResults(mockRequest, mockResponse, mockNext);
 
-    // 1. mypageService의 getMyWorldcupResults 메소드를 호출하는지 검증
+    /**
+     1. mypageService의 getMyWorldcupResults 메소드를 호출하는지 검증
+     2. res.status는 200을 반환하는지 검증
+     3. response에서 결과 데이터를 제대로 출력하는지 검증
+     */
     expect(mockMypageService.getMyWorldcupResults).toHaveBeenCalledTimes(1);
-
-    // 2. res.status는 200을 반환하는지 검증
     expect(mockResponse.status).toHaveBeenCalledWith(200);
-
-    // 3. response에서 결과 데이터를 제대로 출력하는지 검증
     expect(mockResponse.json).toHaveBeenCalledWith({
       results: myWorldcupResultsExample,
     });
