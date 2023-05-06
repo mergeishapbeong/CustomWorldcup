@@ -35,8 +35,8 @@ describe("MypageService Unit Test", () => {
 
     mockWorldcupRepository.findAll = jest.fn(() => myWorldcupsExample);
 
-    const userId = 1;
-    const myWorldcups = await mypageService.getMyWorldcups(userId);
+    const user_id = 1;
+    const myWorldcups = await mypageService.getMyWorldcups(user_id);
 
     // 1. 결과값 내림차순 정렬 검증, 결과 검증
     expect(myWorldcups).toEqual(
@@ -63,8 +63,8 @@ describe("MypageService Unit Test", () => {
 
     mockWorldcupChoiceRepository.findAllMine = jest.fn(() => myWorldcupResultsExample);
 
-    const userId = 1;
-    const myWorldcupResults = await mypageService.getMyWorldcupResults(userId);
+    const user_id = 1;
+    const myWorldcupResults = await mypageService.getMyWorldcupResults(user_id);
 
     // 1. 결과값 내림차순 정렬 검증, 결과 검증
     expect(myWorldcupResults).toEqual(

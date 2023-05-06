@@ -5,7 +5,7 @@ class WorldcupChoiceRepository {
     this.worldcupChoiceModel = worldcupChoiceModel;
   }
 
-  findAllMine = async (userId) => {
+  findAllMine = async (user_id) => {
     const myWorldcupResults = await this.worldcupChoiceModel.findAll({
       includes: [
         {
@@ -15,7 +15,7 @@ class WorldcupChoiceRepository {
         {
           model: Worldcup_results,
           attributes: [],
-          where: { userId },
+          where: { user_id },
         },
       ],
       attributes: ['choice_name'],

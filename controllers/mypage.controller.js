@@ -6,8 +6,8 @@ class MypageController {
   
   getMyWorldcups = async (req, res, next) => {
     try {
-      const { userId } = res.locals.user;
-      const myWorldcups = await this.mypageService.getMyWorldcups(userId);
+      const { user_id } = res.locals.user;
+      const myWorldcups = await this.mypageService.getMyWorldcups(user_id);
       res.status(200).json({ results: myWorldcups });
     } catch (error) {
       next(error, req, res, "내가 만든 월드컵 조회에 실패하였습니다.");
@@ -17,8 +17,8 @@ class MypageController {
   // 모델 3개를 가지고 놀아야 되는데 이거 왜 이렇게 해야 하는 걸까?
   getMyWorldcupResults = async (req, res, next) => {
     try {
-      const { userId } = res.locals.user;
-      const myWorldcupResults = await this.mypageService.getMyWorldcupResults(userId);
+      const { user_id } = res.locals.user;
+      const myWorldcupResults = await this.mypageService.getMyWorldcupResults(user_id);
       res.status(200).json({ results: myWorldcupResults });
     } catch (error) {
       next(error, req, res, "월드컵 결과 조회에 실패하였습니다.");
