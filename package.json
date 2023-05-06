@@ -1,7 +1,6 @@
 {
   "name": "customworldcup",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest --forceExit",
@@ -30,5 +29,6 @@
     "nodemon": "^2.0.22",
     "sequelize-cli": "^6.6.0",
     "supertest": "^6.3.3"
-  }
+  },
+  "description": ""
 }
