@@ -6,7 +6,7 @@ class LikesRepository {
   }
 
   getUserLiked = async (user_id, worldcup_id) => {
-    const getUserLikedData = this.Likes.find({
+    const getUserLikedData = await this.Likes.find({
       where: {
         [Op.and]: [{ worldcup_id }, { user_id }],
       },
@@ -15,14 +15,14 @@ class LikesRepository {
   };
 
   deleteLike = async (user_id, worldcup_id) => {
-    const deleteLikeData = this.Likes.destroy({
+    const deleteLikeData = await this.Likes.destroy({
       where: { [Op.and]: [{ user_id }, { worldcup_id }] },
     });
     return deleteLikeData;
   };
 
   createLike = async (user_id, worldcup_id) => {
-    const createLikeData = this.Likes.create({ user_id, worldcup_id });
+    const createLikeData = await this.Likes.create({ user_id, worldcup_id });
     return createLikeData;
   };
 }
