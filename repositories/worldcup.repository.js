@@ -49,6 +49,24 @@ class WorldcupRepository {
     });
     return posts;
   };
+
+  decreaseLikes = async (worldcup_id) => {
+    const findLikesData = await this.worldcupsModel.findOne({
+      where: { worldcup_id },
+    });
+
+    const decreaseLikesData = await findLikesData.decrement("likes", { by: 1 });
+    return decreaseLikesData;
+  };
+
+  increaseLikes = async (worldcup_id) => {
+    const findLikesData = await this.worldcupsModel.findOne({
+      where: { worldcup_id },
+    });
+
+    const increaseLikesData = await findLikesData.increment("likes", { by: 1 });
+    return increaseLikesData;
+  };
 }
 
 module.exports = WorldcupRepository;

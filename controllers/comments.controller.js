@@ -1,16 +1,23 @@
 const CommentsService = require("../services/comments.service");
-
+const WorldcupService = require("../services/worldcup.service");
 class CommentsController {
   commentsService = new CommentsService();
-  // worldcupService 추가 예정
+  worldcupService = new WorldcupService();
 
   createComment = async (req, res) => {
     try {
       const { comment } = req.body;
       const { worldcup_id } = req.params;
       const { user_id } = res.locals.user;
-      // worldcup이 있는지 조회하여 오류처리 (미작성)
 
+      const worldcupIsExist = await this.worldcupService.getOneWorldcup(
+        worldcup_id
+      );
+      if (!worldcupIsExist) {
+        return res
+          .status(404)
+          .json({ errorMessage: "게시글이 존재하지 않습니다." });
+      }
       const createCommentData = await this.commentsService.createComment(
         comment,
         worldcup_id,
@@ -28,8 +35,14 @@ class CommentsController {
     try {
       const { worldcup_id } = req.params;
 
-      // worldcup이 있는지 조회하여 오류처리 (미작성)
-
+      const worldcupIsExist = await this.worldcupService.getOneWorldcup(
+        worldcup_id
+      );
+      if (!worldcupIsExist) {
+        return res
+          .status(404)
+          .json({ errorMessage: "게시글이 존재하지 않습니다." });
+      }
       const findAllCommentsData = await this.commentsService.findAllComments(
         worldcup_id
       );
@@ -44,9 +57,17 @@ class CommentsController {
     try {
       const { comment } = req.body;
       const { worldcup_id, comment_id } = req.params;
-      // worldcup이 있는지 조회하여 오류처리 (미작성)
-
-      const updateCommentData = await this.commentsService.updateComment(
+      const { user_id } = res.locals.user;
+      // user 정보가 맞는지 조회하여 오류처리 (미작성)
+      const worldcupIsExist = await this.worldcupService.getOneWorldcup(
+        worldcup_id
+      );
+      if (!worldcupIsExist) {
+        return res
+          .status(404)
+          .json({ errorMessage: "게시글이 존재하지 않습니다." });
+      }
+      const updateCommentData = await this.commentsService.updateComments(
         comment,
         worldcup_id,
         comment_id
@@ -62,7 +83,15 @@ class CommentsController {
     try {
       const { worldcup_id, comment_id } = req.params;
       const { user_id } = res.locals.user;
-      // worldcup이 있는지 조회하여 오류처리 (미작성)
+      const worldcupIsExist = await this.worldcupService.getOneWorldcup(
+        worldcup_id
+      );
+      if (!worldcupIsExist) {
+        return res
+          .status(404)
+          .json({ errorMessage: "게시글이 존재하지 않습니다." });
+      }
+
       // 유저 정보 확인 (미작성)
 
       const deleteCommentData = await this.commentsService.deleteComment(
