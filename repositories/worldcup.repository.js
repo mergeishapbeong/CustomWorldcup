@@ -34,9 +34,9 @@ class WorldcupRepository {
     });
   };
 
-  findAll = async (userId) => {
+  findAll = async (user_id) => {
     const posts = await this.worldcupsModel.findAll({
-      where: { userId },
+      where: { user_id },
     });
     return posts;
   };

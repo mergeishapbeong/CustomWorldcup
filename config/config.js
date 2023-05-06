@@ -1,44 +1,31 @@
 require("dotenv").config();
 
-function required(key, defaultValue = undefined) {
-  const value = process.env[key] || defaultValue;
-  if (value == null) {
-    throw new Error(`Key ${key} is undefined`);
-  }
-  return value;
-}
+const env = process.env;
 
-const jwt = {
-  secretKey: required("SECRET_KEY"),
-  refreshExpiresIn: required("REFRESH_EXPIRES", "7d"),
-  accessExpiresIn: required("ACCESS_EXPIRES", "2h"),
-};
-const bcrypt = {
-  saltRounds: parseInt(required("BCRYPT_SALT_ROUNDS", 10)),
-};
-const host = {
-  port: parseInt(required("HOST_PORT")),
-};
 const development = {
-  host: required("DB_HOST"),
-  username: required("DB_USER"),
-  database: required("DB_NAME"),
-  password: required("DB_PASSWORD"),
-  dialect: "mysql",
+  host: env.DB_HOST,
+  username: env.DB_USER,
+  database: env.DB_NAME,
+  password: env.DB_PASSWORD,
+  dialect: env.DB_DIALECT,
 };
 const test = {
-  host: required("DB_HOST"),
-  username: required("DB_USER"),
-  database: required("DB_TEST_NAME"),
-  password: required("DB_PASSWORD"),
-  dialect: "mysql",
+  host: env.DB_HOST,
+  username: env.DB_USER,
+  database: env.DB_TEST_NAME,
+  password: env.DB_PASSWORD,
+  dialect: env.DB_DIALECT,
 };
-const production = {
-  username: required("DB_USER"),
-  password: required("DB_PASSWORD"),
-  database: required("DB_NAME"),
-  host: required("DB_HOST"),
-  dialect: "mysql",
+const jwt = {
+  secretKey: env.SECRET_KEY,
+  refreshExpiresIn: env.REFRESH_EXPIRES,
+  accessExpiresIn: env.ACCESS_EXPIRES,
+};
+const bcrypt = {
+  saltRounds: parseInt(env.BCRYPT_SALT_ROUNDS),
+};
+const host = {
+  port: parseInt(env.HOST_PORT),
 };
 
-module.exports = { jwt, bcrypt, host, test, production };
+module.exports = { development, test, jwt, bcrypt, host };

@@ -37,15 +37,30 @@ module.exports = {
   }),
   updateWorldcupSchema: Joi.object({
     title: Joi.string().required().min(1).max(30).messages({
-        "string.base": "월드컵 제목의 형식이 올바르지 않습니다.",
-        "string.empty": "월드컵 제목이 비어있습니다.",
-        "string.min": "월드컵 제목은 최소 1자이어야 합니다.",
-        "string.max": "월드컵 제목은 최대 30자이어야 합니다.",
-      }),
+      "string.base": "월드컵 제목의 형식이 올바르지 않습니다.",
+      "string.empty": "월드컵 제목이 비어있습니다.",
+      "string.min": "월드컵 제목은 최소 1자이어야 합니다.",
+      "string.max": "월드컵 제목은 최대 30자이어야 합니다.",
+    }),
     content: Joi.string().required().min(1).messages({
-        "string.base": "월드컵 내용의 형식이 올바르지 않습니다.",
-        "string.empty": "월드컵 내용이 비어있습니다.",
-        "string.min": "월드컵 내용은 최소 1자이어야 합니다.",
-      }),
+      "string.base": "월드컵 내용의 형식이 올바르지 않습니다.",
+      "string.empty": "월드컵 내용이 비어있습니다.",
+      "string.min": "월드컵 내용은 최소 1자이어야 합니다.",
+    }),
+  }),
+
+  postWorldcupCommentSchema: Joi.object({
+    comment: Joi.string().required().min(1).messages({
+      "string.base": "댓글 데이터 형식이 올바르지 않습니다.",
+      "string.empty": "댓글 데이터가 비어있습니다.",
+      "string.min": "댓글 내용은 최소 1자이어야 합니다.",
+    }),
+  }),
+  updateWorldcupCommentSchema: Joi.object({
+    comment: Joi.string().required().min(1).messages({
+      "string.base": "댓글 데이터 형식이 올바르지 않습니다.",
+      "string.empty": "댓글 데이터가 비어있습니다.",
+      "string.min": "댓글 내용은 최소 1자이어야 합니다.",
+    }),
   }),
 };

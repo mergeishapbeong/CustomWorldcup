@@ -25,23 +25,25 @@ class LikesController {
       );
 
       if (likeIsExist) {
-        const worldcupLikeToggleData = this.likesService.worldcupLikeToggle(
-          user_id,
-          worldcup_id,
-          true
-        );
+        const worldcupLikeToggleData =
+          await this.likesService.worldcupLikeToggle(
+            user_id,
+            worldcup_id,
+            true
+          );
         return res.status(200).json(worldcupLikeToggleData);
       } else {
-        const worldcupLikeToggleData = this.likesService.worldcupLikeToggle(
-          user_id,
-          worldcup_id,
-          false
-        );
+        const worldcupLikeToggleData =
+          await this.likesService.worldcupLikeToggle(
+            user_id,
+            worldcup_id,
+            false
+          );
         return res.status(200).json(worldcupLikeToggleData);
       }
     } catch (error) {
       console.log(error);
-      res.status(400).json({ errorMessage: error.message });
+      next(error, req, res, "좋아요 설정에 실패하였습니다.");
     }
   };
 }
