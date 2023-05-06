@@ -1,11 +1,17 @@
 const WorldcupRepository = require("../../../repositories/worldcup.repository");
 
 // 가상 모델 생성
-let mockWorldcupModel = {
+const mockWorldcupModel = {
+  createWorldcup: jest.fn(),
+  createWorldcupChoice: jest.fn(),
+  getAllWorldcups: jest.fn(),
+  getOneWorldcup: jest.fn(),
+  updateWorldcup: jest.fn(),
+  deleteWorldcup: jest.fn(),
   findAll: jest.fn(),
 };
 
-let worldcupRepository = new WorldcupRepository(mockWorldcupModel);
+const worldcupRepository = new WorldcupRepository(mockWorldcupModel);
 
 describe("WorldcupRepository Unit Test", () => {
   beforeEach(() => {

@@ -1,32 +1,44 @@
 const WorldcupRepository = require("../repositories/worldcup.repository");
+const WorldcupChoiceRepository = require("../repositories/worldcup.choice.repository");
 const { Worldcups, Worldcup_choices } = require("../models");
 
 class WorldcupService {
-    worldcupRepository = new WorldcupRepository(Worldcups, Worldcup_choices);
+  worldcupRepository = new WorldcupRepository(Worldcups, Worldcup_choices);
+  worldcupChoiceRepository = new WorldcupChoiceRepository(Worldcup_choices);
 
-    createWorldcup = async (user_id, title, content) => {
-        return await this.worldcupRepository.createWorldcup(user_id, title, content)
-    };
+  createWorldcup = async (user_id, title, content, choices) => {
+    const newWorldcup = await this.worldcupRepository.create(
+      user_id,
+      title,
+      content
+    );
+    const worldcup_id = newWorldcup.dataValues.worldcup_id;
+    await Promise.all(
+      choices.map(async (choice) => {
+        await this.worldcupChoiceRepository.createChoice(
+          worldcup_id,
+          choice.choice_name,
+          choice.choice_url
+        );
+      })
+    );
+  };
 
-    createWorldcupChoice = async (worldcup_id, choice_name, choice_url) => {
-        await this.worldcupRepository.createWorldcupChoice(worldcup_id, choice_name, choice_url)
-    }
+  getAllWorldcups = async () => {
+    return await this.worldcupRepository.getAll();
+  };
 
-    getAllWorldcups = async () => {
-        return await this.worldcupRepository.getAllWorldcups()
-    };
+  getOneWorldcup = async (worldcup_id) => {
+    return await this.worldcupRepository.getOne(worldcup_id);
+  };
 
-    getOneWorldcup = async (worldcup_id) => {
-        return await this.worldcupRepository.getOneWorldcup(worldcup_id);
-      };
+  updateWorldcup = async (title, content, worldcup_id, user_id) => {
+    await this.worldcupRepository.update(title, content, worldcup_id, user_id);
+  };
 
-    updateWorldcup = async (title, content, worldcup_id, user_id) => {
-        await this.worldcupRepository.updateWorldcup(title, content, worldcup_id, user_id)
-    };
-
-    deleteWorldcup = async (worldcup_id, user_id) => {
-        await this.worldcupRepository.deleteWorldcup(worldcup_id, user_id)
-    };
+  deleteWorldcup = async (worldcup_id, user_id) => {
+    await this.worldcupRepository.remove(worldcup_id, user_id);
+  };
 }
 
 module.exports = WorldcupService;
