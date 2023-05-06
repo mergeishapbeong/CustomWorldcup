@@ -10,6 +10,8 @@ class CommentsController {
 
   createComment = async (req, res) => {
     try {
+      console.log(res.locals.user);
+
       const { comment } = await postWorldcupCommentSchema
         .validateAsync(req.body)
         .catch((error) => {
@@ -18,7 +20,6 @@ class CommentsController {
         });
       const { worldcup_id } = req.params;
       const { user_id } = res.locals.user;
-
       const worldcupIsExist = await this.worldcupService.getOneWorldcup(
         worldcup_id
       );
@@ -72,7 +73,7 @@ class CommentsController {
         });
       const { worldcup_id, comment_id } = req.params;
       const { user_id } = res.locals.user;
-      // user 정보가 맞는지 조회하여 오류처리 (미작성)
+
       const worldcupIsExist = await this.worldcupService.getOneWorldcup(
         worldcup_id
       );
@@ -80,6 +81,12 @@ class CommentsController {
         return res
           .status(404)
           .json({ errorMessage: "게시글이 존재하지 않습니다." });
+      }
+
+      if (worldcupIsExist.user_id !== user_id) {
+        return res
+          .status(403)
+          .json({ errorMessage: "게시글 수정의 권한이 존재하지 않습니다." });
       }
       const updateCommentData = await this.commentsService.updateComments(
         comment,
@@ -106,7 +113,11 @@ class CommentsController {
           .json({ errorMessage: "게시글이 존재하지 않습니다." });
       }
 
-      // 유저 정보 확인 (미작성)
+      if (worldcupIsExist.user_id !== user_id) {
+        return res
+          .status(403)
+          .json({ errorMessage: "게시글 수정의 권한이 존재하지 않습니다." });
+      }
 
       const deleteCommentData = await this.commentsService.deleteComment(
         worldcup_id,
