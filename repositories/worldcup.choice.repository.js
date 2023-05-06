@@ -22,6 +22,14 @@ class WorldcupChoiceRepository {
     });
     return myWorldcupResults;
   };
+
+  createChoice = async (worldcup_id, choice_name, choice_url) => {
+    await this.worldcupChoiceModel.create({
+      worldcup_id,
+      choice_name,
+      choice_url,
+    });
+  };
 }
 
 module.exports = WorldcupChoiceRepository;

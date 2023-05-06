@@ -4,74 +4,82 @@ const { postWorldcupSchema, updateWorldcupSchema } = require("./joi");
 class WorldcupController {
   worldcupService = new WorldcupService();
 
-  createWorldcup = async (req, res) => {
+  createWorldcup = async (req, res, next) => {
     const { title, content, choices } = await postWorldcupSchema
       .validateAsync(req.body)
       .catch((error) => {
-        console.error(error);
-        return res.status(412).json({ errorMessage: error.message });
+        error.errorCode = 412;
+        next(error, req, res, error.message);
       });
     const user_id = 1;
     // const { user_id } = res.locals.user;
 
-    const newWorldcup = await this.worldcupService.createWorldcup(
-      user_id,
-      title,
-      content
-    );
-    const worldcup_id = newWorldcup.dataValues.worldcup_id;
-    await Promise.all(
-      choices.map(async (choice) => {
-        await this.worldcupService.createWorldcupChoice(
-          worldcup_id,
-          choice.choice_name,
-          choice.choice_url
-        );
-      })
-    );
-    res.status(201).json({ message: "월드컵 작성 완료" });
+    try {
+      await this.worldcupService.createWorldcup(
+        user_id,
+        title,
+        content,
+        choices
+      );
+      res.status(201).json({ message: "월드컵 작성 완료" });
+    } catch (error) {
+      next(error, req, res, "월드컵 생성에 실패하였습니다.");
+    }
   };
 
-  getAllWorldcups = async (req, res) => {
-    const worldcups = await this.worldcupService.getAllWorldcups();
-    res.status(200).json({ worldcups });
+  getAllWorldcups = async (req, res, next) => {
+    try {
+      const worldcups = await this.worldcupService.getAllWorldcups();
+      res.status(200).json({ worldcups });
+    } catch (error) {
+      next(error, req, res, "전체 월드컵 조회에 실패하였습니다.");
+    }
   };
 
-  getOneWorldcup = async (req, res) => {
+  getOneWorldcup = async (req, res, next) => {
     const { worldcup_id } = req.params;
-    const worldcup = await this.worldcupService.getOneWorldcup(worldcup_id);
-    res.status(200).json({ worldcup });
+    try {
+      const worldcup = await this.worldcupService.getOneWorldcup(worldcup_id);
+      res.status(200).json({ worldcup });
+    } catch (error) {
+      next(error, req, res, "월드컵 조회에 실패하였습니다.");
+    }
   };
 
-  updateWorldcup = async (req, res) => {
+  updateWorldcup = async (req, res, next) => {
     const { title, content } = await updateWorldcupSchema
       .validateAsync(req.body)
       .catch((error) => {
-        console.error(error);
-        return res.status(412).json({ errorMessage: error.message });
+        error.errorCode = 412;
+        next(error, req, res, error.message);
       });
     const { worldcup_id } = req.params;
     const user_id = 1;
     // const { user_id } = res.locals.user;
-
-    await this.worldcupService.updateWorldcup(
-      title,
-      content,
-      worldcup_id,
-      user_id
-    );
-
-    res.status(200).json({ message: "월드컵 수정 완료" });
+    try {
+      await this.worldcupService.updateWorldcup(
+        title,
+        content,
+        worldcup_id,
+        user_id
+      );
+      res.status(200).json({ message: "월드컵 수정 완료" });
+    } catch (error) {
+      next(error, req, res, "월드컵 수정에 실패하였습니다.");
+    }
   };
 
-  deleteWorldcup = async (req, res) => {
+  deleteWorldcup = async (req, res, next) => {
     const { worldcup_id } = req.params;
     const user_id = 1;
     // const { user_id } = res.locals.user;
 
-    await this.worldcupService.deleteWorldcup(worldcup_id, user_id);
-
-    res.status(200).json({ message: "월드컵 삭제 완료" });
+    try {
+      await this.worldcupService.deleteWorldcup(worldcup_id, user_id);
+      res.status(200).json({ message: "월드컵 삭제 완료" });
+    } catch (error) {
+      next(error, req, res, "월드컵 삭제에 실패하였습니다.");
+    }
   };
 }
 
