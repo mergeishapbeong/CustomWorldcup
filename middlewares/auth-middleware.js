@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { Users } = require("../models");
-const { Tokens } = require("../models");
+const { Tokens } = require("../models"); 
 const UserRepository = require("../repositories/users.repository");
 const TokenRepository = require("../repositories/tokens.repository");
 
@@ -16,7 +16,7 @@ module.exports = async (req, res, next) => {
     });
     return;
   }
-
+//
   if (!refreshToken) {
     res.status(403).send({
       errorMessage: "로그인이 필요한 기능입니다.",
@@ -42,7 +42,7 @@ module.exports = async (req, res, next) => {
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
 
     const decodedToken = jwt.verify(a, process.env.SECRET_KEY);
-    const userId = decodedToken.userId;
+    const userId = decodedToken.user_id;
 
     if (!isRefreshTokenValidate)
       return res
@@ -63,7 +63,7 @@ module.exports = async (req, res, next) => {
       }
     }
 
-    const user = await Users.findOne({ where: { userId } });
+    const user = await Users.findOne({ where: { user_id: userId } });
     res.locals.user = user;
     next();
   } catch (err) {

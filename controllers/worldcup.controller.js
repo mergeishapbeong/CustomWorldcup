@@ -11,8 +11,7 @@ class WorldcupController {
         error.errorCode = 412;
         next(error, req, res, error.message);
       });
-    const user_id = 1;
-    // const { user_id } = res.locals.user;
+    const { user_id } = res.locals.user;
 
     try {
       await this.worldcupService.createWorldcup(
@@ -54,8 +53,7 @@ class WorldcupController {
         next(error, req, res, error.message);
       });
     const { worldcup_id } = req.params;
-    const user_id = 1;
-    // const { user_id } = res.locals.user;
+    const { user_id } = res.locals.user;
     try {
       await this.worldcupService.updateWorldcup(
         title,
@@ -71,9 +69,7 @@ class WorldcupController {
 
   deleteWorldcup = async (req, res, next) => {
     const { worldcup_id } = req.params;
-    const user_id = 1;
-    // const { user_id } = res.locals.user;
-
+    const { user_id } = res.locals.user;
     try {
       await this.worldcupService.deleteWorldcup(worldcup_id, user_id);
       res.status(200).json({ message: "월드컵 삭제 완료" });
