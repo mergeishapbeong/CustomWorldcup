@@ -43,7 +43,12 @@ class WorldcupController {
     const user_id = 1;
     // const { user_id } = res.locals.user;
 
-    await this.worldcupService.updateWorldcup(title, content, worldcup_id, user_id);
+    await this.worldcupService.updateWorldcup(
+      title,
+      content,
+      worldcup_id,
+      user_id
+    );
 
     res.status(200).json({ message: "월드컵 수정 완료" });
   };

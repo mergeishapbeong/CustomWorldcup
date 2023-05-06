@@ -1,6 +1,5 @@
 const MypageController = require("../../../controllers/mypage.controller");
 
-// posts.controller.js 에서는 아래 5개의 Method만을 사용합니다.
 let mockMypageService = {
   getMyWorldcups: jest.fn(),
   getMyWorldcupResults: jest.fn(),
@@ -67,7 +66,7 @@ describe("MypageController Unit Test", () => {
     // 1. mypageService의 getMyWorldcups 메소드를 호출하는지 검증
     expect(mockMypageService.getMyWorldcups).toHaveBeenCalledTimes(1);
 
-    // 2. res.status는 200의 값을 반환하는지 검증
+    // 2. res.status는 200을 반환하는지 검증
     expect(mockResponse.status).toHaveBeenCalledWith(200);
 
     // 3. response에서 결과 데이터를 제대로 출력하는지 검증
@@ -95,7 +94,7 @@ describe("MypageController Unit Test", () => {
     // 1. mypageService의 getMyWorldcupResults 메소드를 호출하는지 검증
     expect(mockMypageService.getMyWorldcupResults).toHaveBeenCalledTimes(1);
 
-    // 2. res.status는 200의 값을 반환하는지 검증
+    // 2. res.status는 200을 반환하는지 검증
     expect(mockResponse.status).toHaveBeenCalledWith(200);
 
     // 3. response에서 결과 데이터를 제대로 출력하는지 검증
