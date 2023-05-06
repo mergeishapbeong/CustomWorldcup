@@ -22,6 +22,14 @@ class CommentsService {
     return findAllCommentsData;
   };
 
+  findOneComment = async (comment_id) => {
+    const findOneCommentData = await this.commentsRepository.findOneComment(
+      comment_id
+    );
+
+    return findOneCommentData;
+  };
+
   updateComments = async (comment, worldcup_id, comment_id) => {
     const updateCommentData = await this.commentsRepository.updateComment(
       comment,
