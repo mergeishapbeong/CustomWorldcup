@@ -46,12 +46,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       createdAt: {
-        defaultValue: DataTypes.fn("now"),
+        defaultValue: DataTypes.NOW,
         allowNull: false,
         type: DataTypes.DATE,
       },
       updatedAt: {
-        defaultValue: DataTypes.fn("now"),
+        defaultValue: DataTypes.NOW,
         allowNull: false,
         type: DataTypes.DATE,
       },
