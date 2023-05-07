@@ -25,18 +25,61 @@ class WorldcupService {
   };
 
   getAllWorldcups = async () => {
-    return await this.worldcupRepository.getAll();
+    const allWorldcups = await this.worldcupRepository.getAll();
+    if (allWorldcups.length === 0) {
+      const error = new Error();
+      error.errorCode = 404;
+      error.message = "월드컵 게시물이 존재하지 않습니다.";
+      throw error;
+    }
+    return allWorldcups;
   };
 
   getOneWorldcup = async (worldcup_id) => {
-    return await this.worldcupRepository.getOne(worldcup_id);
+    const worldcup = await this.worldcupRepository.getOne(worldcup_id);
+    if (!worldcup) {
+      const error = new Error();
+      error.errorCode = 404;
+      error.message = "월드컵 게시물이 존재하지 않습니다.";
+      throw error;
+    }
+    return worldcup;
   };
 
   updateWorldcup = async (title, content, worldcup_id, user_id) => {
+    const worldcup = await this.worldcupRepository.getOne(worldcup_id);
+    if(!worldcup) {
+      const error = new Error();
+      error.errorCode = 404;
+      error.message = "월드컵 게시물이 존재하지 않습니다.";
+      throw error;
+    }
+		if(worldcup.user_id !== user_id) {
+      const error = new Error();
+      error.errorCode = 403;
+      error.message = "월드컵 게시물 수정 권한이 없습니다.";
+      throw error;
+    }
+
     await this.worldcupRepository.update(title, content, worldcup_id, user_id);
   };
 
   deleteWorldcup = async (worldcup_id, user_id) => {
+    const worldcup = await this.worldcupRepository.getOne(worldcup_id);
+    if(!worldcup) {
+      const error = new Error();
+      error.errorCode = 404;
+      error.message = "월드컵 게시물이 존재하지 않습니다.";
+      throw error;
+    }
+    console.log("log", worldcup.user_id,user_id);
+		if(worldcup.user_id !== user_id) {
+      const error = new Error();
+      error.errorCode = 403;
+      error.message = "월드컵 게시물 삭제 권한이 없습니다.";
+      throw error;
+    }
+
     await this.worldcupRepository.remove(worldcup_id, user_id);
   };
 }
