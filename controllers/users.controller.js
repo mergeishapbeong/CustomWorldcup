@@ -77,6 +77,20 @@ class UserController {
       });
     }
   };
+
+  logout = async (req, res) => {
+    const { user_id } = req.params;
+
+    try {
+      const logoutData = await this.userService.logout(user_id);
+      res.clearCookie("Authorization");
+      res.clearCookie("refreshToken");
+      delete res.locals.user;
+      res.status(200).json(logoutData);
+    } catch (error) {
+      res.status(400).json({ errorMessage: "로그아웃에 실패하였습니다." });
+    }
+  };
 }
 
 module.exports = UserController;

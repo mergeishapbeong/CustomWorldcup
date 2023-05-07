@@ -38,6 +38,11 @@ class UserService {
 
     return findOneUserData;
   };
+
+  logout = async (user_id) => {
+    await this.tokenRepository.deleteRefreshToken(user_id);
+    return { message: "로그아웃 완료" };
+  };
 }
 
 module.exports = UserService;
