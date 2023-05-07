@@ -1,5 +1,9 @@
 const WorldcupController = require("../../../controllers/worldcup.controller");
-const Joi = require('../../../controllers/joi');
+const Joi = require("../../../controllers/joi");
+const {
+  postWorldcupSchema,
+  updateWorldcupSchema,
+} = require("../../../controllers/joi");
 
 let mockWorldcupService = {
   createWorldcup: jest.fn(),
@@ -31,8 +35,8 @@ let mockPostWorldcupSchema = {
   validateAsync: async (input) => {
     return {
       catch: (err) => {
-        return { value: input };
-      }
+        return input;
+      },
     };
   },
 };
@@ -40,8 +44,8 @@ let mockUpdateWorldcupSchema = {
   validateAsync: async (input) => {
     return {
       catch: (err) => {
-        return { value: input };
-      }
+        return input;
+      },
     };
   },
 };
@@ -78,11 +82,35 @@ describe("WorldcupController Unit Test", () => {
    1. worldcupService의 createWorldcup() 메소드를 잘 호출하는지 검증
    2. res.status는 201의 값을 반환하는지 검증
    */
+  //  {
+  //   choice_name: "테스트",
+  //   choice_url:
+  //     "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+  // },
+  // {
+  //   choice_name: "테스트",
+  //   choice_url:
+  //     "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+  // },
   test("createWorldcup success test", async () => {
     // 여기에서 입력 값을 넣어줬어야 했는데 그러지 않았었구나
-    mockRequest.body.title = '여자 아이돌 월드컵';
-    mockRequest.body.content = '귀엽습니다 ^^';
-    mockRequest.body.choices = [];
+    const worldcupInput = {
+      title: "타이틀 테스트",
+      content: "컨텐트 테스트",
+      choices: [
+        {
+          choice_name: "테스트",
+          choice_url:
+            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+        },
+        {
+          choice_name: "테스트",
+          choice_url:
+            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+        },
+      ],
+    };
+    mockRequest.body = worldcupInput;
 
     await worldcupController.createWorldcup(
       mockRequest,
@@ -166,9 +194,21 @@ describe("WorldcupController Unit Test", () => {
    3. res.status는 200의 값을 반환하는지 검증
    */
   test("updateWorldcup success test", async () => {
-    mockRequest.body.title = '여자 아이돌 월드컵';
-    mockRequest.body.content = '귀엽습니다 ^^';
-    
+    const worldcupData = {
+      title: "여자 아이돌 월드컵",
+      content: "귀엽습니다 ^^",
+    };
+    mockRequest.body = worldcupData;
+    // const validationResult = postWorldcupSchema.validate(mockRequest.body);
+    // mockRequest.body = {
+    //   title: '여자 아이돌 월드컵',
+    //   content: '귀엽습니다 ^^',
+    // }
+
+    mockRequest.params = {
+      worldcup_id: 1,
+    };
+
     await worldcupController.updateWorldcup(
       mockRequest,
       mockResponse,
@@ -176,7 +216,7 @@ describe("WorldcupController Unit Test", () => {
     );
 
     // 1. mockWorldcupService의 getOneWorldcup 메소드를 호출하는지 검증
-    expect(mockWorldcupService.getOneWorldcup).toHaveBeenCalledTimes(1);
+    expect(mockWorldcupService.updateWorldcup).toHaveBeenCalledTimes(1);
 
     // 2. res.status는 200의 값을 반환하는지 검증
     expect(mockResponse.status).toHaveBeenCalledWith(200);
