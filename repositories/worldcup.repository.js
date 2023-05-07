@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 
 class WorldcupRepository {
-  constructor(WorldcupsModel, WorldcupChoicesModel) {
+  constructor(WorldcupsModel) {
     this.worldcupsModel = WorldcupsModel;
   }
 
@@ -16,7 +16,7 @@ class WorldcupRepository {
   };
 
   getOne = async (worldcup_id) => {
-    return await this.worldcupsModel.findAll({
+    return await this.worldcupsModel.findOne({
       where: { worldcup_id },
     });
   };
