@@ -6,6 +6,6 @@ const MypageController = require('../controllers/mypage.controller');
 const mypageController = new MypageController();
 
 router.get('/worldcup', authMiddleware, mypageController.getMyWorldcups);
-router.get('/worldcup_result', authMiddleware, mypageController.getMyWorldcupResults);
+router.get('/worldcup_results', authMiddleware, mypageController.getMyWorldcupResults);
 
 module.exports = router;

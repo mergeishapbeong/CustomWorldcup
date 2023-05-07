@@ -11,6 +11,7 @@ let mockWorldcupService = {
   getOneWorldcup: jest.fn(),
   updateWorldcup: jest.fn(),
   deleteWorldcup: jest.fn(),
+  postWorldcupResult: jest.fn(),
 };
 
 let mockRequest = {
@@ -247,6 +248,36 @@ describe("WorldcupController Unit Test", () => {
       worldcup_id,
       user_id
     );
+
+    // 3. res.status는 200의 값을 반환하는지 검증
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+  });
+
+  /**
+   1. worldcupService의 deleteWorldcup() 메소드를 잘 호출하는지 검증
+   2. 입력값을 worldcupService의 deleteWorldcup() 메소드로 잘 전달하는지 검증
+   3. res.status는 200의 값을 반환하는지 검증
+   */
+  test('postWorldcupResult success test', async () => {
+    const worldcup_id = 1;
+    const user_id = 1;
+    const worldcup_choice_id = 1;
+    mockRequest.params.worldcup_id = worldcup_id;
+    mockResponse.locals.user.user_id = user_id;
+    mockRequest.body.worldcup_choice_id = worldcup_choice_id;
+    const worldcupResultData = { worldcup_id, user_id, worldcup_choice_id };
+
+    await worldcupController.postWorldcupResult(
+      mockRequest,
+      mockResponse,
+      mockNext
+    );
+
+    // 1. worldcupService의 postWorldcupResult() 메소드를 잘 호출하는지 검증
+    expect(mockWorldcupService.postWorldcupResult).toHaveBeenCalledTimes(1);
+
+    // 2. 입력값을 postWorldcupResult()로 잘 전달하는지 검증
+    expect(mockWorldcupService.postWorldcupResult).toHaveBeenCalledWith(worldcupResultData);
 
     // 3. res.status는 200의 값을 반환하는지 검증
     expect(mockResponse.status).toHaveBeenCalledWith(200);
