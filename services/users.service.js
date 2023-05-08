@@ -25,9 +25,13 @@ class UserService {
     );
     const accessObject = { type: "Bearer", token: accessToken };
 
-    const refreshToken = jwt.sign({}, process.env.SECRET_KEY, {
-      expiresIn: process.env.REFRESH_EXPIRES,
-    });
+    const refreshToken = jwt.sign(
+      { user_id: user.user_id },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: process.env.REFRESH_EXPIRES,
+      }
+    );
     await this.tokenRepository.setRefreshToken(refreshToken, userId);
 
     return { accessObject, refreshToken: refreshToken };

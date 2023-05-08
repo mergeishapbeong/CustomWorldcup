@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.2.4",
+    "nodemailer": "^6.9.1",
     "sequelize": "^6.31.1",
     "swagger-autogen": "^2.23.1",
     "swagger-ui-express": "^4.6.3"

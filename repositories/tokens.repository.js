@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const { Tokens } = require("../models");
 
 class TokenRepository {
@@ -27,6 +28,12 @@ class TokenRepository {
   deleteRefreshToken = async (user_id) => {
     await Tokens.destroy({
       where: { user_id },
+    });
+  };
+
+  deleteRefreshToken2 = async (refreshToken) => {
+    await Tokens.destroy({
+      where: { token: refreshToken },
     });
   };
 }
