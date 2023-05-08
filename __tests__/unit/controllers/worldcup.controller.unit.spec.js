@@ -1,5 +1,8 @@
 const WorldcupController = require("../../../controllers/worldcup.controller.js");
-const { postWorldcupSchema, updateWorldcupSchema } = require("../../../controllers/joi");
+const {
+  postWorldcupSchema,
+  updateWorldcupSchema,
+} = require("../../../controllers/joi");
 
 let mockWorldcupService = {
   createWorldcup: jest.fn(),
@@ -43,8 +46,8 @@ describe("Worldcup Controller 단위 테스트", () => {
       {
         worldcup_id: 2,
         user_id: 2,
-        title: "고양이테스트임",
-        content: "고양이테스트임",
+        title: "테스트",
+        content: "테스트",
         likes: 0,
         createdAt: "2023-05-06T02:49:25.000Z",
         updatedAt: "2023-05-06T02:49:25.000Z",
@@ -129,14 +132,22 @@ describe("Worldcup Controller 단위 테스트", () => {
 
     mockRequest.body = createWorldcupRequestBodyParams;
 
-    const createPostReturnValue = "월드컵 작성 완료";
+    const createWorldcupReturnValue = {
+      choices: createWorldcupRequestBodyParams.choices,
+      content: createWorldcupRequestBodyParams.content,
+      title: createWorldcupRequestBodyParams.title,
+      user_id: mockResponse.locals.user.user_id,
+      worldcup_id: 1,
+    };
 
     // validation
-    const validationResult = postWorldcupSchema.validate(mockRequest.body)
-    expect(validationResult.value).toEqual(createWorldcupRequestBodyParams)
+    const validationResult = postWorldcupSchema.validate(mockRequest.body);
+    expect(validationResult.value).toEqual(createWorldcupRequestBodyParams);
 
     // createWorldcup
-    mockWorldcupService.createPost = jest.fn();
+    mockWorldcupService.createWorldcup = jest.fn(
+      () => createWorldcupReturnValue
+    );
 
     await worldcupController.createWorldcup(
       mockRequest,
@@ -156,36 +167,135 @@ describe("Worldcup Controller 단위 테스트", () => {
     expect(mockResponse.status).toHaveBeenCalledWith(201);
 
     expect(mockResponse.json).toHaveBeenCalledWith({
-      message: createPostReturnValue,
+      newWorldcup: createWorldcupReturnValue,
     });
   });
 
   test("POST: Worldcup Controller createWorldcup 실패 케이스", async () => {
-    const createWorldcupRequestBodyParamsInvalid1 = {
-      title: "",
-      content: "Content_InvalidParamsError",
-      choices: [
-        {
-          choice_name: "Choice_name_InvalidParamsError",
-          choice_url: "Choice_url_InvalidParamsError",
-        },
-        {
-          choice_name: "Choice_name_InvalidParamsError",
-          choice_url: "Choice_url_InvalidParamsError",
-        },
-      ],
+    mockRequest.body = {
+      title: "타이틀 실패 테스트",
+      content: "컨텐트 실패 테스트",
+      choices: [],
     };
 
-    // validation
-    mockRequest.body = createWorldcupRequestBodyParamsInvalid1;
-    const validationResult = postWorldcupSchema.validate(mockRequest.body)
-    expect(validationResult).toEqual()
-
-    // // controller function
-    // await worldcupController.createWorldcup(mockRequest, mockResponse, mockNext);
-
-    // expect(mockResponse.status).toHaveBeenCalledTimes(1);
-    // expect(mockResponse.status).toHaveBeenCalledWith(500);
+    // title validation
+    {
+      mockRequest.body.title = "";
+      expect(() =>
+        postWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 제목이 비어있습니다.")
+      );
+    }
+    {
+      mockRequest.body.title = 12345;
+      expect(() =>
+        postWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 제목의 형식이 올바르지 않습니다.")
+      );
+    }
+    {
+      mockRequest.body.title = "0123456789012345678901234567890123";
+      expect(() =>
+        postWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 제목은 최대 30자이어야 합니다.")
+      );
+    }
+    // content validation
+    {
+      mockRequest.body.content = "";
+      expect(() =>
+        postWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 내용이 비어있습니다.")
+      );
+    }
+    {
+      mockRequest.body.content = 12345;
+      expect(() =>
+        postWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 내용의 형식이 올바르지 않습니다.")
+      );
+    }
+    // choices validation
+    {
+      mockRequest.body.choices = [
+        {
+          choice_name: "",
+          choice_url:
+            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+        },
+        {
+          choice_name: "이름",
+          choice_url:
+            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+        },
+      ];
+      expect(() =>
+        postWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 종목의 형식이 올바르지 않습니다.")
+      );
+    }
+    {
+      mockRequest.body.choices = [
+        {
+          choice_name: "이름",
+          choice_url:
+            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+        },
+        {
+          choice_name: "이름",
+          choice_url: "url",
+        },
+      ];
+      expect(() =>
+        postWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 종목의 형식이 올바르지 않습니다.")
+      );
+    }
+    {
+      mockRequest.body.choices = [
+        {
+          choice_name: "테스트",
+          choice_url:
+            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+        },
+      ];
+      expect(() =>
+        postWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 종목은 최소 2개이어야 합니다.")
+      );
+    }
+    {
+      mockRequest.body.choices = [
+        {
+          choice_name: "테스트",
+          choice_url:
+            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+        },
+        {
+          choice_name: "테스트",
+          choice_url:
+            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+        },
+        {
+          choice_name: "테스트",
+          choice_url:
+            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
+        },
+      ];
+      expect(() =>
+        postWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 종목 개수는 짝수이어야 합니다.")
+      );
+    }
   });
 
   test("PUT: Worldcup Controller updateWorldcup 성공 케이스", async () => {
@@ -195,73 +305,115 @@ describe("Worldcup Controller 단위 테스트", () => {
     };
 
     mockRequest.body = updateWorldcupRequestBodyParams;
+    mockRequest.params = { worldcup_id: 1 };
 
-    mockWorldcupService.createPost = jest.fn(() => createPostReturnValue);
+    const updateWorldcupReturnValue = {
+      title: "타이틀 수정 테스트",
+      content: "컨텐트 수정 테스트",
+      worldcup_id: mockRequest.params.worldcup_id,
+      user_id: mockResponse.locals.user.user_id,
+    };
 
-    await postsController.createWorldcup(mockRequest, mockResponse, mockNext);
+    // validation
+    const validationResult = updateWorldcupSchema.validate(mockRequest.body);
+    expect(validationResult.value).toEqual(updateWorldcupRequestBodyParams);
 
-    expect(mockWorldcupService.createPost).toHaveBeenCalledTimes(1);
-    expect(mockWorldcupService.createPost).toHaveBeenCalledWith(
-      createWorldcupRequestBodyParams.title,
-      createWorldcupRequestBodyParams.content,
-      createWorldcupRequestBodyParams.choices
+    mockWorldcupService.updateWorldcup = jest.fn(
+      () => updateWorldcupReturnValue
+    );
+
+    await worldcupController.updateWorldcup(
+      mockRequest,
+      mockResponse,
+      mockNext
+    );
+
+    expect(mockWorldcupService.updateWorldcup).toHaveBeenCalledTimes(1);
+    expect(mockWorldcupService.updateWorldcup).toHaveBeenCalledWith(
+      updateWorldcupRequestBodyParams.title,
+      updateWorldcupRequestBodyParams.content,
+      mockResponse.locals.user.user_id,
+      mockRequest.params.worldcup_id
     );
 
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
-    expect(mockResponse.status).toHaveBeenCalledWith(201);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
 
     expect(mockResponse.json).toHaveBeenCalledWith({
-      data: createPostReturnValue,
+      updatedWorldcup: updateWorldcupReturnValue,
     });
   });
 
   test("PUT: Worldcup Controller createWorldcup 실패 케이스", async () => {
-    const createPostRequestBodyParamsByInvalidParamsError = {
-      nickname: "Nickname_InvalidParamsError",
-      password: "Password_InvalidParamsError",
+    mockRequest.body = {
+      title: "타이틀 수정 실패 테스트",
+      content: "컨텐트 수정 실패 테스트",
     };
 
-    mockRequest.body = createPostRequestBodyParamsByInvalidParamsError;
-
-    await postsController.createWorldcup(mockRequest, mockResponse, mockNext);
-
-    expect(mockResponse.status).toHaveBeenCalledTimes(1);
-    expect(mockResponse.status).toHaveBeenCalledWith(400);
+    // title validation
+    {
+      mockRequest.body.title = "";
+      expect(() =>
+        updateWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 제목이 비어있습니다.")
+      );
+    }
+    {
+      mockRequest.body.title = 12345;
+      expect(() =>
+        updateWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 제목의 형식이 올바르지 않습니다.")
+      );
+    }
+    {
+      mockRequest.body.title = "0123456789012345678901234567890123";
+      expect(() =>
+        updateWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 제목은 최대 30자이어야 합니다.")
+      );
+    }
+    // content validation
+    {
+      mockRequest.body.content = "";
+      expect(() =>
+        updateWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 내용이 비어있습니다.")
+      );
+    }
+    {
+      mockRequest.body.content = 12345;
+      expect(() =>
+        updateWorldcupSchema
+          .validate(mockRequest.body)
+          .toThrow("월드컵 내용의 형식이 올바르지 않습니다.")
+      );
+    }
   });
 
   test("DELETE: Worldcup Controller deleteWorldcup 성공 케이스", async () => {
-    mockRequest.body = createWorldcupRequestBodyParams;
+    mockRequest.params = { worldcup_id: 1 };
 
-    mockWorldcupService.createPost = jest.fn(() => createPostReturnValue);
+    const deleteWorldcupReturnMessage = "월드컵 삭제 완료"
 
-    await postsController.createWorldcup(mockRequest, mockResponse, mockNext);
+    mockWorldcupService.deletePost = jest.fn(() => deleteWorldcupReturnMessage);
 
-    expect(mockWorldcupService.createPost).toHaveBeenCalledTimes(1);
-    expect(mockWorldcupService.createPost).toHaveBeenCalledWith(
-      createWorldcupRequestBodyParams.title,
-      createWorldcupRequestBodyParams.content,
-      createWorldcupRequestBodyParams.choices
+    await worldcupController.deleteWorldcup(mockRequest, mockResponse, mockNext);
+
+    expect(mockWorldcupService.deleteWorldcup).toHaveBeenCalledTimes(1);
+    expect(mockWorldcupService.deleteWorldcup).toHaveBeenCalledWith(
+      mockRequest.params.worldcup_id,
+      mockResponse.locals.user.user_id
     );
 
     expect(mockResponse.status).toHaveBeenCalledTimes(1);
-    expect(mockResponse.status).toHaveBeenCalledWith(201);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
 
     expect(mockResponse.json).toHaveBeenCalledWith({
-      data: createPostReturnValue,
+      message: deleteWorldcupReturnMessage,
     });
-  });
-
-  test("DELETE: Worldcup Controller createWorldcup 실패 케이스", async () => {
-    const createPostRequestBodyParamsByInvalidParamsError = {
-      nickname: "Nickname_InvalidParamsError",
-      password: "Password_InvalidParamsError",
-    };
-
-    mockRequest.body = createPostRequestBodyParamsByInvalidParamsError;
-
-    await postsController.createWorldcup(mockRequest, mockResponse, mockNext);
-
-    expect(mockResponse.status).toHaveBeenCalledTimes(1);
-    expect(mockResponse.status).toHaveBeenCalledWith(400);
   });
 });
