@@ -18,7 +18,7 @@ class LikesService {
 
   worldcupLikeToggle = async (user_id, worldcup_id, isExistWorldcup) => {
     await sequelize.transaction(
-      { isolateLeve: Transaction.ISOLATION_LEVELS.READ_COMMITTED },
+      { isolateLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED },
       async (t) => {
         if (isExistWorldcup) {
           // 2-1. 존재하면 삭제 및 decrease
