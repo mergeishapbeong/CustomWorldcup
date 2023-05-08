@@ -86,6 +86,11 @@ class CommentsController {
         comment_id
       );
       console.log("commentIsExist", commentIsExist);
+      if (!commentIsExist) {
+        return res
+          .status(404)
+          .json({ errorMessage: "댓글이 존재하지 않습니다." });
+      }
 
       if (commentIsExist.user_id !== user_id) {
         return res
@@ -120,6 +125,11 @@ class CommentsController {
       const commentIsExist = await this.commentsService.findOneComment(
         comment_id
       );
+      if (!commentIsExist) {
+        return res
+          .status(404)
+          .json({ errorMessage: "댓글이 존재하지 않습니다." });
+      }
 
       if (commentIsExist.user_id !== user_id) {
         return res
