@@ -18,7 +18,7 @@ class CommentsService {
     const findAllCommentsData = await this.commentsRepository.findAllComments(
       worldcup_id
     );
-    console.log(findAllCommentsData);
+    // console.log(findAllCommentsData);
     return findAllCommentsData;
   };
 
@@ -30,7 +30,7 @@ class CommentsService {
     return findOneCommentData;
   };
 
-  updateComments = async (comment, worldcup_id, comment_id) => {
+  updateComment = async (comment, worldcup_id, comment_id) => {
     const updateCommentData = await this.commentsRepository.updateComment(
       comment,
       worldcup_id,

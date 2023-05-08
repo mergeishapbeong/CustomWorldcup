@@ -1,4 +1,5 @@
 const Commentsrepository = require("../../../repositories/comments.repository");
+const { Op } = require("sequelize");
 
 // 가상 모델 생성
 let mockCommentsModel = {
@@ -63,81 +64,85 @@ describe("WorldcupRepository Unit Test", () => {
     });
   });
 
-  //   test("createComment success test", async () => {
-  //     mockCommentsModel.create = jest.fn(() => {
-  //       return "created";
-  //     });
-  //     const CommentsBody = {
-  //       comment: "comment",
-  //       worldcup_id: 1,
-  //       user_id: 1,
-  //     };
+  test("findOne success test", async () => {
+    mockCommentsModel.findOne = jest.fn(() => {
+      return "findOne";
+    });
+    const CommentsParam = {
+      comment_id: 1,
+    };
 
-  //     const createCommentData = await commentsRepository.createComment(
-  //       CommentsBody.comment,
-  //       CommentsBody.worldcup_id,
-  //       CommentsBody.user_id
-  //     );
+    const findOneCommentData = await commentsRepository.findOneComment(
+      CommentsParam.comment_id
+    );
 
-  //     expect(mockCommentsModel.create).toHaveBeenCalledTimes(1);
+    expect(mockCommentsModel.findOne).toHaveBeenCalledTimes(1);
 
-  //     expect(createCommentData).toEqual("created");
-  //     expect(mockCommentsModel.create).toHaveBeenCalledWith({
-  //       comment: CommentsBody.comment,
-  //       worldcup_id: CommentsBody.worldcup_id,
-  //       user_id: CommentsBody.user_id,
-  //     });
-  //   });
+    expect(findOneCommentData).toEqual("findOne");
+    expect(mockCommentsModel.findOne).toHaveBeenCalledWith({
+      where: { comment_id: CommentsParam.comment_id },
+    });
+  });
 
-  //   test("createComment success test", async () => {
-  //     mockCommentsModel.create = jest.fn(() => {
-  //       return "created";
-  //     });
-  //     const CommentsBody = {
-  //       comment: "comment",
-  //       worldcup_id: 1,
-  //       user_id: 1,
-  //     };
+  test("update success test", async () => {
+    mockCommentsModel.update = jest.fn(() => {
+      return "update";
+    });
+    const CommentsParam = {
+      comment: "수정된 댓글",
+      comment_id: 1,
+      worldcup_id: 12,
+    };
 
-  //     const createCommentData = await commentsRepository.createComment(
-  //       CommentsBody.comment,
-  //       CommentsBody.worldcup_id,
-  //       CommentsBody.user_id
-  //     );
+    const updateCommentData = await commentsRepository.updateComment(
+      CommentsParam.comment,
+      CommentsParam.worldcup_id,
+      CommentsParam.comment_id
+    );
 
-  //     expect(mockCommentsModel.create).toHaveBeenCalledTimes(1);
+    expect(mockCommentsModel.update).toHaveBeenCalledTimes(1);
 
-  //     expect(createCommentData).toEqual("created");
-  //     expect(mockCommentsModel.create).toHaveBeenCalledWith({
-  //       comment: CommentsBody.comment,
-  //       worldcup_id: CommentsBody.worldcup_id,
-  //       user_id: CommentsBody.user_id,
-  //     });
-  //   });
+    expect(updateCommentData).toEqual("update");
+    expect(mockCommentsModel.update).toHaveBeenCalledWith(
+      { comment: CommentsParam.comment },
+      {
+        where: {
+          [Op.and]: [
+            { worldcup_id: CommentsParam.worldcup_id },
+            { comment_id: CommentsParam.comment_id },
+          ],
+        },
+      }
+    );
+  });
 
-  //   test("createComment success test", async () => {
-  //     mockCommentsModel.create = jest.fn(() => {
-  //       return "created";
-  //     });
-  //     const CommentsBody = {
-  //       comment: "comment",
-  //       worldcup_id: 1,
-  //       user_id: 1,
-  //     };
+  test("destroy success test", async () => {
+    mockCommentsModel.destroy = jest.fn(() => {
+      return "destroy";
+    });
+    const CommentsParam = {
+      comment_id: 1,
+      worldcup_id: 12,
+      user_id: 4,
+    };
 
-  //     const createCommentData = await commentsRepository.createComment(
-  //       CommentsBody.comment,
-  //       CommentsBody.worldcup_id,
-  //       CommentsBody.user_id
-  //     );
+    const destroyCommentData = await commentsRepository.deleteComment(
+      CommentsParam.worldcup_id,
+      CommentsParam.comment_id,
+      CommentsParam.user_id
+    );
 
-  //     expect(mockCommentsModel.create).toHaveBeenCalledTimes(1);
+    expect(mockCommentsModel.destroy).toHaveBeenCalledTimes(1);
 
-  //     expect(createCommentData).toEqual("created");
-  //     expect(mockCommentsModel.create).toHaveBeenCalledWith({
-  //       comment: CommentsBody.comment,
-  //       worldcup_id: CommentsBody.worldcup_id,
-  //       user_id: CommentsBody.user_id,
-  //     });
-  //   });
+    expect(destroyCommentData).toEqual("destroy");
+    expect(mockCommentsModel.destroy).toHaveBeenCalledWith({
+      where: {
+        [Op.and]: [
+          { worldcup_id: CommentsParam.worldcup_id },
+          { comment_id: CommentsParam.comment_id },
+          { user_id: CommentsParam.user_id },
+        ],
+      },
+    });
+  });
 });

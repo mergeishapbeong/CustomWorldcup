@@ -97,7 +97,7 @@ class CommentsController {
           .status(403)
           .json({ errorMessage: "게시글 수정의 권한이 존재하지 않습니다." });
       }
-      const updateCommentData = await this.commentsService.updateComments(
+      const updateCommentData = await this.commentsService.updateComment(
         comment,
         worldcup_id,
         comment_id
