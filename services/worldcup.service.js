@@ -143,9 +143,25 @@ class WorldcupService {
       error.message = "월드컵 게시물이 존재하지 않습니다.";
       throw error;
     }
+
+    // 선택지 존재 확인
+    const worldcupChoice = await this.worldcupChoiceRepository.findOne(worldcupResultData.worldcup_choice_id);
+    if (!worldcupChoice) {
+      const error = new Error();
+      error.errorCode = 404;
+      error.message = "월드컵 선택지가 존재하지 않습니다.";
+      throw error;
+    }
+
     // 월드컵 결과 저장
     await this.worldcupChoiceRepository.createResult(worldcupResultData);
-  };
+
+    // 월드컵 진행 횟수 1 증가
+    await this.worldcupRepository.increasePlayCount(worldcupResultData.worldcup_id);
+
+    // 월드컵 선택지 승리 횟수 1 증가
+    await this.worldcupChoiceRepository.increaseWinCount(worldcupResultData.worldcup_choice_id);
+  }
 }
 
 module.exports = WorldcupService;

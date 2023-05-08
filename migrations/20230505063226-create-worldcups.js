@@ -32,6 +32,11 @@ module.exports = {
         defaultValue: 0,
         type: Sequelize.INTEGER,
       },
+      play_count: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
       createdAt: {
         allowNull: false,
         defaultValue: Sequelize.fn("now"),
