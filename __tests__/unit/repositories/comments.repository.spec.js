@@ -59,7 +59,7 @@ describe("WorldcupRepository Unit Test", () => {
 
     expect(findAllCommentData).toEqual("findAll");
     expect(mockCommentsModel.findAll).toHaveBeenCalledWith({
-      worldcup_id: CommentsParam.worldcup_id,
+      where: { worldcup_id: CommentsParam.worldcup_id },
     });
   });
 
