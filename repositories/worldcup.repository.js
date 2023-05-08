@@ -1,4 +1,6 @@
 const { Op } = require("sequelize");
+const { Users, Worldcup_choices } = require("../models");
+const { Sequelize } = require('sequelize');
 
 class WorldcupRepository {
   constructor(WorldcupsModel) {
@@ -11,12 +13,54 @@ class WorldcupRepository {
 
   getAll = async () => {
     return await this.worldcupsModel.findAll({
+      include: [
+        {
+          model: Users,
+          attributes: [],
+          required: true,
+        },
+      ],
+      attributes: [
+        "worldcup_id",
+        "user_id",
+        "title",
+        "content",
+        "play_count",
+        "likes",
+        [Sequelize.literal("`User`.`nickname`"), "nickname"],
+        "createdAt",
+        "updatedAt",
+      ],
+      group: ["Worldcups.worldcup_id"],
       order: [["createdAt", "DESC"]],
     });
   };
 
   getOne = async (worldcup_id) => {
     return await this.worldcupsModel.findOne({
+      include: [
+        {
+          model: Worldcup_choices,
+          attributes: ["choice_name", "choice_url"],
+          required: true,
+        },
+        {
+          model: Users,
+          attributes: [],
+          required: true,
+        },
+      ],
+      attributes: [
+        "worldcup_id",
+        "user_id",
+        "title",
+        "content",
+        "play_count",
+        "likes",
+        [Sequelize.literal("`User`.`nickname`"), "nickname"],
+        "createdAt",
+        "updatedAt",
+      ],
       where: { worldcup_id },
     });
   };
@@ -57,13 +101,6 @@ class WorldcupRepository {
 
     const increaseLikesData = await findLikesData.increment("likes", { by: 1 });
     return increaseLikesData;
-  };
-
-  increasePlayCount = async (worldcup_id) => {
-    await this.worldcupsModel.increment('play_count', {
-      by: 1,
-      where: { worldcup_id },
-    });
   };
 }
 

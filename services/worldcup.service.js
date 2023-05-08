@@ -71,26 +71,22 @@ class WorldcupService {
       throw error;
     }
 
-    const allChoices =
-      await this.worldcupChoicesRepository.findAllWorldcupChoices(worldcup_id);
-    const choices = allChoices.map((choice) => ({
-      choice_name: choice.dataValues.choice_name,
-      choice_url: choice.dataValues.choice_url,
+    const worldcup_choices = worldcup.Worldcup_choices.map((choice) => ({
+      choice_name: choice.choice_name,
+      choice_url: choice.choice_url,
     }));
 
-    const user_id = worldcup.user_id;
-    const userInfo = await this.usersRepository.findOneByUserId(user_id)
-    const nickname = userInfo.dataValues.nickname;
     return {
       worldcup_id: worldcup.dataValues.worldcup_id,
       user_id: worldcup.dataValues.user_id,
-      nickname,
+      nickname: worldcup.dataValues.nickname,
       title: worldcup.dataValues.title,
       content: worldcup.dataValues.content,
       likes: worldcup.dataValues.likes,
+      play_count: worldcup.dataValues.play_count,
       createdAt: worldcup.dataValues.createdAt,
       updatedAt: worldcup.dataValues.updatedAt,
-      choices,
+      choices: worldcup_choices,
     };
   };
 
