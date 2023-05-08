@@ -7,9 +7,18 @@ class UserController {
     const { nickname, password, email } = req.body;
     try {
       const existsUsers = await this.userService.findOneUser(nickname);
+      const existsEmail = await this.userService.findOneUser(email);
+
       if (existsUsers) {
         res.status(412).json({
           errorMessage: "중복된 닉네임입니다.",
+        });
+        return;
+      }
+
+      if (existsEmail) {
+        res.status(412).json({
+          errorMessage: "중복된 이메일입니다.",
         });
         return;
       }
@@ -18,6 +27,14 @@ class UserController {
       if (!nicknameFilter) {
         res.status(412).json({
           errorMessage: "닉네임의 형식이 일치하지 않습니다.",
+        });
+        return;
+      }
+
+      const emailFilter = /^[A-Za-z0-9]{3,}$/.test(nickname);
+      if (!emailFilter) {
+        res.status(412).json({
+          errorMessage: "이메일의 형식이 일치하지 않습니다.",
         });
         return;
       }
@@ -60,7 +77,7 @@ class UserController {
         return;
       }
 
-      const userData = await this.userService.login(nickname, password);
+      const userData = await this.userService.login(nickname);
 
       res.cookie(
         "Authorization",

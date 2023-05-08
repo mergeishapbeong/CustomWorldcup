@@ -40,78 +40,7 @@ describe("Worldcup Controller 단위 테스트", () => {
       return mockResponse;
     });
   });
-
-  test("GET: Worldcup Controller getAllWorldcups 성공 케이스", async () => {
-    const worldcupsReturnedValue = [
-      {
-        worldcup_id: 2,
-        user_id: 2,
-        title: "테스트",
-        content: "테스트",
-        likes: 0,
-        createdAt: "2023-05-06T02:49:25.000Z",
-        updatedAt: "2023-05-06T02:49:25.000Z",
-      },
-      {
-        worldcup_id: 1,
-        user_id: 1,
-        title: "제목",
-        content: "내용",
-        likes: 0,
-        createdAt: "2023-05-06T01:32:24.000Z",
-        updatedAt: "2023-05-06T01:52:19.000Z",
-      },
-    ];
-
-    mockWorldcupService.getAllWorldcups = jest.fn(() => worldcupsReturnedValue);
-
-    await worldcupController.getAllWorldcups(
-      mockRequest,
-      mockResponse,
-      mockNext
-    );
-
-    expect(mockWorldcupService.getAllWorldcups).toHaveBeenCalledTimes(1);
-
-    expect(mockResponse.status).toHaveBeenCalledTimes(1);
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
-
-    expect(mockResponse.json).toHaveBeenCalledWith({
-      worldcups: worldcupsReturnedValue,
-    });
-  });
-
-  test("GET: Worldcup Controller getOneWorldcup 성공 케이스", async () => {
-    const worldcupReturnedValue = [
-      {
-        worldcup_id: 1,
-        user_id: 1,
-        title: "제목",
-        content: "내용",
-        likes: 0,
-        createdAt: "2023-05-06T01:32:24.000Z",
-        updatedAt: "2023-05-06T01:52:19.000Z",
-      },
-    ];
-
-    mockWorldcupService.getOneWorldcup = jest.fn(() => worldcupReturnedValue);
-
-    await worldcupController.getOneWorldcup(
-      mockRequest,
-      mockResponse,
-      mockNext
-    );
-
-    expect(mockWorldcupService.getOneWorldcup).toHaveBeenCalledTimes(1);
-
-    expect(mockResponse.status).toHaveBeenCalledTimes(1);
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
-
-    expect(mockResponse.json).toHaveBeenCalledWith({
-      worldcup: worldcupReturnedValue,
-    });
-  });
-
+  
   test("POST: Worldcup Controller createWorldcup 성공 케이스", async () => {
     const createWorldcupRequestBodyParams = {
       title: "타이틀 테스트",
@@ -298,6 +227,77 @@ describe("Worldcup Controller 단위 테스트", () => {
     }
   });
 
+  test("GET: Worldcup Controller getAllWorldcups 성공 케이스", async () => {
+    const worldcupsReturnedValue = [
+      {
+        worldcup_id: 2,
+        user_id: 2,
+        title: "테스트",
+        content: "테스트",
+        likes: 0,
+        createdAt: "2023-05-06T02:49:25.000Z",
+        updatedAt: "2023-05-06T02:49:25.000Z",
+      },
+      {
+        worldcup_id: 1,
+        user_id: 1,
+        title: "제목",
+        content: "내용",
+        likes: 0,
+        createdAt: "2023-05-06T01:32:24.000Z",
+        updatedAt: "2023-05-06T01:52:19.000Z",
+      },
+    ];
+
+    mockWorldcupService.getAllWorldcups = jest.fn(() => worldcupsReturnedValue);
+
+    await worldcupController.getAllWorldcups(
+      mockRequest,
+      mockResponse,
+      mockNext
+    );
+
+    expect(mockWorldcupService.getAllWorldcups).toHaveBeenCalledTimes(1);
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      worldcups: worldcupsReturnedValue,
+    });
+  });
+
+  test("GET: Worldcup Controller getOneWorldcup 성공 케이스", async () => {
+    const worldcupReturnedValue = [
+      {
+        worldcup_id: 1,
+        user_id: 1,
+        title: "제목",
+        content: "내용",
+        likes: 0,
+        createdAt: "2023-05-06T01:32:24.000Z",
+        updatedAt: "2023-05-06T01:52:19.000Z",
+      },
+    ];
+
+    mockWorldcupService.getOneWorldcup = jest.fn(() => worldcupReturnedValue);
+
+    await worldcupController.getOneWorldcup(
+      mockRequest,
+      mockResponse,
+      mockNext
+    );
+
+    expect(mockWorldcupService.getOneWorldcup).toHaveBeenCalledTimes(1);
+
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      worldcup: worldcupReturnedValue,
+    });
+  });
+
   test("PUT: Worldcup Controller updateWorldcup 성공 케이스", async () => {
     const updateWorldcupRequestBodyParams = {
       title: "타이틀 수정 테스트",
@@ -397,11 +397,15 @@ describe("Worldcup Controller 단위 테스트", () => {
   test("DELETE: Worldcup Controller deleteWorldcup 성공 케이스", async () => {
     mockRequest.params = { worldcup_id: 1 };
 
-    const deleteWorldcupReturnMessage = "월드컵 삭제 완료"
+    const deleteWorldcupReturnMessage = "월드컵 삭제 완료";
 
     mockWorldcupService.deletePost = jest.fn(() => deleteWorldcupReturnMessage);
 
-    await worldcupController.deleteWorldcup(mockRequest, mockResponse, mockNext);
+    await worldcupController.deleteWorldcup(
+      mockRequest,
+      mockResponse,
+      mockNext
+    );
 
     expect(mockWorldcupService.deleteWorldcup).toHaveBeenCalledTimes(1);
     expect(mockWorldcupService.deleteWorldcup).toHaveBeenCalledWith(
