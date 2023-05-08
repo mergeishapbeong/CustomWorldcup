@@ -26,6 +26,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      win_count: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+      },
       createdAt: {
         defaultValue: Sequelize.fn("now"),
         allowNull: false,
