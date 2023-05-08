@@ -1,27 +1,25 @@
 const WorldcupRepository = require("../repositories/worldcup.repository");
-const WorldcupChoiceRepository = require("../repositories/worldcup.choice.repository");
 const { Worldcups, Worldcup_choices } = require("../models");
 
 class WorldcupService {
   worldcupRepository = new WorldcupRepository(Worldcups, Worldcup_choices);
-  worldcupChoiceRepository = new WorldcupChoiceRepository(Worldcup_choices);
 
   createWorldcup = async (user_id, title, content, choices) => {
     const newWorldcup = await this.worldcupRepository.create(
       user_id,
       title,
-      content
+      content, 
+      choices
     );
-    const worldcup_id = newWorldcup.dataValues.worldcup_id;
-    await Promise.all(
-      choices.map(async (choice) => {
-        await this.worldcupChoiceRepository.createChoice(
-          worldcup_id,
-          choice.choice_name,
-          choice.choice_url
-        );
-      })
-    );
+
+    const createdWorldcup = {
+      worldcup_id: newWorldcup.dataValues.worldcup_id,
+      user_id,
+      title,
+      content,
+      choices
+    }
+    return createdWorldcup;
   };
 
   getAllWorldcups = async () => {
@@ -61,7 +59,14 @@ class WorldcupService {
       throw error;
     }
 
-    await this.worldcupRepository.update(title, content, worldcup_id, user_id);
+
+    const updatedWorldcup = await this.worldcupRepository.update(title, content, worldcup_id, user_id);
+    
+    return {
+      worldcup_id: updatedWorldcup.worldcup_id,
+      title: updatedWorldcup.title,
+      content: updatedWorldcup.content,
+    }
   };
 
   deleteWorldcup = async (worldcup_id, user_id) => {
