@@ -16,6 +16,13 @@ class UserRepository {
     });
     return findOneUserData;
   };
+
+  findOneByUserId = async (user_id) => {
+    const userInfo= await Users.findOne({
+      where: { user_id },
+    });
+    return userInfo
+  };
 }
 
 module.exports = UserRepository;
