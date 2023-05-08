@@ -21,18 +21,6 @@ describe("Worldcup Service 단위 테스트", () => {
     const createWorldcupReturnValue = {
       title: "타이틀 테스트",
       content: "컨텐트 테스트",
-      choices: [
-        {
-          choice_name: "테스트",
-          choice_url:
-            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
-        },
-        {
-          choice_name: "테스트",
-          choice_url:
-            "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
-        },
-      ],
       user_id: 1,
       worldcup_id: 1,
     };
