@@ -1,46 +1,12 @@
 const { Op } = require("sequelize");
-const { Transaction } = require("sequelize");
-const { sequelize } = require("../models");
 
 class WorldcupRepository {
-  constructor(WorldcupsModel, WorldcupChoicesMode) {
+  constructor(WorldcupsModel) {
     this.worldcupsModel = WorldcupsModel;
-    this.worldcupChoicesModel = WorldcupChoicesMode;
   }
 
-  create = async (user_id, title, content, choices) => {
-    const t = await sequelize.transaction({
-      isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
-    });
-    try {
-      const newWorldcup = await this.worldcupsModel.create(
-        { user_id, title, content },
-        {
-          transaction: t,
-        }
-      );
-      const worldcup_id = newWorldcup.dataValues.worldcup_id;
-
-      await Promise.all(
-        choices.map(async (choice) => {
-          await this.worldcupChoicesModel.create(
-            {
-              worldcup_id,
-              choice_name: choice.choice_name,
-              choice_url: choice.choice_url,
-            },
-            {
-              transaction: t,
-            }
-          );
-        })
-      );
-      await t.commit();
-      return newWorldcup;
-    } catch (error) {
-      console.error(error);
-      await t.rollback();
-    }
+  create = async (user_id, title, content) => {
+    return await this.worldcupsModel.create({ user_id, title, content });
   };
 
   getAll = async () => {
@@ -56,21 +22,13 @@ class WorldcupRepository {
   };
 
   update = async (title, content, worldcup_id, user_id) => {
-    const t = await sequelize.transaction({
-      isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
-    });
     await this.worldcupsModel.update(
       { title, content },
       { where: { [Op.and]: [{ worldcup_id }, { user_id }] } }
     );
-
-    return this.getOne(worldcup_id);
   };
 
   remove = async (worldcup_id, user_id) => {
-    const t = await sequelize.transaction({
-      isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
-    });
     await this.worldcupsModel.destroy({
       where: { [Op.and]: [{ worldcup_id }, { user_id }] },
     });
