@@ -26,18 +26,10 @@ let mypageController = new MypageController();
 mypageController.mypageService = mockMypageService;
 
 describe("MypageController Unit Test", () => {
-  /**
-   -> Controller의 모든 메소드 테스트하기
-   1. getMyWorldcups
-   2. getMyWorldcupResults
-   일단 성공 케이스부터 만들어보자.
-   */
 
   beforeEach(() => {
-    // 모든 Mock 초기화
     jest.resetAllMocks();
 
-    // mockResponse.status의 경우 메서드 체이닝으로 인해 반환값이 Response(자신: this)로 설정되어야합니다.
     mockResponse.status = jest.fn(() => {
       return mockResponse;
     });
@@ -49,6 +41,11 @@ describe("MypageController Unit Test", () => {
   3. then - Check
   */
 
+  /**
+   1. mypageService의 getMyWorldcups() 메소드를 잘 호출하는지 검증
+   2. res.status는 200을 반환하는지 검증
+   3. getMyWorldcups()에서 얻은 myWorldcupsExample을 잘 반환하는지 검증
+   */
   test("getMyWorldcups success test", async () => {
     const myWorldcupsExample = [
       {
@@ -60,23 +57,30 @@ describe("MypageController Unit Test", () => {
         content: "점심 메뉴 추천 월드컵입니다.",
       },
     ];
-    mockMypageService.getMyWorldcups = jest.fn(() => myWorldcupsExample);
 
+    mockMypageService.getMyWorldcups = jest.fn(() => myWorldcupsExample);
 
     await mypageController.getMyWorldcups(mockRequest, mockResponse, mockNext);
 
-    /**
-     1. mypageService의 getMyWorldcups 메소드를 호출하는지 검증
-     2. res.status는 200을 반환하는지 검증
-     3. response에서 결과 데이터를 제대로 출력하는지 검증
-     */
+
+    // 1. mypageService의 getMyWorldcups() 메소드를 잘 호출하는지 검증
     expect(mockMypageService.getMyWorldcups).toHaveBeenCalledTimes(1);
+
+    // 2. res.status는 200을 반환하는지 검증
     expect(mockResponse.status).toHaveBeenCalledWith(200);
+
+    // 3. getMyWorldcups()에서 얻은 myWorldcupsExample을 잘 반환하는지 검증
     expect(mockResponse.json).toHaveBeenCalledWith({
       results: myWorldcupsExample,
     });
   });
 
+
+  /**
+   1. mypageService의 getMyWorldcupResults 메소드를 잘 호출하는지 검증
+   2. res.status는 200을 반환하는지 검증
+   3. getMyWorldcupResults()에서 얻은 myWorldcupResultsExample을 잘 반환하는지 검증
+   */
   test("getMyWorldcupResults success test", async () => {
     const myWorldcupResultsExample = [
       {
@@ -93,13 +97,13 @@ describe("MypageController Unit Test", () => {
 
     await mypageController.getMyWorldcupResults(mockRequest, mockResponse, mockNext);
 
-    /**
-     1. mypageService의 getMyWorldcupResults 메소드를 호출하는지 검증
-     2. res.status는 200을 반환하는지 검증
-     3. response에서 결과 데이터를 제대로 출력하는지 검증
-     */
+    // 1. mypageService의 getMyWorldcupResults 메소드를 잘 호출하는지 검증
     expect(mockMypageService.getMyWorldcupResults).toHaveBeenCalledTimes(1);
+
+    // 2. res.status는 200을 반환하는지 검증
     expect(mockResponse.status).toHaveBeenCalledWith(200);
+
+    // 3. getMyWorldcupResults()에서 얻은 myWorldcupResultsExample을 잘 반환하는지 검증
     expect(mockResponse.json).toHaveBeenCalledWith({
       results: myWorldcupResultsExample,
     });

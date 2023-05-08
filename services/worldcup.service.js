@@ -82,6 +82,20 @@ class WorldcupService {
 
     await this.worldcupRepository.remove(worldcup_id, user_id);
   };
+
+  postWorldcupResult = async (worldcupResultData) => {
+    console.log('worldcupResultData', worldcupResultData);
+    // 월드컵 존재 확인
+    const worldcup = await this.worldcupRepository.getOne(worldcupResultData.worldcup_id);
+    if (!worldcup) {
+      const error = new Error();
+      error.errorCode = 404;
+      error.message = "월드컵 게시물이 존재하지 않습니다.";
+      throw error;
+    }
+    // 월드컵 결과 저장
+    await this.worldcupChoiceRepository.createResult(worldcupResultData);
+  }
 }
 
 module.exports = WorldcupService;

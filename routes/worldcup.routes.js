@@ -19,4 +19,7 @@ router.put("/:worldcup_id", authMiddleware, worldcupController.updateWorldcup);
 // DELETE: 월드컵 삭제
 router.delete("/:worldcup_id", authMiddleware, worldcupController.deleteWorldcup);
 
+// POST: 월드컵 결과 저장
+router.post('/:worldcup_id/result', authMiddleware, worldcupController.postWorldcupResult);
+
 module.exports = router;
