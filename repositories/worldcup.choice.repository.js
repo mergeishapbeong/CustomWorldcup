@@ -1,4 +1,4 @@
-const { Worldcups, Worldcup_choices, Worldcup_results } = require('../models');
+const { Worldcups, Worldcup_results } = require('../models');
 
 class WorldcupChoiceRepository {
   constructor(worldcupChoiceModel) {
