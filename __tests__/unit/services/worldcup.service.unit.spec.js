@@ -1,12 +1,12 @@
 const WorldcupService = require("../../../services/worldcup.service");
 
 let mockWorldcupRepository = {
-  createWorldcup: jest.fn(),
-  getAllWorldcups: jest.fn(),
-  getOneWorldcup: jest.fn(),
-  updateWorldcup: jest.fn(),
-  deleteWorldcup: jest.fn(),
-  postWorldcupResult: jest.fn(),
+  create: jest.fn(),
+  createChoice: jest.fn(),
+  getAll: jest.fn(),
+  getOne: jest.fn(),
+  update: jest.fn(),
+  remove: jest.fn(),
 };
 
 let worldcupService = new WorldcupService();
@@ -37,20 +37,21 @@ describe("Worldcup Service 단위 테스트", () => {
       worldcup_id: 1,
     };
 
-    mockWorldcupRepository.createWorldcup = jest.fn(
+    mockWorldcupRepository.create = jest.fn(
       () => createWorldcupReturnValue
     );
 
-    const allWorldcups = await worldcupService.createWorldcup(
+    const createdWorldcup = await worldcupService.createWorldcup(
       createWorldcupReturnValue.user_id,
       createWorldcupReturnValue.title,
       createWorldcupReturnValue.content,
       createWorldcupReturnValue.choices,
     );
 
-    expect(allWorldcups).toEqual(createWorldcupReturnValue);
+    expect(createdWorldcup).toEqual(createWorldcupReturnValue);
 
-    expect(mockWorldcupRepository.createWorldcup).toHaveBeenCalledTimes(1);
+    expect(mockWorldcupRepository.create).toHaveBeenCalledTimes(1);
+    expect(mockWorldcupRepository.createChoice).toHaveBeenCalledTimes(1);
   });
 
   test("Worldcup Service createWorldcup 성공 케이스", async () => {});
