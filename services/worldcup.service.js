@@ -1,12 +1,12 @@
 const WorldcupRepository = require("../repositories/worldcup.repository");
-const WorldcupChoicesRepository = require("../repositories/worldcup.choice.repository");
+const WorldcupChoiceRepository = require("../repositories/worldcup.choice.repository");
 const { Worldcups, Worldcup_choices } = require("../models");
 const { Transaction } = require("sequelize");
 const { sequelize } = require("../models");
 
 class WorldcupService {
   worldcupRepository = new WorldcupRepository(Worldcups);
-  worldcupChoicesRepository = new WorldcupChoicesRepository(Worldcup_choices);
+  worldcupChoiceRepository = new WorldcupChoiceRepository(Worldcup_choices);
 
   createWorldcup = async (user_id, title, content, choices) => {
     await sequelize.transaction(
@@ -25,7 +25,7 @@ class WorldcupService {
 
         await Promise.all(
           choices.map(async (choice) => {
-            await this.worldcupChoicesRepository.createChoice(
+            await this.worldcupChoiceRepository.createChoice(
               worldcup_id,
               choice.choice_name,
               choice.choice_url

@@ -25,10 +25,19 @@ describe("WorldcupService Unit Test", () => {
   });
 
   /**
+   postWorldcupResult 검증 코드 3가지
+   1. 성공
+   2. 게시글이 없어서 실패
+   3. 게시글의 해당 선택지가 없어서 실패
+   */
+
+  /**
+   1. 일단 뭘 검증해야 하는 걸까?
    2. worldcupRepository의 createResult() 메소드를 잘 호출하는지 검증
    3. 매개변수 검증
    */
    test("postWorldcupResult success test", async () => {
+    // 준비
     const worldcup_id = 1;
     const user_id = 1;
     const worldcup_choice_id = 1;
@@ -38,8 +47,10 @@ describe("WorldcupService Unit Test", () => {
     mockWorldcupRepository.getOne = jest.fn(() => worldcupMock);
     mockWorldcupChoiceRepository.findOne = jest.fn(() => worldcupResultMock);
 
+    // 실행
     await worldcupService.postWorldcupResult(worldcupResultData);
 
+    // 검증
     expect(mockWorldcupRepository.getOne).toHaveBeenCalledTimes(1);
 
     // 2. worldcupRepository의 findAll 메소드를 호출하는지 검증
