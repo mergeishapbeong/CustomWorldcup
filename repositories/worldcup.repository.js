@@ -58,6 +58,13 @@ class WorldcupRepository {
     const increaseLikesData = await findLikesData.increment("likes", { by: 1 });
     return increaseLikesData;
   };
+
+  increasePlayCount = async (worldcup_id) => {
+    await this.worldcupsModel.increment('play_count', {
+      by: 1,
+      where: { worldcup_id },
+    });
+  };
 }
 
 module.exports = WorldcupRepository;

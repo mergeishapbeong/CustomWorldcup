@@ -45,6 +45,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      win_count: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
       createdAt: {
         defaultValue: DataTypes.NOW,
         allowNull: false,

@@ -38,6 +38,19 @@ class WorldcupChoiceRepository {
   createResult = async (worldcupResultData) => {
     await Worldcup_results.create(worldcupResultData);
   }
+
+  findOne = async (worldcup_choice_id) => {
+    return await this.worldcupsModel.findOne({
+      where: { worldcup_choice_id },
+    });
+  };
+
+  increaseWinCount = async (worldcup_choice_id) => {
+    await this.worldcupChoiceModel.increment('win_count', {
+      by: 1,
+      where: { worldcup_choice_id },
+    });
+  };
 }
 
 module.exports = WorldcupChoiceRepository;
