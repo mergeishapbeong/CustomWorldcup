@@ -6,16 +6,16 @@ class MypageService {
   worldcupRepository = new WorldcupRepository(Worldcups);
   worldcupChoiceRepository = new WorldcupChoiceRepository(Worldcup_choices);
 
-  getMyWorldcups = async () => {
-    const myWorldcups = await this.worldcupRepository.findAll();
+  getMyWorldcups = async (user_id) => {
+    const myWorldcups = await this.worldcupRepository.findAll(user_id);
     myWorldcups.sort((a, b) => {
       return b.createdAt - a.createdAt;
     });
     return myWorldcups;
   }
 
-  getMyWorldcupResults = async () => {
-    const myWorldcupResults = await this.worldcupChoiceRepository.findAllMine();
+  getMyWorldcupResults = async (user_id) => {
+    const myWorldcupResults = await this.worldcupChoiceRepository.findAllMine(user_id);
     myWorldcupResults.sort((a, b) => {
       return b.createdAt - a.createdAt;
     });

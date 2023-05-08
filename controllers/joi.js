@@ -48,19 +48,4 @@ module.exports = {
       "string.min": "월드컵 내용은 최소 1자이어야 합니다.",
     }),
   }),
-
-  postWorldcupCommentSchema: Joi.object({
-    comment: Joi.string().required().min(1).messages({
-      "string.base": "댓글 데이터 형식이 올바르지 않습니다.",
-      "string.empty": "댓글 데이터가 비어있습니다.",
-      "string.min": "댓글 내용은 최소 1자이어야 합니다.",
-    }),
-  }),
-  updateWorldcupCommentSchema: Joi.object({
-    comment: Joi.string().required().min(1).messages({
-      "string.base": "댓글 데이터 형식이 올바르지 않습니다.",
-      "string.empty": "댓글 데이터가 비어있습니다.",
-      "string.min": "댓글 내용은 최소 1자이어야 합니다.",
-    }),
-  }),
 };

@@ -78,6 +78,21 @@ class WorldcupController {
       next(error, req, res, "월드컵 삭제에 실패하였습니다.");
     }
   };
+
+  postWorldcupResult = async (req, res, next) => {
+    try {
+      const { worldcup_id } = req.params;
+      const { user_id } = res.locals.user;
+      const { worldcup_choice_id } = req.body;
+      const worldcupResultData = { worldcup_id, user_id, worldcup_choice_id };
+      console.log('worldcupResultData', worldcupResultData);
+      
+      await this.worldcupService.postWorldcupResult(worldcupResultData);
+      res.status(200).json({ message: "월드컵 결과 저장 완료" });
+    } catch (error) {
+      next(error, req, res, "월드컵 결과 저장에 실패하였습니다.");
+    }
+  }
 }
 
 module.exports = WorldcupController;

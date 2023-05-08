@@ -23,6 +23,12 @@ class TokenRepository {
     });
     return token;
   };
+
+  deleteRefreshToken = async (user_id) => {
+    await Tokens.destroy({
+      where: { user_id },
+    });
+  };
 }
 
 module.exports = TokenRepository;
