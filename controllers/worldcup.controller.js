@@ -14,13 +14,13 @@ class WorldcupController {
     const { user_id } = res.locals.user;
 
     try {
-      await this.worldcupService.createWorldcup(
+      const newWorldcup = await this.worldcupService.createWorldcup(
         user_id,
         title,
         content,
         choices
       );
-      res.status(201).json({ message: "월드컵 작성 완료" });
+      res.status(201).json({ newWorldcup });
     } catch (error) {
       next(error, req, res, "월드컵 생성에 실패하였습니다.");
     }
@@ -55,13 +55,14 @@ class WorldcupController {
     const { worldcup_id } = req.params;
     const { user_id } = res.locals.user;
     try {
-      await this.worldcupService.updateWorldcup(
+      const updatedWorldcup = await this.worldcupService.updateWorldcup(
         title,
         content,
         worldcup_id,
         user_id
       );
-      res.status(200).json({ message: "월드컵 수정 완료" });
+
+      res.status(200).json({ updatedWorldcup });
     } catch (error) {
       next(error, req, res, "월드컵 수정에 실패하였습니다.");
     }
@@ -77,6 +78,21 @@ class WorldcupController {
       next(error, req, res, "월드컵 삭제에 실패하였습니다.");
     }
   };
+
+  postWorldcupResult = async (req, res, next) => {
+    try {
+      const { worldcup_id } = req.params;
+      const { user_id } = res.locals.user;
+      const { worldcup_choice_id } = req.body;
+      const worldcupResultData = { worldcup_id, user_id, worldcup_choice_id };
+      console.log('worldcupResultData', worldcupResultData);
+      
+      await this.worldcupService.postWorldcupResult(worldcupResultData);
+      res.status(200).json({ message: "월드컵 결과 저장 완료" });
+    } catch (error) {
+      next(error, req, res, "월드컵 결과 저장에 실패하였습니다.");
+    }
+  }
 }
 
 module.exports = WorldcupController;

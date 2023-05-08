@@ -1,4 +1,4 @@
-const { Worldcups, Worldcup_choices, Worldcup_results } = require('../models');
+const { Worldcups, Worldcup_results } = require('../models');
 
 class WorldcupChoiceRepository {
   constructor(worldcupChoiceModel) {
@@ -7,7 +7,7 @@ class WorldcupChoiceRepository {
 
   findAllMine = async (user_id) => {
     const myWorldcupResults = await this.worldcupChoiceModel.findAll({
-      includes: [
+      include: [
         {
           model: Worldcups,
           attributes: ['title'],
@@ -20,7 +20,11 @@ class WorldcupChoiceRepository {
       ],
       attributes: ['choice_name'],
     });
-    return myWorldcupResults;
+    const results = myWorldcupResults.map(result => ({
+      choice_name: result.choice_name,
+      title: result.Worldcup.title,
+    }));
+    return results;
   };
 
   createChoice = async (worldcup_id, choice_name, choice_url) => {
@@ -30,6 +34,10 @@ class WorldcupChoiceRepository {
       choice_url,
     });
   };
+
+  createResult = async (worldcupResultData) => {
+    await Worldcup_results.create(worldcupResultData);
+  }
 }
 
 module.exports = WorldcupChoiceRepository;

@@ -1,7 +1,6 @@
 const MypageService = require("../../../services/mypage.service");
 
-// mock Repository <- 의존성 주입하는 건가봐. 아닌가. 아닌 거 같음.
-// 의존성 주입은 Repository에서 model을 생성자의 인자로 받는 부분이 아닌가?
+
 let mockWorldcupRepository = {
   findAll: jest.fn(),
 };
@@ -11,7 +10,8 @@ let mockWorldcupChoiceRepository = {
 };
 
 let mypageService = new MypageService();
-// postService의 Repository를 Mock Repository로 변경합니다.
+
+// mocking
 mypageService.worldcupRepository = mockWorldcupRepository;
 mypageService.worldcupChoiceRepository = mockWorldcupChoiceRepository;
 
@@ -21,6 +21,11 @@ describe("MypageService Unit Test", () => {
     jest.resetAllMocks();
   });
 
+  /**
+   1. 결과값 내림차순 정렬 검증, 결과 검증
+   2. worldcupRepository의 findAll() 메소드를 잘 호출하는지 검증
+   3. 매개변수 검증
+   */
   test("getMyWorldcups success test", async () => {
     const myWorldcupsExample = [
       {
@@ -47,8 +52,16 @@ describe("MypageService Unit Test", () => {
 
     // 2. worldcupRepository의 findAll 메소드를 호출하는지 검증
     expect(mockWorldcupRepository.findAll).toHaveBeenCalledTimes(1);
+
+    // 3. 매개변수 검증
+    expect(mockWorldcupRepository.findAll).toHaveBeenCalledWith(user_id);
   });
 
+  /**
+   1. 결과값 내림차순 정렬 검증, 결과 검증
+   2. worldcupChoiceRepository의 findAllMine() 메소드를 잘 호출하는지 검증
+   3. 매개변수 검증
+   */
   test("getMyWorldcupResults success test", async () => {
     const myWorldcupResultsExample = [
       {
@@ -75,5 +88,8 @@ describe("MypageService Unit Test", () => {
 
     // 2. worldcupChoiceRepository의 findAllMine 메소드를 호출하는지 검증
     expect(mockWorldcupChoiceRepository.findAllMine).toHaveBeenCalledTimes(1);
+
+    // 3. 매개변수 검증
+    expect(mockWorldcupChoiceRepository.findAllMine).toHaveBeenCalledWith(user_id);
   });
 });

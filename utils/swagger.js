@@ -3,8 +3,8 @@ const swaggerAutogen = require("swagger-autogen")();
 // 기본 설명 설정 알맞게 채워주세요
 const doc = {
   info: {
-    title: "CustomWorldcup",
-    description: "Description",
+    "title": "월드컵 어쩌구",
+    "description": "17조는 짱짱맨이다",
   },
   host: "localhost:3000",
   schemes: ["http"],

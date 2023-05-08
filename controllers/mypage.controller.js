@@ -6,6 +6,7 @@ class MypageController {
   
   getMyWorldcups = async (req, res, next) => {
     try {
+      console.log('res.locals.user', res.locals.user);
       const { user_id } = res.locals.user;
       const myWorldcups = await this.mypageService.getMyWorldcups(user_id);
       res.status(200).json({ results: myWorldcups });
