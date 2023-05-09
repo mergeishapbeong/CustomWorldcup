@@ -115,6 +115,7 @@ class WorldcupService {
 
   updateWorldcup = async (title, content, worldcup_id, user_id) => {
     try {
+      let updatedWorldcup;
       await sequelize.transaction(
         {
           isolationLevel: Transaction.ISOLATION_LEVELS.READ_COMMITTED,
@@ -141,7 +142,7 @@ class WorldcupService {
             user_id
           );
 
-          return {
+          updatedWorldcup =  {
             worldcup_id,
             user_id,
             title: worldcup.title,
@@ -149,6 +150,7 @@ class WorldcupService {
           };
         }
       );
+      return updatedWorldcup;
     } catch (error) {
       throw error;
     }
