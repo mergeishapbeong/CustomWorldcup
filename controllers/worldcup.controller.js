@@ -5,20 +5,16 @@ class WorldcupController {
   worldcupService = new WorldcupService();
 
   createWorldcup = async (req, res, next) => {
-    const { title, content, choices } = await postWorldcupSchema
-      .validateAsync(req.body)
-      .catch((error) => {
-        error.errorCode = 412;
-        next(error, req, res, error.message);
-      });
+    const { value, error } = await postWorldcupSchema.validate(req.body);
+
     const { user_id } = res.locals.user;
 
     try {
       const newWorldcup = await this.worldcupService.createWorldcup(
         user_id,
-        title,
-        content,
-        choices
+        value.title,
+        value.content,
+        value.choices
       );
       res.status(201).json({ newWorldcup });
     } catch (error) {
