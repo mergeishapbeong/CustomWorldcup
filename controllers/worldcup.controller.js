@@ -5,7 +5,12 @@ class WorldcupController {
   worldcupService = new WorldcupService();
 
   createWorldcup = async (req, res, next) => {
-    const { value, error } = await postWorldcupSchema.validate(req.body);
+    const { value, error } = postWorldcupSchema.validate(req.body);
+    // validation 에러 처리 - 에러 없는 경우 error === undefined
+    if (error) {
+      error.errorCode = 412;
+      next(error, req, res, error.message);
+    }
 
     const { user_id } = res.locals.user;
 
@@ -42,17 +47,18 @@ class WorldcupController {
   };
 
   updateWorldcup = async (req, res, next) => {
-    const { title, content } = await updateWorldcupSchema
-      .validateAsync(req.body)
-      .catch((error) => {
-        error.errorCode = 412;
-        next(error, req, res, error.message);
-      });
+    const { value, content } = updateWorldcupSchema.validate(req.body);
+    // validation 에러 처리
+    if (error) {
+      error.errorCode = 412;
+      next(error, req, res, error.message);
+    }
+
     const { worldcup_id } = req.params;
     const { user_id } = res.locals.user;
     try {
       const updatedWorldcup = await this.worldcupService.updateWorldcup(
-        title,
+        value.title,
         content,
         worldcup_id,
         user_id
@@ -81,7 +87,6 @@ class WorldcupController {
       const { user_id } = res.locals.user;
       const { worldcup_choice_id } = req.body;
       const worldcupResultData = { worldcup_id, user_id, worldcup_choice_id };
-      console.log("worldcupResultData", worldcupResultData);
 
       await this.worldcupService.postWorldcupResult(worldcupResultData);
       res.status(200).json({ message: "월드컵 결과 저장 완료" });
