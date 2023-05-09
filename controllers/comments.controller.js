@@ -7,15 +7,16 @@ class CommentsController {
 
   createComment = async (req, res, next) => {
     try {
-      const { comment } = await createCommentSchema
-        .validateAsync(req.body)
-        .catch((error) => {
-          error.errorCode = 412;
-          next(error, req, res, error.message);
-        });
+      const { value, error } = createCommentSchema.validate(req.body);
+      // validation 에러 처리
+      if (error) {
+        error.errorCode = 412;
+        next(error, req, res, error.message);
+      }
+
       const { worldcup_id } = req.params;
       const { user_id } = res.locals.user;
-      console.log(comment, worldcup_id, user_id);
+      console.log(value.comment, worldcup_id, user_id);
 
       const worldcupIsExist = await this.worldcupService.getOneWorldcup(
         worldcup_id
@@ -27,7 +28,7 @@ class CommentsController {
       }
 
       const createCommentData = await this.commentsService.createComment(
-        comment,
+        value.comment,
         worldcup_id,
         user_id
       );
@@ -63,12 +64,13 @@ class CommentsController {
   };
   updateComment = async (req, res, next) => {
     try {
-      const { comment } = await updateCommentSchema
-        .validateAsync(req.body)
-        .catch((error) => {
-          error.errorCode = 412;
-          next(error, req, res, error.message);
-        });
+      const { value, error } = updateCommentSchema.validate(req.body);
+      // validation 에러 처리
+      if (error) {
+        error.errorCode = 412;
+        next(error, req, res, error.message);
+      }
+
       const { worldcup_id, comment_id } = req.params;
       const { user_id } = res.locals.user;
 
@@ -96,7 +98,7 @@ class CommentsController {
           .json({ errorMessage: "게시글 수정의 권한이 존재하지 않습니다." });
       }
       const updateCommentData = await this.commentsService.updateComment(
-        comment,
+        value.comment,
         worldcup_id,
         comment_id
       );
