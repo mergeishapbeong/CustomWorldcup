@@ -29,6 +29,8 @@ app.use(morgan("dev"));
 app.use(
   cors({
     origin: "*",
+    credentials: "true",
+    // cors options
   })
 );
 
