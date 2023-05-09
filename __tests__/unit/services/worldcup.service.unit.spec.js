@@ -64,26 +64,30 @@ describe("Worldcup Service 단위 테스트", () => {
   test("Worldcup Service getAllWorldcups 성공 케이스", async () => {
     const getAllFuncReturnValue = [
       {
-        dataValues: { worldcup_id: 1 },
-        user_id: 1,
-        nickname: "test1",
-        title: "타이틀 테스트1",
-        content: "컨텐트 테스트1",
-        likes: 1,
-        play_count: 10,
-        createdAt: "2023-05-08T15:52:03.000Z",
-        updatedAt: "2023-05-08T15:52:03.000Z",
+        dataValues: {
+          worldcup_id: 1,
+          user_id: 1,
+          nickname: "test1",
+          title: "타이틀 테스트1",
+          content: "컨텐트 테스트1",
+          likes: 1,
+          play_count: 10,
+          createdAt: "2023-05-08T15:52:03.000Z",
+          updatedAt: "2023-05-08T15:52:03.000Z",
+        },
       },
       {
-        dataValues: { worldcup_id: 2 },
-        user_id: 2,
-        nickname: "test2",
-        title: "타이틀 테스트2",
-        content: "컨텐트 테스트2",
-        likes: 3,
-        play_count: 7,
-        createdAt: "2023-05-08T15:52:03.000Z",
-        updatedAt: "2023-05-08T15:52:03.000Z",
+        dataValues: {
+          worldcup_id: 2,
+          user_id: 2,
+          nickname: "test2",
+          title: "타이틀 테스트2",
+          content: "컨텐트 테스트2",
+          likes: 3,
+          play_count: 7,
+          createdAt: "2023-05-08T15:52:03.000Z",
+          updatedAt: "2023-05-08T15:52:03.000Z",
+        },
       },
     ];
 
@@ -95,15 +99,9 @@ describe("Worldcup Service 단위 테스트", () => {
     mockWorldcupRepository.getAll = jest.fn(() => getAllFuncReturnValue);
     mockWorldcupChoicesRepository.findAllWorldcupChoices = jest
       .fn()
-      .mockImplementation((worldcup_id) =>
-        choices.map((choice) => ({
-          choice_name: choice.choice_name,
-          choice_url: choice.choice_url,
-        }))
-      );
+      .mockImplementation(() => choices.map((choice) => choice));
 
     const allWorldcups = await worldcupService.getAllWorldcups();
-
     expect(mockWorldcupRepository.getAll).toHaveBeenCalledTimes(1);
     expect(
       mockWorldcupChoicesRepository.findAllWorldcupChoices
@@ -112,14 +110,21 @@ describe("Worldcup Service 단위 테스트", () => {
       mockWorldcupChoicesRepository.findAllWorldcupChoices
     ).toHaveBeenCalledWith(2);
 
-    // const getAllWorldcupsReturnValue = await Promise.all(
-    //   getAllFuncReturnValue.map(async (worldcup, index) => {
-    //     const { dataValues, ...newWorldcup } = worldcup;
-    //     return { choices, worldcup_id: index + 1, ...newWorldcup };
-    //   })
-    // );
-
-    // return object를 비교하고 싶은데 undefined가 나와요... createWorldcup()를 또 테스트에 맞게 재구현해야할까요...
+    const getAllWorldcupsReturnValue = getAllFuncReturnValue.map(
+      (worldcup) => ({
+        worldcup_id: worldcup.dataValues.worldcup_id,
+        user_id: worldcup.dataValues.user_id,
+        nickname: worldcup.dataValues.nickname,
+        title: worldcup.dataValues.title,
+        content: worldcup.dataValues.content,
+        likes: worldcup.dataValues.likes,
+        play_count: worldcup.dataValues.play_count,
+        createdAt: worldcup.dataValues.createdAt,
+        updatedAt: worldcup.dataValues.updatedAt,
+        choices,
+      })
+    );
+    expect(allWorldcups).toMatchObject(getAllWorldcupsReturnValue);
   });
 
   test("Worldcup Service getAllWorldcups 실패 케이스", async () => {
@@ -183,7 +188,6 @@ describe("Worldcup Service 단위 테스트", () => {
     }));
 
     const oneWorldcup = await worldcupService.getOneWorldcup(worldcup_id);
-    global.console.log("wc debug", oneWorldcup);
 
     expect(mockWorldcupRepository.getOne).toHaveBeenCalledTimes(1);
     expect(oneWorldcup).toMatchObject(getOneWorldcupReturnValue);
