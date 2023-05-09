@@ -59,7 +59,30 @@ class WorldcupService {
       error.message = "월드컵 게시물이 존재하지 않습니다.";
       throw error;
     }
-    return allWorldcups;
+
+    const choices = await Promise.all(allWorldcups.map(async (worldcup) => {
+      const worldcup_id = worldcup.dataValues.worldcup_id
+      const choices = await this.worldcupChoicesRepository.findAllWorldcupChoices(worldcup_id);
+      
+      const worldcupChoices = choices.map((choice) => ({
+        choice_name: choice.choice_name,
+        choice_url: choice.choice_url,
+      }));
+
+      return {
+        worldcup_id: worldcup.dataValues.worldcup_id,
+        user_id: worldcup.dataValues.user_id,
+        nickname: worldcup.dataValues.nickname,
+        title: worldcup.dataValues.title,
+        content: worldcup.dataValues.content,
+        likes: worldcup.dataValues.likes,
+        play_count: worldcup.dataValues.play_count,
+        createdAt: worldcup.dataValues.createdAt,
+        updatedAt: worldcup.dataValues.updatedAt,
+        choices: worldcupChoices,
+      };
+    }));
+    return choices;
   };
 
   getOneWorldcup = async (worldcup_id) => {
