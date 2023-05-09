@@ -43,6 +43,7 @@ module.exports = async (req, res, next) => {
     }
     next();
   } catch (err) {
+    console.log(err);
     res.clearCookie("Authorization");
     return res.status(403).send({
       errorMessage:
