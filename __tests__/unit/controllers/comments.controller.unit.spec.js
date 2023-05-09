@@ -1,4 +1,8 @@
 const CommentsController = require("../../../controllers/comments.controller");
+const {
+  createCommentSchema,
+  updateCommentSchema,
+} = require("../../../controllers/joi");
 
 let mockCommentsService = {
   createComment: jest.fn(),
@@ -8,20 +12,20 @@ let mockCommentsService = {
   deleteComment: jest.fn(),
 };
 
-let mockWorldcupService = {
-  getOneWorldcup: jest.fn(),
-};
-
 let mockRequest = {
   body: jest.fn(),
   params: jest.fn(),
 };
 
 let mockResponse = {
-  tatus: jest.fn(),
+  status: jest.fn(),
   json: jest.fn(),
-  locals: {},
+  locals: {
+    user: {},
+  },
 };
+
+let mockNext = jest.fn();
 
 let commentsController = new CommentsController();
 commentsController.commentsService = mockCommentsService;
@@ -37,38 +41,42 @@ describe("Layered Architecture Pattern Comments Controller Unit Test", () => {
     });
   });
 
-  //   test("Comments Controller createComment Method by Success", async () => {
-  //     const createCommentRequestBodyParams = {
-  //       title: "Title_Success",
-  //       content: "Content_Success",
-  //     };
-  //     const createPostResLocals = {
-  //       nickname: "Nickname_Success",
-  //       userId: 1,
-  //     };
+  test("Comments Controller createComment Method by Success", async () => {
+    const createCommentRequestBody = {
+      comment: "Comment_Success",
+    };
+    const createCommentRequestParams = {
+      worldcup_id: 11,
+    };
+    const createCommentResLocals = {
+      user_id: 4,
+    };
 
-  //     mockRequest.body = createPostRequestBodyParams;
-  //     mockResponse.locals.user = createPostResLocals;
+    mockRequest.body = createCommentRequestBody;
+    mockRequest.params = createCommentRequestParams;
+    mockResponse.locals.user = createCommentResLocals;
 
-  //     const createPostReturnValue = { message: "게시글 생성 성공" };
+    const createCommentReturnValue = { message: "댓글 작성 완료" };
 
-  //     mockPostService.createPost = jest.fn(() => createPostReturnValue);
+    mockCommentsService.createComment = jest.fn(() => createCommentReturnValue);
 
-  //     await postsController.createPost(mockRequest, mockResponse);
+    const validationResult = createCommentSchema.validate(mockRequest.body);
+    expect(validationResult.value).toEqual(createCommentRequestBody);
 
-  //     expect(mockPostService.createPost).toHaveBeenCalledTimes(1);
-  //     expect(mockPostService.createPost).toHaveBeenCalledWith(
-  //       createPostResLocals.nickname,
-  //       createPostResLocals.userId,
-  //       createPostRequestBodyParams.title,
-  //       createPostRequestBodyParams.content
-  //     );
+    await commentsController.createComment(mockRequest, mockResponse, mockNext);
 
-  //     expect(mockResponse.status).toHaveBeenCalledTimes(1);
-  //     expect(mockResponse.status).toHaveBeenCalledWith(201);
+    expect(mockCommentsService.createComment).toHaveBeenCalledTimes(1);
+    expect(mockCommentsService.createComment).toHaveBeenCalledWith(
+      createCommentRequestBody.comment,
+      createCommentRequestParams.worldcup_id,
+      createCommentResLocals.user_id
+    );
 
-  //     expect(mockResponse.json).toHaveBeenCalledWith({
-  //       message: "게시글 생성 성공",
-  //     });
-  //   });
+    expect(mockResponse.status).toHaveBeenCalledTimes(1);
+    expect(mockResponse.status).toHaveBeenCalledWith(200);
+
+    expect(mockResponse.json).toHaveBeenCalledWith({
+      message: "댓글 작성 완료",
+    });
+  });
 });
