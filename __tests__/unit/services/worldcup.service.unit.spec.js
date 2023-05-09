@@ -144,8 +144,26 @@ describe("Worldcup Service 단위 테스트", () => {
   // 3. 1번에서 얻은 월드컵을 map으로 순회하면서 choices 내의 object를 반환하고 return할 object에 추가해줍니다.
 
   test("Worldcup Service getOneWorldcup 성공 케이스", async () => {
-    const getOneFuncReturnValue = {
-      dataValues: { worldcup_id: 1 },
+    const choices = [
+      { choice_name: "A", choice_url: "http://example.com.jpg" },
+      { choice_name: "B", choice_url: "http://example.com.jpg" },
+    ];
+    const worldcup = {
+      dataValues: {
+        worldcup_id: 1,
+        user_id: 1,
+        nickname: "test1",
+        title: "타이틀 테스트1",
+        content: "컨텐트 테스트1",
+        likes: 1,
+        play_count: 10,
+        createdAt: "2023-05-08T15:52:03.000Z",
+        updatedAt: "2023-05-08T15:52:03.000Z",
+      },
+    };
+
+    const getOneWorldcupReturnValue = {
+      worldcup_id: 1,
       user_id: 1,
       nickname: "test1",
       title: "타이틀 테스트1",
@@ -154,26 +172,21 @@ describe("Worldcup Service 단위 테스트", () => {
       play_count: 10,
       createdAt: "2023-05-08T15:52:03.000Z",
       updatedAt: "2023-05-08T15:52:03.000Z",
+      choices,
     };
-    const choices = [
-      { choice_name: "A", choice_url: "http://example.com.jpg" },
-      { choice_name: "B", choice_url: "http://example.com.jpg" },
-    ];
 
-    mockWorldcupRepository.getOne = jest
-      .fn()
-      .mockImplementation((worldcup_id) => {
-        const Worldcup_choices = choices.map((choice) => ({
-          choice_name: choice.choice_name,
-          choice_url: choice.choice_url,
-        }));
-        return { ...getOneFuncReturnValue, Worldcup_choices };
-      });
+    const worldcup_id = worldcup.dataValues.worldcup_id;
 
-    const worldcup = await worldcupService.getOneWorldcup();
+    mockWorldcupRepository.getOne = jest.fn(() => ({
+      ...worldcup,
+      Worldcup_choices: choices,
+    }));
+
+    const oneWorldcup = await worldcupService.getOneWorldcup(worldcup_id);
+    global.console.log("wc debug", oneWorldcup);
 
     expect(mockWorldcupRepository.getOne).toHaveBeenCalledTimes(1);
-    // return object를 비교하고 싶은데 undefined가 나와요... create()를 또 테스트에 맞게 재구현해야할까요...
+    expect(oneWorldcup).toMatchObject(getOneWorldcupReturnValue);
   });
 
   test("Worldcup Service getOneWorldcup 실패 케이스", async () => {
