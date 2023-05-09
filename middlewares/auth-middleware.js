@@ -25,7 +25,7 @@ module.exports = async (req, res, next) => {
 
       const userR = await tokenRepository.getRefreshToken(userId);
 
-      if (!userPayload) {
+      if (!userR) {
         return res.status(419).json({
           message:
             "Refresh Token의 정보가 서버에 존재하지 않습니다. 다시 로그인 해주세요",
@@ -39,8 +39,9 @@ module.exports = async (req, res, next) => {
       const user = await Users.findOne({ where: { user_id: userId } });
       res.locals.user = user;
     } else {
-      const user_id = jwt.verify(accessToken, process.env.SECRET_KEY).user_id;
-      const user = await Users.findOne({ where: { user_id } });
+      const userId = jwt.verify(accessToken, process.env.SECRET_KEY).user_id;
+
+      const user = await Users.findOne({ where: { user_id: userId } });
       res.locals.user = user;
     }
     next();
