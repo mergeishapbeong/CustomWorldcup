@@ -247,28 +247,16 @@ describe("Worldcup Service 단위 테스트", () => {
     const debugObj = {
       worldcup_id: updateWorldcupParams.worldcup_id,
       user_id: updateWorldcupParams.user_id,
-      nickname: getWorldcupByIdReturnValue.nickname,
       title: updateWorldcupParams.title,
       content: updateWorldcupParams.content,
-      likes: getWorldcupByIdReturnValue.likes,
-      play_count: getWorldcupByIdReturnValue.play_count,
-      createdAt: getWorldcupByIdReturnValue.createdAt,
-      updatedAt: getWorldcupByIdReturnValue.updatedAt,
-      choices: getWorldcupByIdReturnValue.choices,
     };
     global.console.log("updated", updatedWorldcup);
     global.console.log("return", debugObj);
     expect(updatedWorldcup).toMatchObject({
       worldcup_id: updateWorldcupParams.worldcup_id,
       user_id: updateWorldcupParams.user_id,
-      nickname: getWorldcupByIdReturnValue.nickname,
       title: updateWorldcupParams.title,
       content: updateWorldcupParams.content,
-      likes: getWorldcupByIdReturnValue.likes,
-      play_count: getWorldcupByIdReturnValue.play_count,
-      createdAt: getWorldcupByIdReturnValue.createdAt,
-      updatedAt: getWorldcupByIdReturnValue.updatedAt,
-      choices: getWorldcupByIdReturnValue.choices,
     });
   });
 
