@@ -27,5 +27,8 @@ const bcrypt = {
 const host = {
   port: parseInt(env.HOST_PORT),
 };
+const sentry = {
+  dsn: env.DSN,
+};
 
-module.exports = { development, test, jwt, bcrypt, host };
+module.exports = { development, test, jwt, bcrypt, host, sentry };

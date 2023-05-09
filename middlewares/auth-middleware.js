@@ -9,10 +9,20 @@ module.exports = async (req, res, next) => {
   const [authType, accessToken] = (Authorization ?? "").split(" ");
 
   try {
-    console.log("auth-middleware, 12: ", refreshToken);
-    const isAccessTokenValidate = validateAccessToken(accessToken);
-    const isRefreshTokenValidate = validateRefreshToken(refreshToken);
+    // refresh token 존재 여부 확인
+    if (!refreshToken)
+      return res.status(401).json({
+        message: "Refresh Token이 존재하지 않습니다. 다시 로그인 해주세요.",
+      });
 
+    // access token 존재 여부 확인
+    if (!accessToken)
+      return res.status(401).json({
+        message: "Access Token이 존재하지 않습니다. 다시 로그인 해주세요.",
+      });
+
+    // refresh token 유효성 확인
+    const isRefreshTokenValidate = validateRefreshToken(refreshToken);
     if (!isRefreshTokenValidate) {
       await tokenRepository.deleteRefreshToken2(refreshToken);
       return res.status(419).json({
@@ -20,26 +30,26 @@ module.exports = async (req, res, next) => {
       });
     }
 
-    if (!isAccessTokenValidate) {
-      const userId = jwt.verify(refreshToken, process.env.SECRET_KEY).user_id;
-      const userR = await tokenRepository.getRefreshToken(userId); // {user_id : 2}
+    // access token 유효성 확인
+    const isAccessTokenValidate = validateAccessToken(accessToken);
+    if (authType !== "Bearer" || !isAccessTokenValidate) {
+      // access token 재발급
+      const user_id = jwt.verify(refreshToken, process.env.SECRET_KEY).user_id;
+      const userPayload = await tokenRepository.getRefreshToken(user_id);
 
-      if (!userR) {
+      if (!userPayload) {
         return res.status(419).json({
           message:
             "Refresh Token의 정보가 서버에 존재하지 않습니다. 다시 로그인 해주세요",
         });
       }
 
-      const newAccessToken = createAccessToken(userR.dataValues);
-      res.cookie("Authorization", `bearer ${newAccessToken}`);
-
-      const user = await Users.findOne({ where: { user_id: userId } });
-      res.locals.user = user;
+      const newAccessToken = createAccessToken(userPayload.dataValues);
+      res.cookie("Authorization", `Bearer ${newAccessToken}`);
+      res.locals.user = userPayload.dataValues;
     } else {
-      const userId = jwt.verify(accessToken, process.env.SECRET_KEY).user_id;
-
-      const user = await Users.findOne({ where: { user_id: userId } });
+      const user_id = jwt.verify(accessToken, process.env.SECRET_KEY).user_id;
+      const user = await Users.findOne({ where: { user_id } });
       res.locals.user = user;
     }
     next();
