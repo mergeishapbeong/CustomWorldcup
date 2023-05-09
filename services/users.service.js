@@ -39,7 +39,6 @@ class UserService {
 
   findOneUser = async (nickname) => {
     const findOneUserData = this.userRepository.findOneUser(nickname);
-
     return findOneUserData;
   };
 
