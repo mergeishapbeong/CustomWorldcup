@@ -9,6 +9,7 @@ module.exports = async (req, res, next) => {
   const [authType, accessToken] = (Authorization ?? "").split(" ");
 
   try {
+    console.log("auth-middleware, 12: ", refreshToken);
     const isAccessTokenValidate = validateAccessToken(accessToken);
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
 
@@ -78,6 +79,7 @@ function validateRefreshToken(refreshToken) {
     jwt.verify(refreshToken, process.env.SECRET_KEY);
     return true;
   } catch (error) {
+    console.log("validateRefreshToken err ==>", error);
     return false;
   }
 }

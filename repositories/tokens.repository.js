@@ -32,6 +32,8 @@ class TokenRepository {
   };
 
   deleteRefreshToken2 = async (refreshToken) => {
+    console.log("deleteRefreshToken2 refreshToken 매개변수 ==>", refreshToken);
+
     await Tokens.destroy({
       where: { token: refreshToken },
     });
