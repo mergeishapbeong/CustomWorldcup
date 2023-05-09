@@ -81,6 +81,15 @@ class WorldcupRepository {
   findAll = async (user_id) => {
     const posts = await this.worldcupsModel.findAll({
       where: { user_id },
+      include: [
+        {
+          model: Worldcup_choices,
+          attributes: ['choice_name', 'choice_url', 'win_count'],
+          required: true,
+          order: [['win_count', 'DESC']],
+          limit: 2,
+        },
+      ],
     });
     return posts;
   };

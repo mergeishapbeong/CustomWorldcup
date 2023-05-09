@@ -83,16 +83,6 @@ describe("WorldcupController Unit Test", () => {
    1. worldcupService의 createWorldcup() 메소드를 잘 호출하는지 검증
    2. res.status는 201의 값을 반환하는지 검증
    */
-  //  {
-  //   choice_name: "테스트",
-  //   choice_url:
-  //     "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
-  // },
-  // {
-  //   choice_name: "테스트",
-  //   choice_url:
-  //     "https://media.istockphoto.com/id/108221348/photo/cat-jumping.jpg?s=1024x1024&w=is&k=20&c=W4pZdN6qS1HJG1fBMEhNEhKl8iJt4Q2yazF_3vF0qAw=",
-  // },
   test("createWorldcup success test", async () => {
     // 여기에서 입력 값을 넣어줬어야 했는데 그러지 않았었구나
     const worldcupInput = {
