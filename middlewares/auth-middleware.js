@@ -9,6 +9,7 @@ module.exports = async (req, res, next) => {
   const [authType, accessToken] = (Authorization ?? "").split(" ");
 
   try {
+    console.log("auth-middleware, 12: ", refreshToken);
     const isAccessTokenValidate = validateAccessToken(accessToken);
     const isRefreshTokenValidate = validateRefreshToken(refreshToken);
 
@@ -21,7 +22,7 @@ module.exports = async (req, res, next) => {
 
     if (!isAccessTokenValidate) {
       const userId = jwt.verify(refreshToken, process.env.SECRET_KEY).user_id;
-      const userR = await tokenRepository.getRefreshToken(userId);
+      const userR = await tokenRepository.getRefreshToken(userId); // {user_id : 2}
 
       if (!userR) {
         return res.status(419).json({
@@ -30,7 +31,7 @@ module.exports = async (req, res, next) => {
         });
       }
 
-      const newAccessToken = createAccessToken(userR);
+      const newAccessToken = createAccessToken(userR.dataValues);
       res.cookie("Authorization", `bearer ${newAccessToken}`);
 
       const user = await Users.findOne({ where: { user_id: userId } });
@@ -43,6 +44,7 @@ module.exports = async (req, res, next) => {
     }
     next();
   } catch (err) {
+    console.log(err);
     res.clearCookie("Authorization");
     return res.status(403).send({
       errorMessage:
@@ -77,6 +79,7 @@ function validateRefreshToken(refreshToken) {
     jwt.verify(refreshToken, process.env.SECRET_KEY);
     return true;
   } catch (error) {
+    console.log("validateRefreshToken err ==>", error);
     return false;
   }
 }
