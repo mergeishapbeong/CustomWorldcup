@@ -18,7 +18,11 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 // cors
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 // swagger
 app.use("/api/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));

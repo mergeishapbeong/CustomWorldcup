@@ -1,18 +1,13 @@
 const CommentsService = require("../services/comments.service");
 const WorldcupService = require("../services/worldcup.service");
-const {
-  postWorldcupCommentSchema,
-  updateWorldcupCommentSchema,
-} = require("./joi");
+const { createCommentSchema, updateCommentSchema } = require("./joi");
 class CommentsController {
   commentsService = new CommentsService();
   worldcupService = new WorldcupService();
 
   createComment = async (req, res, next) => {
     try {
-      console.log(res.locals.user);
-
-      const { comment } = await postWorldcupCommentSchema
+      const { comment } = await createCommentSchema
         .validateAsync(req.body)
         .catch((error) => {
           error.errorCode = 412;
@@ -20,6 +15,8 @@ class CommentsController {
         });
       const { worldcup_id } = req.params;
       const { user_id } = res.locals.user;
+      console.log(comment, worldcup_id, user_id);
+
       const worldcupIsExist = await this.worldcupService.getOneWorldcup(
         worldcup_id
       );
@@ -28,6 +25,7 @@ class CommentsController {
           .status(404)
           .json({ errorMessage: "게시글이 존재하지 않습니다." });
       }
+
       const createCommentData = await this.commentsService.createComment(
         comment,
         worldcup_id,
@@ -65,7 +63,7 @@ class CommentsController {
   };
   updateComment = async (req, res, next) => {
     try {
-      const { comment } = await updateWorldcupCommentSchema
+      const { comment } = await updateCommentSchema
         .validateAsync(req.body)
         .catch((error) => {
           error.errorCode = 412;
