@@ -244,14 +244,7 @@ describe("Worldcup Service 단위 테스트", () => {
       updateWorldcupParams.worldcup_id,
       updateWorldcupParams.user_id
     );
-    const debugObj = {
-      worldcup_id: updateWorldcupParams.worldcup_id,
-      user_id: updateWorldcupParams.user_id,
-      title: updateWorldcupParams.title,
-      content: updateWorldcupParams.content,
-    };
-    global.console.log("updated", updatedWorldcup);
-    global.console.log("return", debugObj);
+
     expect(updatedWorldcup).toMatchObject({
       worldcup_id: updateWorldcupParams.worldcup_id,
       user_id: updateWorldcupParams.user_id,
@@ -310,7 +303,46 @@ describe("Worldcup Service 단위 테스트", () => {
   // 2. 찾은 게시글이 없을 때, Error가 발생합니다. ("월드컵 게시물이 존재하지 않습니다.");
   // 3. 찾은 게시글의 user_id와 param으로 받아온 user_id가 다를 경우, Error가 발생합니다. ("월드컵 게시물 수정 권한이 없습니다.");
   // 4. 해당 월드컵을 삭제해줍니다. (worldcupRepository.remove(worldcup_id, user_id))
-  test("Worldcup Service deleteWorldcup 성공 케이스", async () => {});
+  test("Worldcup Service deleteWorldcup 성공 케이스", async () => {
+    const deleteWorldcupParams = {
+      worldcup_id: 1,
+      user_id: 1,
+    };
+
+    const getWorldcupByIdReturnValue = {
+      worldcup_id: deleteWorldcupParams.worldcup_id,
+      user_id: deleteWorldcupParams.user_id,
+      nickname: "test1",
+      title: "타이틀 테스트1",
+      content: "컨텐트 테스트1",
+      likes: 1,
+      play_count: 10,
+      createdAt: "2023-05-08T15:52:03.000Z",
+      updatedAt: "2023-05-08T15:52:03.000Z",
+      choices: [
+        { choice_name: "A", choice_url: "http://example.com.jpg" },
+        { choice_name: "B", choice_url: "http://example.com.jpg" },
+      ],
+    };
+
+    mockWorldcupRepository.getOne = jest.fn(() => getWorldcupByIdReturnValue);
+
+    await worldcupService.deleteWorldcup(
+      deleteWorldcupParams.worldcup_id,
+      deleteWorldcupParams.user_id
+    );
+
+    expect(mockWorldcupRepository.getOne).toHaveBeenCalledTimes(1);
+    expect(mockWorldcupRepository.getOne).toHaveBeenCalledWith(
+      deleteWorldcupParams.worldcup_id
+    );
+
+    expect(mockWorldcupRepository.remove).toHaveBeenCalledTimes(1);
+    expect(mockWorldcupRepository.remove).toHaveBeenCalledWith(
+      deleteWorldcupParams.worldcup_id,
+      deleteWorldcupParams.user_id
+    );
+  });
 
   test("Worldcup Service deleteWorldcup 실패 케이스 - 게시물이 존재하지 않는 경우", async () => {
     // 2. 찾은 게시글이 없을 때, Error가 발생합니다. ("월드컵 게시물이 존재하지 않습니다.");
