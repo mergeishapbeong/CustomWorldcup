@@ -107,22 +107,54 @@
                 "worldcups": {
                   "example": [
                     {
-                      "worldcup_id": 2,
-                      "user_id": 1,
-                      "nickname": "kim_cool",
-                      "title": "안녕하세요 2번째 게시글 제목입니다.",
-                      "likes": 5,
-                      "createdAt": "2022-07-25T07:45:56.000Z",
-                      "updatedAt": "2022-07-25T07:45:56.000Z"
+                      "worldcup_id": 64,
+                      "user_id": 4,
+                      "nickname": "siwon",
+                      "title": "타이틀",
+                      "content": "테스트",
+                      "likes": 0,
+                      "play_count": 0,
+                      "createdAt": "2023-05-08T15:16:35.000Z",
+                      "updatedAt": "2023-05-08T15:16:35.000Z",
+                      "choices": [
+                        {
+                          "choice_name": "떡볶이",
+                          "choice_url": "http://www.kfjals.com"
+                        },
+                        {
+                          "choice_name": "김밥",
+                          "choice_url": "http://www…"
+                        }
+                      ]
                     },
                     {
-                      "worldcup_id": 1,
-                      "user_id": 1,
-                      "nickname": "kim_cool",
-                      "title": "안녕하세요 게시글 제목입니다.",
-                      "likes": 3,
-                      "createdAt": "2022-07-25T07:45:15.000Z",
-                      "updatedAt": "2022-07-25T07:45:15.000Z"
+                      "worldcup_id": 64,
+                      "user_id": 4,
+                      "nickname": "jjm",
+                      "title": "드라마 월드컵!",
+                      "content": "인생 드라마를 골라요",
+                      "likes": 1,
+                      "play_count": 10,
+                      "createdAt": "2023-05-08T15:16:35.000Z",
+                      "updatedAt": "2023-05-08T15:16:35.000Z",
+                      "choices": [
+                        {
+                          "choice_name": "이상한 변호사 우영우",
+                          "choice_url": "https://i.namu.wiki/i/Pa2G4uR4bpcE_nrT8MBw5C8DWkDviK4oLP1NCsrkjirs4JlXYFwsudKsk8ExqwptfcKfyJIcCWczkIbmFbENkXV4idBubECUz46iKEx1EXDMEyUNWwuauTyn_bzdBrtu1BFGP4OA4fRD7AxapcegGQ.webp"
+                        },
+                        {
+                          "choice_name": "유미의 세포들",
+                          "choice_url": "https://i.namu.wiki/i/I-9nwpymGR0_QCo9C9Y0GOf0vrzYTy7oEkO0y-X6poLIX_qdwBdORMLUqaum8volslMe4DvrjyG6q0L9vqHq_Wsnb7Q0eLR3t6fJlKpFqxvcFVgxM6R6Z5FbPFUO3HNfkwUsK_H394qvFm1vwASJqA.webp"
+                        },
+                        {
+                          "choice_name": "작은 아씨들",
+                          "choice_url": "https://i.namu.wiki/i/uiF_QkGELCcwTNkZy_x5ZOH57eSpvcRIU6o4StyljNFjDvPFqKcaAXmZVEcI5IyahDIo9nhHlPWUXiC7CdJDq5CnXZnpkaDGkHywLiMb8f3j0lNVc-Yxl25viVFbDpm-GSKW1CiT0dkytGFGLMDy_Q.webp"
+                        },
+                        {
+                          "choice_name": "재벌집 막내 아들",
+                          "choice_url": "https://i.namu.wiki/i/6rr8meXT4C2GWb0EvuUpuASUOe-dRpfVXSrROUrRyMPXnaQeLuULZwiL6B0KjBAYbA_GIQ6xKZ672ruO_fGw2WXCVx-GZzvbop7bTmzCL1Yk0DxM-1kDlAm8ARr0Jx_gXHmCzU3qjUfsoxAPmq18UQ.webp"
+                        }
+                      ]
                     }
                   ]
                 }
@@ -177,7 +209,17 @@
                     "title": "안녕하세요 2번째 게시글 제목입니다.",
                     "likes": 5,
                     "createdAt": "2022-07-25T07:45:56.000Z",
-                    "updatedAt": "2022-07-25T07:45:56.000Z"
+                    "updatedAt": "2022-07-25T07:45:56.000Z",
+                    "choices": [
+                      {
+                        "choice_name": "떡볶이",
+                        "choice_url": "http://www.kfjals.com"
+                      },
+                      {
+                        "choice_name": "김밥",
+                        "choice_url": "http://www…"
+                      }
+                    ]
                   }
                 }
               }

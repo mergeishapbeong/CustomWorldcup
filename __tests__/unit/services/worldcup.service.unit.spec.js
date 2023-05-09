@@ -199,7 +199,78 @@ describe("Worldcup Service 단위 테스트", () => {
   // 3. 찾은 게시글의 user_id와 param으로 받아온 user_id가 다를 경우, Error가 발생합니다. ("월드컵 게시물 수정 권한이 없습니다.");
   // 4. body 데이터로 받아온 제목과 내용을 update합니다. (worldcupRepository.update(title, content, worldcup_id, user_id))
 
-  test("Worldcup Service updateWorldcup 성공 케이스", async () => {});
+  test("Worldcup Service updateWorldcup 성공 케이스", async () => {
+    const updateWorldcupParams = {
+      title: "updatingtitle",
+      content: "updatingcontent",
+      worldcup_id: 1,
+      user_id: 1,
+    };
+
+    const getWorldcupByIdReturnValue = {
+      worldcup_id: updateWorldcupParams.worldcup_id,
+      user_id: updateWorldcupParams.user_id,
+      nickname: "test1",
+      title: "타이틀 테스트1",
+      content: "컨텐트 테스트1",
+      likes: 1,
+      play_count: 10,
+      createdAt: "2023-05-08T15:52:03.000Z",
+      updatedAt: "2023-05-08T15:52:03.000Z",
+      choices: [
+        { choice_name: "A", choice_url: "http://example.com.jpg" },
+        { choice_name: "B", choice_url: "http://example.com.jpg" },
+      ],
+    };
+
+    mockWorldcupRepository.getOne = jest.fn(() => getWorldcupByIdReturnValue);
+
+    const updatedWorldcup = await worldcupService.updateWorldcup(
+      updateWorldcupParams.title,
+      updateWorldcupParams.content,
+      updateWorldcupParams.worldcup_id,
+      updateWorldcupParams.user_id
+    );
+
+    expect(mockWorldcupRepository.getOne).toHaveBeenCalledTimes(1);
+    expect(mockWorldcupRepository.getOne).toHaveBeenCalledWith(
+      updateWorldcupParams.worldcup_id
+    );
+
+    expect(mockWorldcupRepository.update).toHaveBeenCalledTimes(1);
+    expect(mockWorldcupRepository.update).toHaveBeenCalledWith(
+      updateWorldcupParams.title,
+      updateWorldcupParams.content,
+      updateWorldcupParams.worldcup_id,
+      updateWorldcupParams.user_id
+    );
+    const debugObj = {
+      worldcup_id: updateWorldcupParams.worldcup_id,
+      user_id: updateWorldcupParams.user_id,
+      nickname: getWorldcupByIdReturnValue.nickname,
+      title: updateWorldcupParams.title,
+      content: updateWorldcupParams.content,
+      likes: getWorldcupByIdReturnValue.likes,
+      play_count: getWorldcupByIdReturnValue.play_count,
+      createdAt: getWorldcupByIdReturnValue.createdAt,
+      updatedAt: getWorldcupByIdReturnValue.updatedAt,
+      choices: getWorldcupByIdReturnValue.choices,
+    };
+    global.console.log("updated", updatedWorldcup);
+    global.console.log("return", debugObj);
+    expect(updatedWorldcup).toMatchObject({
+      worldcup_id: updateWorldcupParams.worldcup_id,
+      user_id: updateWorldcupParams.user_id,
+      nickname: getWorldcupByIdReturnValue.nickname,
+      title: updateWorldcupParams.title,
+      content: updateWorldcupParams.content,
+      likes: getWorldcupByIdReturnValue.likes,
+      play_count: getWorldcupByIdReturnValue.play_count,
+      createdAt: getWorldcupByIdReturnValue.createdAt,
+      updatedAt: getWorldcupByIdReturnValue.updatedAt,
+      choices: getWorldcupByIdReturnValue.choices,
+    });
+  });
 
   test("Worldcup Service updateWorldcup 실패 케이스 - 게시물이 존재하지 않는 경우", async () => {
     // 2. 찾은 게시글이 없을 때, Error가 발생합니다. ("월드컵 게시물이 존재하지 않습니다.");
@@ -208,11 +279,13 @@ describe("Worldcup Service 단위 테스트", () => {
       content: "updatingcontent",
       worldcup_id: 2,
       user_id: 1,
-    }
+    };
     const getOneWorldcupWithNull = null;
     mockWorldcupRepository.getOne = jest.fn(() => getOneWorldcupWithNull);
     try {
-      const worldcup = await worldcupService.updateWorldcup(worldcupParams.worldcup_id);
+      const worldcup = await worldcupService.updateWorldcup(
+        worldcupParams.worldcup_id
+      );
     } catch (error) {
       expect(mockWorldcupRepository.getOne).toHaveBeenCalledTimes(1);
       expect(error.message).toEqual("월드컵 게시물이 존재하지 않습니다.");
@@ -226,7 +299,7 @@ describe("Worldcup Service 단위 테스트", () => {
       content: "updatingcontent",
       worldcup_id: 1,
       user_id: 2,
-    }
+    };
     const getOneWorldcupWithDifferentUserId = {
       worldcup_id: worldcupParams.worldcup_id,
       user_id: 1,
@@ -235,7 +308,9 @@ describe("Worldcup Service 단위 테스트", () => {
       () => getOneWorldcupWithDifferentUserId
     );
     try {
-      const worldcup = await worldcupService.updateWorldcup(worldcupParams.worldcup_id);
+      const worldcup = await worldcupService.updateWorldcup(
+        worldcupParams.worldcup_id
+      );
     } catch (error) {
       expect(mockWorldcupRepository.getOne).toHaveBeenCalledTimes(1);
       expect(error.message).toEqual("월드컵 게시물 수정 권한이 없습니다.");
@@ -254,11 +329,13 @@ describe("Worldcup Service 단위 테스트", () => {
     const worldcupParams = {
       worldcup_id: 2,
       user_id: 1,
-    }
+    };
     const getOneWorldcupWithNull = null;
     mockWorldcupRepository.getOne = jest.fn(() => getOneWorldcupWithNull);
     try {
-      const worldcup = await worldcupService.deleteWorldcup(worldcupParams.worldcup_id);
+      const worldcup = await worldcupService.deleteWorldcup(
+        worldcupParams.worldcup_id
+      );
     } catch (error) {
       expect(mockWorldcupRepository.getOne).toHaveBeenCalledTimes(1);
       expect(error.message).toEqual("월드컵 게시물이 존재하지 않습니다.");
@@ -270,7 +347,7 @@ describe("Worldcup Service 단위 테스트", () => {
     const worldcupParams = {
       worldcup_id: 1,
       user_id: 2,
-    }
+    };
     const getOneWorldcupWithDifferentUserId = {
       worldcup_id: worldcupParams.worldcup_id,
       user_id: 1,
@@ -279,7 +356,9 @@ describe("Worldcup Service 단위 테스트", () => {
       () => getOneWorldcupWithDifferentUserId
     );
     try {
-      const worldcup = await worldcupService.deleteWorldcup(worldcupParams.worldcup_id);
+      const worldcup = await worldcupService.deleteWorldcup(
+        worldcupParams.worldcup_id
+      );
     } catch (error) {
       expect(mockWorldcupRepository.getOne).toHaveBeenCalledTimes(1);
       expect(error.message).toEqual("월드컵 게시물 삭제 권한이 없습니다.");
