@@ -5,7 +5,8 @@ const TokenRepository = require("../repositories/tokens.repository");
 
 module.exports = async (req, res, next) => {
   const tokenRepository = new TokenRepository(Tokens);
-  const { Authorization, refreshToken } = req.cookies;
+  const { Authorization, refreshToken } = req.cookies; // 백엔드용
+  // const { Authorization, refreshToken } = req.headers; // 프론트용
   const [authType, accessToken] = (Authorization ?? "").split(" ");
 
   try {
@@ -31,7 +32,7 @@ module.exports = async (req, res, next) => {
       }
 
       const newAccessToken = createAccessToken(userR);
-      res.cookie("Authorization", `bearer ${newAccessToken}`);
+      res.cookie("Authorization", `Bearer ${newAccessToken}`);
 
       const user = await Users.findOne({ where: { user_id: userId } });
       res.locals.user = user;
