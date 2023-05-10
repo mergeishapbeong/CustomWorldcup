@@ -66,7 +66,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -161,7 +161,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -225,7 +225,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -284,7 +284,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -343,7 +343,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -416,7 +416,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -494,7 +494,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -552,7 +552,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -618,7 +618,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -672,7 +672,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -724,7 +724,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -777,7 +777,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -822,7 +822,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -868,7 +868,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -927,7 +927,7 @@
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
@@ -976,7 +976,10 @@
             "schema": {
               "type": "object",
               "properties": {
-                "comment": { "worldcup_choice_id": 1 }
+                "worldcup_choice_id": {
+                  "type": "integer",
+                  "example": 1
+                }
               }
             }
           }
@@ -987,16 +990,18 @@
             "schema": {
               "type": "object",
               "properties": {
-                "message": { "example": "댓글 작성 완료" }
+                "message": { "example": "월드컵 결과 저장 완료" }
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
               "properties": {
-                "errorMessage": { "example": "댓글 작성에 실패하였습니다" }
+                "errorMessage": {
+                  "example": "월드컵 결과 저장에 실패하였습니다."
+                }
               }
             }
           },
@@ -1010,12 +1015,12 @@
             }
           },
           "404": {
-            "description": "게시글이 존재하지 않는 경우",
+            "description": "게시글/게시글 선택지가 존재하지 않는 경우",
             "schema": {
               "type": "object",
               "properties": {
                 "errorMessage": {
-                  "example": "월드컵 게시물이 존재하지 않습니다."
+                  "example": "월드컵 게시물 or 선택지가 존재하지 않습니다."
                 }
               }
             }
@@ -1034,10 +1039,16 @@
     },
     "/api/worldcup/{worldcup_id}/result/{worldcup_choice_id}": {
       "get": {
-        "description": "월드컵 게시물 상세 조회",
+        "description": "월드컵 플레이 결과 조회",
         "parameters": [
           {
             "name": "worldcup_id",
+            "in": "path",
+            "required": true,
+            "type": "int"
+          },
+          {
+            "name": "worldcup_choice_id",
             "in": "path",
             "required": true,
             "type": "int"
@@ -1049,47 +1060,59 @@
             "schema": {
               "type": "object",
               "properties": {
-                "worldcup": {
+                "worldcupResult": {
                   "example": {
-                    "worldcup_id": 2,
+                    "worldcup_id": 1,
                     "user_id": 1,
-                    "nickname": "kim_cool",
-                    "title": "안녕하세요 2번째 게시글 제목입니다.",
-                    "likes": 5,
-                    "createdAt": "2022-07-25T07:45:56.000Z",
-                    "updatedAt": "2022-07-25T07:45:56.000Z",
-                    "choices": [
-                      {
-                        "choice_name": "떡볶이",
-                        "choice_url": "http://www.kfjals.com"
-                      },
-                      {
-                        "choice_name": "김밥",
-                        "choice_url": "http://www…"
-                      }
-                    ]
+                    "choice_name": "신라면",
+                    "choice_url": "img.png",
+                    "title": "제목입니다.",
+                    "content": "내용입니다.",
+                    "win_count": 3,
+                    "play_count": 12,
+                    "win_percentage": 25
                   }
                 }
               }
             }
           },
-          "400": {
+          "500": {
             "description": "예외 케이스 외의 처리 에러",
             "schema": {
               "type": "object",
               "properties": {
-                "errorMessage": { "example": "월드컵 조회에 실패하였습니다" }
+                "errorMessage": {
+                  "example": "월드컵 결과 조회에 실패하였습니다"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "로그인 쿠키 오류",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": { "example": "로그인이 필요한 기능입니다." }
               }
             }
           },
           "404": {
-            "description": "게시글이 존재하지 않는 경우",
+            "description": "게시글/게시글 선택지가 존재하지 않는 경우",
             "schema": {
               "type": "object",
               "properties": {
                 "errorMessage": {
-                  "example": "월드컵 게시물이 존재하지 않습니다."
+                  "example": "월드컵 게시물 or 선택지가 존재하지 않습니다."
                 }
+              }
+            }
+          },
+          "412": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "errorMessage": { "example": "데이터 형식이 올바르지 않습니다" }
               }
             }
           }
