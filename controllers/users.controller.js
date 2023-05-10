@@ -1,4 +1,5 @@
 const UserService = require("../services/users.service");
+const nodemailer = require("nodemailer");
 
 class UserController {
   userService = new UserService();
@@ -8,6 +9,8 @@ class UserController {
     try {
       const existsUsers = await this.userService.findOneUser(nickname);
       const existsEmail = await this.userService.findOneUser(email);
+      const nicknameFilter = /^[A-Za-z0-9]{3,}$/.test(nickname);
+      const emailFilter = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/.test(email);
 
       if (existsUsers) {
         res.status(412).json({
@@ -23,7 +26,6 @@ class UserController {
         return;
       }
 
-      const nicknameFilter = /^[A-Za-z0-9]{3,}$/.test(nickname);
       if (!nicknameFilter) {
         res.status(412).json({
           errorMessage: "닉네임의 형식이 일치하지 않습니다.",
@@ -31,7 +33,6 @@ class UserController {
         return;
       }
 
-      const emailFilter = /^[A-Za-z0-9]{3,}$/.test(nickname);
       if (!emailFilter) {
         res.status(412).json({
           errorMessage: "이메일의 형식이 일치하지 않습니다.",
@@ -69,6 +70,7 @@ class UserController {
   login = async (req, res) => {
     const { nickname, password } = req.body;
     const user = await this.userService.findOneUser(nickname);
+    console.log("login, user", user);
     try {
       if (!user || password !== user.password) {
         res.status(412).json({
@@ -78,6 +80,7 @@ class UserController {
       }
 
       const userData = await this.userService.login(nickname);
+      console.log("login, userData", userData);
 
       res.cookie(
         "Authorization",
@@ -87,6 +90,7 @@ class UserController {
       res.cookie("refreshToken", userData.refreshToken);
       res.status(200).json({
         Authorization: `${userData.accessObject.type} ${userData.accessObject.token}`,
+        refreshToken: userData.refreshToken,
       });
     } catch (err) {
       res.status(400).json({
@@ -106,6 +110,60 @@ class UserController {
       res.status(200).json(logoutData);
     } catch (error) {
       res.status(400).json({ errorMessage: "로그아웃에 실패하였습니다." });
+    }
+  };
+
+  emailAuth = async (req, res) => {
+    const { email } = req.body;
+    const emailFilter = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/.test(email);
+
+    try {
+      //템플릿 렌더링 연구 ㄱ
+      // let emailTemplete;
+      // ejs.renderFile(
+      //   appDir + "/template/authMail.ejs",
+      //   { authCode: authNum },
+      //   function (err, data) {
+      //     if (err) {
+      //       console.log(err);
+      //     }
+      //     emailTemplete = data;
+      //   }
+      // );
+
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.NODEMAILER_USER,
+          pass: process.env.NODEMAILER_PASS,
+        },
+      });
+
+      const emailForm = {
+        from: process.env.NODEMAILER_USER,
+        to: email,
+        subject: "이메일 인증 테스트입니다",
+        // html: emailTemplete, 연구끝나면 ㄱ
+        text: "제가 보인다면 당근을 들어주세요",
+      };
+
+      if (!emailFilter) {
+        res.status(412).json({
+          errorMessage: "이메일 형식이 일치하지 않습니다.",
+        });
+        return;
+      }
+
+      await transporter.sendMail(emailForm);
+      res.status(200).json({
+        message: `${email}주소로 인증 메일을 보냈습니다.`,
+      });
+    } catch (err) {
+      res
+        .status(400)
+        .json({ errorMessage: "인증 이메일 전송에 실패하였습니다." });
     }
   };
 }

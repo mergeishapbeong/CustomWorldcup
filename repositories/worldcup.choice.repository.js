@@ -18,7 +18,7 @@ class WorldcupChoiceRepository {
           where: { user_id },
         },
       ],
-      attributes: ["choice_name"],
+      attributes: ['choice_name'],
     });
     const results = myWorldcupResults.map((result) => ({
       choice_name: result.choice_name,

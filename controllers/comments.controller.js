@@ -1,25 +1,23 @@
 const CommentsService = require("../services/comments.service");
 const WorldcupService = require("../services/worldcup.service");
-const {
-  postWorldcupCommentSchema,
-  updateWorldcupCommentSchema,
-} = require("./joi");
+const { createCommentSchema, updateCommentSchema } = require("./joi");
 class CommentsController {
   commentsService = new CommentsService();
   worldcupService = new WorldcupService();
 
   createComment = async (req, res, next) => {
     try {
-      console.log(res.locals.user);
+      const { value, error } = createCommentSchema.validate(req.body);
+      // validation 에러 처리
+      if (error) {
+        error.errorCode = 412;
+        next(error, req, res, error.message);
+      }
 
-      const { comment } = await postWorldcupCommentSchema
-        .validateAsync(req.body)
-        .catch((error) => {
-          error.errorCode = 412;
-          next(error, req, res, error.message);
-        });
       const { worldcup_id } = req.params;
       const { user_id } = res.locals.user;
+      console.log(value.comment, worldcup_id, user_id);
+
       const worldcupIsExist = await this.worldcupService.getOneWorldcup(
         worldcup_id
       );
@@ -28,8 +26,9 @@ class CommentsController {
           .status(404)
           .json({ errorMessage: "게시글이 존재하지 않습니다." });
       }
+
       const createCommentData = await this.commentsService.createComment(
-        comment,
+        value.comment,
         worldcup_id,
         user_id
       );
@@ -65,12 +64,13 @@ class CommentsController {
   };
   updateComment = async (req, res, next) => {
     try {
-      const { comment } = await updateWorldcupCommentSchema
-        .validateAsync(req.body)
-        .catch((error) => {
-          error.errorCode = 412;
-          next(error, req, res, error.message);
-        });
+      const { value, error } = updateCommentSchema.validate(req.body);
+      // validation 에러 처리
+      if (error) {
+        error.errorCode = 412;
+        next(error, req, res, error.message);
+      }
+
       const { worldcup_id, comment_id } = req.params;
       const { user_id } = res.locals.user;
 
@@ -98,7 +98,7 @@ class CommentsController {
           .json({ errorMessage: "게시글 수정의 권한이 존재하지 않습니다." });
       }
       const updateCommentData = await this.commentsService.updateComment(
-        comment,
+        value.comment,
         worldcup_id,
         comment_id
       );

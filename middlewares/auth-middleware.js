@@ -5,23 +5,29 @@ const TokenRepository = require("../repositories/tokens.repository");
 
 module.exports = async (req, res, next) => {
   const tokenRepository = new TokenRepository(Tokens);
+<<<<<<< HEAD
   const { Authorization, refreshToken } = req.cookies; // 백엔드용
   // const { Authorization, refreshToken } = req.headers; // 프론트용
+=======
+
+  const { Authorization, refreshtoken } = req.headers;
+>>>>>>> 923d68a7b29a7ad86ad041d5a5bab3197c20fd73
   const [authType, accessToken] = (Authorization ?? "").split(" ");
 
   try {
     const isAccessTokenValidate = validateAccessToken(accessToken);
-    const isRefreshTokenValidate = validateRefreshToken(refreshToken);
+    const isRefreshTokenValidate = validateRefreshToken(refreshtoken);
 
     if (!isRefreshTokenValidate) {
-      await tokenRepository.deleteRefreshToken2(refreshToken);
+      await tokenRepository.deleteRefreshToken2(refreshtoken);
       return res.status(419).json({
         message: "Refresh Token이 만료되었습니다. 다시 로그인 해주세요",
       });
     }
 
     if (!isAccessTokenValidate) {
-      const userId = jwt.verify(refreshToken, process.env.SECRET_KEY).user_id;
+      const userId = jwt.verify(refreshtoken, process.env.SECRET_KEY).user_id;
+
       const userR = await tokenRepository.getRefreshToken(userId);
 
       if (!userR) {
