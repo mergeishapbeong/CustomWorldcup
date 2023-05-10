@@ -4,6 +4,7 @@ module.exports = (error, req, res, defaultMessage) => {
   console.error(
     `에러로그 ${error.errorCode} ${req.method} ${req.originalUrl} : ${error.message}`
   );
+  console.error(error);
   return Sentry.Handlers.errorHandler({
     shouldHandleError(error) {
       if (

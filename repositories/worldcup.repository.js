@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 const { Users, Worldcup_choices } = require("../models");
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require("sequelize");
 
 class WorldcupRepository {
   constructor(WorldcupsModel) {
@@ -84,9 +84,9 @@ class WorldcupRepository {
       include: [
         {
           model: Worldcup_choices,
-          attributes: ['choice_name', 'choice_url', 'win_count'],
+          attributes: ["choice_name", "choice_url", "win_count"],
           required: true,
-          order: [['win_count', 'DESC']],
+          order: [["win_count", "DESC"]],
           limit: 2,
         },
       ],
@@ -111,6 +111,25 @@ class WorldcupRepository {
     const increaseLikesData = await findLikesData.increment("likes", { by: 1 });
     return increaseLikesData;
   };
+
+  // getWorldcupResult = async (worldcup_id, worldcup_choice_id) => {
+  //   return await this.worldcupsModel.findOne({
+  //     include: [
+  //       {
+  //         model: Worldcup_choices,
+  //         attributes: ["choice_name", "choice_url", "win_count"],
+  //         required: true,
+  //       },
+  //     ],
+  //     attributes: ["worldcup_id", "user_id", "title", "content", "play_count"],
+  //     where: {
+  //       [Op.and]: [
+  //         { worldcup_id },
+  //         { "Worldcup_choices.worldcup_choice_id": worldcup_choice_id },
+  //       ],
+  //     },
+  //   });
+  // };
 }
 
 module.exports = WorldcupRepository;
