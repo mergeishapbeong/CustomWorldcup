@@ -8,9 +8,11 @@ module.exports = async (req, res, next) => {
 
   const { Authorization, refreshtoken } = req.headers; // 배포용
   // const { Authorization, refreshtoken } = req.cookies; // 백엔드 테스트용
+
   const [authType, accessToken] = (Authorization ?? "").split(" ");
 
   try {
+    console.log(Authorization, refreshtoken);
     const isAccessTokenValidate = validateAccessToken(accessToken);
     const isRefreshTokenValidate = validateRefreshToken(refreshtoken);
 
