@@ -47,7 +47,7 @@ class WorldcupController {
   };
 
   updateWorldcup = async (req, res, next) => {
-    const { value, content } = updateWorldcupSchema.validate(req.body);
+    const { value, error } = updateWorldcupSchema.validate(req.body);
     // validation 에러 처리
     if (error) {
       error.errorCode = 412;
@@ -59,7 +59,7 @@ class WorldcupController {
     try {
       const updatedWorldcup = await this.worldcupService.updateWorldcup(
         value.title,
-        content,
+        value.content,
         worldcup_id,
         user_id
       );
