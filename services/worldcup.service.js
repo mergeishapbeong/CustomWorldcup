@@ -210,7 +210,7 @@ class WorldcupService {
     if (!worldcupChoiceResult) {
       const error = new Error();
       error.errorCode = 404;
-      error.message = "월드컵 선택지가 존재하지 않습니다.";
+      error.message = "월드컵 게시물이 존재하지 않습니다.";
       throw error;
     }
 
