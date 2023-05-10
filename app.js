@@ -47,3 +47,5 @@ app.use(errorHandler);
 app.listen(port, () => {
   console.log(`running http://localhost:${port}`);
 });
+
+module.exports = app;
