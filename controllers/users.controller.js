@@ -87,10 +87,9 @@ class UserController {
       );
 
       res.cookie("refreshtoken", userData.refreshToken);
-
       res.status(200).json({
         Authorization: `${userData.accessObject.type} ${userData.accessObject.token}`,
-        refreshToken: userData.refreshToken,
+        refreshtoken: userData.refreshToken,
       });
     } catch (err) {
       res.status(400).json({

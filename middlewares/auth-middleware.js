@@ -41,8 +41,7 @@ module.exports = async (req, res, next) => {
       }
 
       const newAccessToken = createAccessToken(userR);
-
-      res.cookie("Authorization", `bearer ${newAccessToken}`);
+      res.cookie("Authorization", `Bearer ${newAccessToken}`);
 
       const user = await Users.findOne({ where: { user_id: userId } });
       res.locals.user = user;
