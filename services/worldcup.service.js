@@ -200,6 +200,46 @@ class WorldcupService {
     );
   };
 
+  getWorldcupResult = async (worldcup_id, user_id, worldcup_choice_id) => {
+    const worldcupChoiceResult = await this.worldcupChoicesRepository.findOne(
+      worldcup_choice_id
+    );
+    const worldcupResult = await this.worldcupRepository.getOne(worldcup_id);
+
+    if (!worldcupChoiceResult) {
+      const error = new Error();
+      error.errorCode = 404;
+      error.message = "월드컵 선택지가 존재하지 않습니다.";
+      throw error;
+    }
+
+    if (!worldcupResult) {
+      const error = new Error();
+      error.errorCode = 404;
+      error.message = "월드컵 선택지가 존재하지 않습니다.";
+      throw error;
+    }
+
+    const play_count = worldcupResult.play_count;
+    const win_count = worldcupChoiceResult.win_count;
+
+    const win_percentage =
+      play_count !== 0 ? (win_count / play_count) * 100 : 0;
+
+    console.log(win_percentage);
+    return {
+      worldcup_id: worldcupResult.worldcup_id,
+      user_id: worldcupResult.user_id,
+      choice_name: worldcupChoiceResult.choice_name,
+      choice_url: worldcupChoiceResult.choice_url,
+      title: worldcupResult.title,
+      content: worldcupResult.content,
+      win_count: worldcupChoiceResult.win_count,
+      play_count: worldcupResult.play_count,
+      win_percentage: win_percentage.toFixed(0),
+    };
+  };
+
   // 월드컵 존재 확인
   worldcupExistAssert = async (worldcup_id) => {
     const worldcup = await this.worldcupRepository.getOne(worldcup_id);
@@ -213,7 +253,9 @@ class WorldcupService {
 
   // 선택지 존재 확인
   choiceExistAssert = async (worldcup_choice_id) => {
-    const worldcupChoice = await this.worldcupChoiceRepository.findOne(worldcup_choice_id);
+    const worldcupChoice = await this.worldcupChoicesRepository.findOne(
+      worldcup_choice_id
+    );
     if (!worldcupChoice) {
       const error = new Error();
       error.errorCode = 404;

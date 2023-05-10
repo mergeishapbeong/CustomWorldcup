@@ -22,4 +22,7 @@ router.delete("/:worldcup_id", authMiddleware, worldcupController.deleteWorldcup
 // POST: 월드컵 결과 저장
 router.post('/:worldcup_id/result', authMiddleware, worldcupController.postWorldcupResult);
 
+// GET: 월드컵 결과 조회
+router.get('/:worldcup_id/result/:worldcup_choice_id', authMiddleware, worldcupController.getWorldcupResult);
+
 module.exports = router;

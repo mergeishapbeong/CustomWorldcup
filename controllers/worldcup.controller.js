@@ -2,7 +2,6 @@ const WorldcupService = require("../services/worldcup.service");
 const { postWorldcupSchema, updateWorldcupSchema } = require("./joi");
 
 class WorldcupController {
-
   worldcupService = new WorldcupService();
   createWorldcup = async (req, res, next) => {
     const { value, error } = postWorldcupSchema.validate(req.body);
@@ -92,6 +91,21 @@ class WorldcupController {
       res.status(200).json({ message: "월드컵 결과 저장 완료" });
     } catch (error) {
       next(error, req, res, "월드컵 결과 저장에 실패하였습니다.");
+    }
+  };
+
+  getWorldcupResult = async (req, res, next) => {
+    try {
+      const { worldcup_id, worldcup_choice_id } = req.params;
+      const { user_id } = res.locals.user;
+      const worldcupResult = await this.worldcupService.getWorldcupResult(
+        worldcup_id,
+        user_id,
+        worldcup_choice_id
+      );
+      res.status(200).json({ worldcupResult });
+    } catch (error) {
+      next(error, req, res, "월드컵 결과 조회에 실패하였습니다.");
     }
   };
 }
