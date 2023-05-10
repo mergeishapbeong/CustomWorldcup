@@ -5,13 +5,9 @@ const TokenRepository = require("../repositories/tokens.repository");
 
 module.exports = async (req, res, next) => {
   const tokenRepository = new TokenRepository(Tokens);
-<<<<<<< HEAD
-  const { Authorization, refreshToken } = req.cookies; // 백엔드용
-  // const { Authorization, refreshToken } = req.headers; // 프론트용
-=======
 
-  const { Authorization, refreshtoken } = req.headers;
->>>>>>> 923d68a7b29a7ad86ad041d5a5bab3197c20fd73
+  // const { Authorization, refreshtoken } = req.headers;
+  const { Authorization, refreshtoken } = req.cookies;
   const [authType, accessToken] = (Authorization ?? "").split(" ");
 
   try {

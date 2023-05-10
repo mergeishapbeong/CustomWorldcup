@@ -2,8 +2,8 @@ const WorldcupService = require("../services/worldcup.service");
 const { postWorldcupSchema, updateWorldcupSchema } = require("./joi");
 
 class WorldcupController {
-  worldcupService = new WorldcupService();
 
+  worldcupService = new WorldcupService();
   createWorldcup = async (req, res, next) => {
     const { value, error } = postWorldcupSchema.validate(req.body);
     // validation 에러 처리 - 에러 없는 경우 error === undefined
