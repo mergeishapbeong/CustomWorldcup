@@ -40,7 +40,7 @@ class WorldcupChoiceRepository {
   };
 
   findOne = async (worldcup_choice_id) => {
-    return await this.worldcupsModel.findOne({
+    return await this.worldcupChoiceModel.findOne({
       where: { worldcup_choice_id },
     });
   };
