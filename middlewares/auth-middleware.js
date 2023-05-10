@@ -6,11 +6,18 @@ const TokenRepository = require("../repositories/tokens.repository");
 module.exports = async (req, res, next) => {
   const tokenRepository = new TokenRepository(Tokens);
 
-  // const { Authorization, refreshtoken } = req.headers;
-  const { Authorization, refreshtoken } = req.cookies;
-  const [authType, accessToken] = (Authorization ?? "").split(" ");
+  let { Authorization, refreshtoken } = req.headers;
 
   try {
+    Authorization = !req.headers.refreshtoken
+      ? req.cookies.Authorization
+      : Authorization;
+
+    refreshtoken = !req.headers.refreshtoken
+      ? req.cookies.refreshtoken
+      : refreshtoken;
+
+    const [authType, accessToken] = (Authorization ?? "").split(" ");
     const isAccessTokenValidate = validateAccessToken(accessToken);
     const isRefreshTokenValidate = validateRefreshToken(refreshtoken);
 
@@ -46,6 +53,7 @@ module.exports = async (req, res, next) => {
     }
     next();
   } catch (err) {
+    console.log(err);
     res.clearCookie("Authorization");
     return res.status(403).send({
       errorMessage:

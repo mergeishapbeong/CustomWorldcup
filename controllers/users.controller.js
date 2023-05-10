@@ -70,7 +70,7 @@ class UserController {
   login = async (req, res) => {
     const { nickname, password } = req.body;
     const user = await this.userService.findOneUser(nickname);
-    console.log("login, user", user);
+
     try {
       if (!user || password !== user.password) {
         res.status(412).json({
@@ -80,7 +80,6 @@ class UserController {
       }
 
       const userData = await this.userService.login(nickname);
-      console.log("login, userData", userData);
 
       res.cookie(
         "Authorization",
