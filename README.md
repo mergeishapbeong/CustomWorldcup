@@ -9,11 +9,11 @@
 
 > 항해99 14기 주특기 프로젝트 </b>
 >
-> 프로젝트 기간: 2023.05.05 ~ 2023.05.1
+> 프로젝트 기간: 2023.05.05 ~ 2023.05.11
 
 
 ### 💡 API 명세서
-[API 명세서 노션]([https://github.com/TeamDooRiBon/DooRi-Server/wiki](https://siwonmadang.notion.site/S-A-8270cdaad4ce42289642bbe0a39824c7))
+[API 명세서 노션](https://siwonmadang.notion.site/S-A-8270cdaad4ce42289642bbe0a39824c7)
 
 ### 🛠 Development Environment
 <img src="https://img.shields.io/badge/Node.js-v14-green"/> <img src="https://img.shields.io/badge/Mongoose-v5.12.10-blue"/> <img src="https://img.shields.io/badge/Express-v4.17.1-green"/> <img src="https://img.shields.io/badge/Typescript-v4.2.4-blue"/> 
