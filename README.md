@@ -130,8 +130,7 @@
 
 ### 📌 Troubleshooting
 #### FE & BE 공통 Troubleshooting 
-
-#### Frontend Troubleshooting 
+![](https://user-images.githubusercontent.com/76824986/237596493-1a4c4f2a-59ef-4a76-8e60-62248bfd4be2.png)
 
 #### Backend Troubleshooting 
 ![](https://user-images.githubusercontent.com/76824986/237594328-4447dfd3-45c0-489b-8db7-b3a82900197f.png)
