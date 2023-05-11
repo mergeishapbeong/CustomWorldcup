@@ -129,7 +129,16 @@
 </details>
 
 ### 📌 Troubleshooting
+#### FE & BE 공통 Troubleshooting 
+![](https://user-images.githubusercontent.com/76824986/237596493-1a4c4f2a-59ef-4a76-8e60-62248bfd4be2.png)
+![](https://user-images.githubusercontent.com/76824986/237597694-be840c04-2dac-4ae0-a0aa-02e7a1c7d745.png)
 
+#### Backend Troubleshooting 
+![](https://user-images.githubusercontent.com/76824986/237594328-4447dfd3-45c0-489b-8db7-b3a82900197f.png)
+![](https://user-images.githubusercontent.com/76824986/237594446-83224975-02e3-4a3f-a41b-679f58ef89f7.png)
+![](https://user-images.githubusercontent.com/76824986/237593919-87b878d1-45e4-47fd-9e77-a7526ffd137c.png)
+![](https://user-images.githubusercontent.com/76824986/237594025-693e653e-8fef-40b3-b3c4-60342ff277a4.png)
+![](https://user-images.githubusercontent.com/76824986/237594182-54b92bb9-c1e4-4f5d-b34d-dec9c8339b12.png)
 
 ### 👩🏻‍💻 Developers   
 | 주지민 | 김시원 | 이동환 | 오성인 |
