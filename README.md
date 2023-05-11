@@ -13,13 +13,13 @@
 
 
 ### 💡 API 명세서
-[API 명세서 노션](https://siwonmadang.notion.site/S-A-8270cdaad4ce42289642bbe0a39824c7)
+[API 명세서 노션]([https://siwonmadang.notion.site/S-A-8270cdaad4ce42289642bbe0a39824c7](https://www.notion.so/siwonmadang/c822738780334e93a81b95518c98f69d?v=bcc44cebf6da4eca87e16f97b1e70ba7&pvs=4))
 
 ### 🛠 Development Environment
-<img src="https://img.shields.io/badge/Node.js-v14-green"/> <img src="https://img.shields.io/badge/Mongoose-v5.12.10-blue"/> <img src="https://img.shields.io/badge/Express-v4.17.1-green"/> <img src="https://img.shields.io/badge/Typescript-v4.2.4-blue"/> 
+<img src="https://img.shields.io/badge/Node.js-v16-green"/> <img src="https://img.shields.io/badge/Sequelize-v6.31.1-blue"/> <img src="https://img.shields.io/badge/Express-v4.17.1-green"/> 
 
 ### 📋 ER Diagram
-![erd](https://user-images.githubusercontent.com/20807197/126026946-85537a63-b27a-4597-9971-4a9438fbb67a.png)
+![https://github.com/siwon-school/CustomWorldcup_Back/issues/71](https://user-images.githubusercontent.com/76824986/237574679-3caad4c4-de61-4970-b1cc-703bb00810fb.png)
 
 
 ### ⚙️ Dependencies Module
