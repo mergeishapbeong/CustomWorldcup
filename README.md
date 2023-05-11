@@ -131,6 +131,7 @@
 ### 📌 Troubleshooting
 #### FE & BE 공통 Troubleshooting 
 ![](https://user-images.githubusercontent.com/76824986/237596493-1a4c4f2a-59ef-4a76-8e60-62248bfd4be2.png)
+![](https://user-images.githubusercontent.com/76824986/237597694-be840c04-2dac-4ae0-a0aa-02e7a1c7d745.png)
 
 #### Backend Troubleshooting 
 ![](https://user-images.githubusercontent.com/76824986/237594328-4447dfd3-45c0-489b-8db7-b3a82900197f.png)
