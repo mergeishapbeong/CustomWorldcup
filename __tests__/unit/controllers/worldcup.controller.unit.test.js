@@ -33,22 +33,24 @@ let mockPostWorldcupSchema = {
   // new Promise를 이용해서 만들어볼까?
   // 그리고 data를 잘 뱉어야 한다. 아마 객체 형태를 반환해줘야 할 것 같다.
   // 가져온 데이터를 그대로 뱉어주도록 하자.
-  validateAsync: async (input) => {
-    return {
-      catch: (err) => {
-        return input;
-      },
-    };
-  },
+  validateAsync: jest.fn(),
+  // validateAsync: async (input) => {
+  //   return {
+  //     catch: (err) => {
+  //       return input;
+  //     },
+  //   };
+  // },
 };
 let mockUpdateWorldcupSchema = {
-  validateAsync: async (input) => {
-    return {
-      catch: (err) => {
-        return input;
-      },
-    };
-  },
+  validateAsync: jest.fn(),
+  // validateAsync: async (input) => {
+  //   return {
+  //     catch: (err) => {
+  //       return input;
+  //     },
+  //   };
+  // },
 };
 
 let mockNext = jest.fn();

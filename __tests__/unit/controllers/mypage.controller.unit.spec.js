@@ -47,6 +47,7 @@ describe("MypageController Unit Test", () => {
    3. getMyWorldcups()에서 얻은 myWorldcupsExample을 잘 반환하는지 검증
    */
   test("getMyWorldcups success test", async () => {
+    // Given
     const myWorldcupsExample = [
       {
         title: "최애 라면 월드컵",
@@ -57,12 +58,12 @@ describe("MypageController Unit Test", () => {
         content: "점심 메뉴 추천 월드컵입니다.",
       },
     ];
-
     mockMypageService.getMyWorldcups = jest.fn(() => myWorldcupsExample);
 
+    // When
     await mypageController.getMyWorldcups(mockRequest, mockResponse, mockNext);
 
-
+    // Then
     // 1. mypageService의 getMyWorldcups() 메소드를 잘 호출하는지 검증
     expect(mockMypageService.getMyWorldcups).toHaveBeenCalledTimes(1);
 
@@ -82,6 +83,7 @@ describe("MypageController Unit Test", () => {
    3. getMyWorldcupResults()에서 얻은 myWorldcupResultsExample을 잘 반환하는지 검증
    */
   test("getMyWorldcupResults success test", async () => {
+    // Given
     const myWorldcupResultsExample = [
       {
         title: "최애 라면 월드컵",
@@ -94,9 +96,10 @@ describe("MypageController Unit Test", () => {
     ];
     mockMypageService.getMyWorldcupResults = jest.fn(() => myWorldcupResultsExample);
 
-
+    // When
     await mypageController.getMyWorldcupResults(mockRequest, mockResponse, mockNext);
 
+    // Then
     // 1. mypageService의 getMyWorldcupResults 메소드를 잘 호출하는지 검증
     expect(mockMypageService.getMyWorldcupResults).toHaveBeenCalledTimes(1);
 
