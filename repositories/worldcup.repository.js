@@ -41,7 +41,7 @@ class WorldcupRepository {
       include: [
         {
           model: Worldcup_choices,
-          attributes: ["choice_name", "choice_url", "worldcup_choice_id"],
+          attributes: ["choice_name", "choice_url", "worldcup_choice_id", "win_count"],
           required: true,
         },
         {
@@ -61,6 +61,7 @@ class WorldcupRepository {
         "createdAt",
         "updatedAt",
       ],
+      order: [[{model: Worldcup_choices}, "win_count", "DESC"]],
       where: { worldcup_id },
     });
   };
