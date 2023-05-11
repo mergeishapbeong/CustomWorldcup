@@ -1,5 +1,5 @@
 const CommentsRepository = require("../repositories/comments.repository");
-const { Comments } = require("../models/index");
+const { Comments, Users } = require("../models/index");
 
 class CommentsService {
   commentsRepository = new CommentsRepository(Comments);

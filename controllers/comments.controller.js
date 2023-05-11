@@ -56,7 +56,7 @@ class CommentsController {
         worldcup_id
       );
 
-      res.status(200).json(findAllCommentsData);
+      res.status(200).json({ comments: findAllCommentsData });
     } catch (error) {
       console.log(error);
       next(error, req, res, "댓글 조회에 실패하였습니다.");
