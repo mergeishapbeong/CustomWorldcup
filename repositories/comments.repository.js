@@ -1,4 +1,6 @@
 const { Op } = require("sequelize");
+const { Users } = require("../models");
+const { Sequelize } = require("sequelize");
 
 class CommentsRepository {
   constructor(commentsModel) {
@@ -15,7 +17,29 @@ class CommentsRepository {
   };
 
   findAllComments = async (worldcup_id) => {
-    const allComments = await this.Comments.findAll({ where: { worldcup_id } });
+    const allComments = await this.Comments.findAll(
+      {
+        include: [
+          {
+            model: Users,
+            attributes: [],
+            required: true,
+          },
+        ],
+        attributes: [
+          "worldcup_id",
+          "user_id",
+          "comment_id",
+          "comment",
+          [Sequelize.literal("`User`.`nickname`"), "nickname"],
+          "createdAt",
+          "updatedAt",
+        ],
+        group: ["Comments.comment_id"],
+        order: [["createdAt", "DESC"]],
+      },
+      { where: { worldcup_id: worldcup_id } }
+    );
 
     return allComments;
   };

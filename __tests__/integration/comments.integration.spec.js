@@ -13,8 +13,8 @@ beforeAll(async () => {
 });
 
 describe("로그인 한 상태로 comment crud success test", () => {
-  const agent = supertest.agent(app);
-  agent
+  const agent = supertest.agent(app); // agent 생성
+  agent // agent가 회원가입
     .post("/api/auth/signup")
     .send({
       nickname: "test1",
@@ -23,16 +23,9 @@ describe("로그인 한 상태로 comment crud success test", () => {
     })
     .expect(200);
 
-  agent
-    .post("/api/auth/signup")
-    .send({
-      nickname: "test2",
-      password: "abcd1234!",
-      email: "test2@naver.com",
-    })
-    .expect(200);
   beforeEach(async () => {
-    await agent
+    // test 진행 직전에
+    await agent // agent가 로그인 진행
       .post("/api/auth/login")
       .send({
         nickname: "test4231",
