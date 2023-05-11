@@ -182,13 +182,14 @@ class WorldcupService {
     await this.worldcupRepository.remove(worldcup_id, user_id);
   };
 
+  // 월드컵 결과 정하기
   postWorldcupResult = async (worldcupResultData) => {
     console.log("worldcupResultData", worldcupResultData);
     await this.worldcupExistAssert(worldcupResultData.worldcup_id);
     await this.choiceExistAssert(worldcupResultData.worldcup_choice_id);
 
     // 월드컵 결과 저장
-    await this.worldcupChoiceRepository.createResult(worldcupResultData);
+    await this.worldcupChoicesRepository.createResult(worldcupResultData);
 
     // 월드컵 진행 횟수 1 증가
     await this.worldcupRepository.increasePlayCount(
@@ -196,7 +197,7 @@ class WorldcupService {
     );
 
     // 월드컵 선택지 승리 횟수 1 증가
-    await this.worldcupChoiceRepository.increaseWinCount(
+    await this.worldcupChoicesRepository.increaseWinCount(
       worldcupResultData.worldcup_choice_id
     );
   };
