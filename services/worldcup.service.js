@@ -104,6 +104,7 @@ class WorldcupService {
     const worldcup_choices = worldcup.Worldcup_choices.map((choice) => ({
       choice_name: choice.choice_name,
       choice_url: choice.choice_url,
+      worldcup_choice_id: choice.worldcup_choice_id,
     }));
 
     return {
