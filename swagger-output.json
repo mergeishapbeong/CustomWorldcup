@@ -213,11 +213,13 @@
                     "choices": [
                       {
                         "choice_name": "떡볶이",
-                        "choice_url": "http://www.kfjals.com"
+                        "choice_url": "http://www.kfjals.com",
+                        "worldcup_choice_id": 115
                       },
                       {
                         "choice_name": "김밥",
-                        "choice_url": "http://www…"
+                        "choice_url": "http://www…",
+                        "worldcup_choice_id": 116
                       }
                     ]
                   }
