@@ -61,6 +61,7 @@ class WorldcupRepository {
         "createdAt",
         "updatedAt",
       ],
+      // join을 한 모델인 Worldcup_choices의 win_count를 기준으로 정렬하기 위함.
       order: [[{model: Worldcup_choices}, "win_count", "DESC"]],
       where: { worldcup_id },
     });
@@ -93,6 +94,13 @@ class WorldcupRepository {
       ],
     });
     return posts;
+  };
+
+  increasePlayCount = async (worldcup_id) => {
+    await this.worldcupsModel.increment("play_count", {
+      by: 1,
+      where: { worldcup_id },
+    });
   };
 
   decreaseLikes = async (worldcup_id) => {
